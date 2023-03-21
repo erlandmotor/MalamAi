@@ -18,7 +18,6 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final _messages = <ChatMessage>[
-    //ChatMessage('Hello, how can I help?', false),
     ChatMessage('안녕하세요?', false),
   ];
   var _awaitingResponse = false;

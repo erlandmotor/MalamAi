@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.chat_playground">
+    package="com.studiomotorway.chat_playground">
    <application
         android:label="chat_playground"
         android:name="${applicationName}"
