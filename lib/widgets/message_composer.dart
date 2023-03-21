@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 
 class MessageComposer extends StatelessWidget {
   MessageComposer({
@@ -33,15 +34,36 @@ class MessageComposer extends StatelessWidget {
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(),
-                        ),
+                      children: [
+                        // SizedBox(
+                        //   height: 24,
+                        //   width: 24,
+                        //   //child: CircularProgressIndicator(),
+                        //   child: const JumpingDotsProgressIndicator(
+                        //     fontSize: 28.0,
+                        //   ),
+                        // ),
+
+                        // JumpingDotsProgressIndicator(
+                        //   fontSize: 28.0,
+                        // ),
+
+                        // SizedBox(
+                        //   height: 24,
+                        //   width: 24,
+                        //   child: JumpingDotsProgressIndicator(
+                        //     fontSize: 28.0,
+                        //   ),
+                        // ),
+
+                        // Padding(
+                        //   padding: EdgeInsets.all(16),
+                        //   child: Text('응답 대기중...'),
+                        // ),
+
                         Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text('Fetching response...'),
+                          padding: const EdgeInsets.all(16),
+                          child: JumpingText('응답 대기중...'),
                         ),
                       ],
                     ),

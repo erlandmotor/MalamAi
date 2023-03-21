@@ -1,6 +1,5 @@
 import 'package:chat_playground/chat_page.dart';
 import 'package:chat_playground/api/chat_api.dart';
-import 'package:chat_playground/chat_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
