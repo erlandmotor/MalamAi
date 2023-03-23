@@ -1,8 +1,8 @@
 class GlobalDefine {
   //static bool USE_ADS = false;
+  //static String RouteNameRoot = '/';
+  static String routeNameRoot = '/';
+  static String routeNameOption = '/option';
 
-  static String RouteNameRoot = '/';
-  static String RouteNameOption = '/option';
-
-  static String Ver = "1.06.1";
+  static String ver = "1.06.1";
 }

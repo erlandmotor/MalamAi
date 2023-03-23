@@ -4,7 +4,6 @@ import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:chat_playground/widgets/page_setting.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -70,11 +69,11 @@ class _ChatAppState extends State<ChatApp> {
       title: 'Chat Playground',
       theme: themeData,
       //home: ChatPage(chatApi: widget.chatApi),
-      initialRoute: GlobalDefine.RouteNameRoot,
+      initialRoute: GlobalDefine.routeNameRoot,
       routes: {
-        GlobalDefine.RouteNameRoot: (context) =>
+        GlobalDefine.routeNameRoot: (context) =>
             ChatPage(chatApi: widget.chatApi),
-        GlobalDefine.RouteNameOption: (context) => PageSetting(),
+        GlobalDefine.routeNameOption: (context) => const PageSetting(),
       },
     );
 

@@ -47,7 +47,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ],
       ),
-      drawer: MGSideDrawer(),
+      drawer: const MGSideDrawer(),
     );
   }
 

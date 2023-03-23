@@ -1,13 +1,17 @@
+import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PageSetting extends StatelessWidget {
-  PageSetting({Key? key}) : super(key: key);
+  const PageSetting({Key? key}) : super(key: key);
 
   //Navigator.pushNamed(context, GlobalDefine.RouteNameSetting);
   @override
   Widget build(BuildContext context) {
+    var uiNoti = context.read<UIChangeNotifier>();
+
     return Scaffold(
-        appBar: AppBar(title: Text('설정')),
+        appBar: AppBar(title: const Text('설정')),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -15,14 +19,14 @@ class PageSetting extends StatelessWidget {
               ListTile(
                 title: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                         flex: 5,
                         child: Text(
                           '시스템설정 사용',
                         )),
-                    Spacer(),
+                    const Spacer(),
                     Switch(
-                      value: true,
+                      value: uiNoti.isUseSystemSetting,
                       onChanged: (bool value) {
                         //parent.SetUseSystemSet(value);
                       },
@@ -30,16 +34,16 @@ class PageSetting extends StatelessWidget {
                   ],
                 ),
               ),
-              Divider(thickness: 10),
+              const Divider(thickness: 10),
               ListTile(
                 title: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                         flex: 5,
                         child: Text(
                           '다크/라이트',
                         )),
-                    Spacer(),
+                    const Spacer(),
                     Switch(
                       value: true,
                       //activeColor: Colors.red,
@@ -56,7 +60,7 @@ class PageSetting extends StatelessWidget {
               ListTile(
                 title: Column(
                   children: [
-                    Text(
+                    const Text(
                       '글꼴 크기',
                       overflow: TextOverflow.ellipsis,
                     ),

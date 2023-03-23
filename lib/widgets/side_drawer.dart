@@ -1,6 +1,5 @@
 import 'package:chat_playground/define/global_define.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class MGSideDrawer extends StatelessWidget {
   const MGSideDrawer({Key? key}) : super(key: key);
@@ -14,7 +13,7 @@ class MGSideDrawer extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               //color: colorScheme.secondary,
               // image: DecorationImage(
               //     fit: BoxFit.cover,
@@ -39,7 +38,7 @@ class MGSideDrawer extends StatelessWidget {
                     //mainAxisSize: MainAxisSize.min,
                     children: [
                       Image.asset(
-                        'assets/icon/robot2.png',
+                        'assets/icons/robot2.png',
                         width: 100,
                         height: 100,
                         //fit: BoxFit.cover,
@@ -57,7 +56,7 @@ class MGSideDrawer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            ListTile(
+                            const ListTile(
                               dense: true,
                               title: Text(
                                 'Chat Playground',
@@ -65,7 +64,7 @@ class MGSideDrawer extends StatelessWidget {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
-                                  fontFamily: 'SpoqaHanSansNeo',
+                                  //fontFamily: 'SpoqaHanSansNeo',
                                   //color: colorScheme.onSecondary,
                                 ),
                               ),
@@ -75,13 +74,13 @@ class MGSideDrawer extends StatelessWidget {
                               //     color: Colors.white),
                               dense: true,
                               title: Text(
-                                'Ver ${GlobalDefine.Ver}',
+                                'Ver ${GlobalDefine.ver}',
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                   letterSpacing: 0.5,
                                   //color: colorScheme.onSecondary,
-                                  fontFamily: 'SpoqaHanSansNeo',
+                                  //fontFamily: 'SpoqaHanSansNeo',
                                   //fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -94,64 +93,15 @@ class MGSideDrawer extends StatelessWidget {
                 ),
               ],
             ),
-
-            ////////////////////////////////
-            //CircleAvatar(
-            // child: Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 0),
-            //   //.only(bottom: 10, right: 10),
-            //   child: Icon(
-            //     Icons.account_circle,
-            //     color: Colors.red.shade800,
-            //     size: 90,
-            //   ),
-            // ),
-            //backgroundColor: Colors.brown.shade800,
-
-            //radius: 60.0,
-            // child: Icon(
-            //   Icons.account_circle,
-            //   //color: Colors.red.shade800,
-            //   //size: 90,
-            // ),
-            //child: const Text('HS'),
-            /*
-            */
-            //),
-            /////////////////////////////////////////////////////////
           ),
           ListTile(
-            leading: Icon(Icons.settings),
+            leading: const Icon(Icons.settings),
             title: const Text('설정'),
             onTap: () {
               Navigator.pop(context);
               //Navigator.pushNamed(context, GlobalDefine.RouteNameShortcut);
-              Navigator.pushNamed(context, GlobalDefine.RouteNameOption);
+              Navigator.pushNamed(context, GlobalDefine.routeNameOption);
             },
-          ),
-          ListTile(
-            leading: Icon(Icons.flashlight_on),
-            title: Row(
-              children: [
-                Text(
-                  '밝은 화면',
-                ),
-                Spacer(),
-                Switch(
-                  // This bool value toggles the switch.
-                  value: true,
-                  //activeColor: Colors.red,
-                  onChanged: (bool value) {
-                    //parent.handleBrightness(value);
-                  },
-                ),
-                Spacer(),
-              ],
-            ),
-            // onTap: () {
-            //   Navigator.pop(context);
-            //   //Get.back();
-            // },
           ),
         ],
       ),
