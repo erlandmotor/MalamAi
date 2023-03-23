@@ -38,18 +38,18 @@ class MGSideDrawer extends StatelessWidget {
 
                     //mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Image.asset(
-                      //   'assets/icon/cloudy_day_512.png',
-                      //   width: 100,
-                      //   height: 100,
-                      //   fit: BoxFit.cover,
-                      // ),
-                      // const Padding(
-                      //   padding: EdgeInsets.symmetric(vertical: 100),
-                      //   child: VerticalDivider(
-                      //     color: Colors.greenAccent,
-                      //   ),
-                      // ),
+                      Image.asset(
+                        'assets/icon/robot2.png',
+                        width: 100,
+                        height: 100,
+                        //fit: BoxFit.cover,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 100),
+                        child: VerticalDivider(
+                          color: Colors.greenAccent,
+                        ),
+                      ),
 
                       /*2*/
                       Expanded(
@@ -57,15 +57,6 @@ class MGSideDrawer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ElevatedButton(
-                                  child: Text('설정'),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, GlobalDefine.RouteNameOption);
-                                  }),
-                            ),
                             ListTile(
                               dense: true,
                               title: Text(
@@ -129,57 +120,6 @@ class MGSideDrawer extends StatelessWidget {
             //),
             /////////////////////////////////////////////////////////
           ),
-
-          // const Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 0),
-          //   child: Divider(),
-          // ),
-
-          // Row(
-          //   children: [
-          //     Spacer(),
-          //     Text(
-          //       ' 밝은 화면',
-          //     ),
-          //     Spacer(),
-          //     Switch(
-          //       // This bool value toggles the switch.
-          //       value: parent!.useLightMode,
-          //       //activeColor: Colors.red,
-          //       onChanged: (bool value) {
-          //         // This is called when the user toggles the switch.
-          //         //setState(() {
-          //         parent.handleBrightness(value);
-          //         //}
-          //         //);
-          //       },
-          //     ),
-          //     Spacer(),
-          //   ],
-          // ),
-          // Row(
-          //   children: [
-          //     Spacer(),
-          //     Icon(Icons.flashlight_on),
-          //     Text(
-          //       ' 밝은 화면',
-          //     ),
-          //     Spacer(),
-          //     Switch(
-          //       // This bool value toggles the switch.
-          //       value: parent!.useLightMode,
-          //       //activeColor: Colors.red,
-          //       onChanged: (bool value) {
-          //         // This is called when the user toggles the switch.
-          //         //setState(() {
-          //         parent.handleBrightness(value);
-          //         //}
-          //         //);
-          //       },
-          //     ),
-          //     Spacer(),
-          //   ],
-          // ),
           ListTile(
             leading: Icon(Icons.settings),
             title: const Text('설정'),
@@ -189,7 +129,6 @@ class MGSideDrawer extends StatelessWidget {
               Navigator.pushNamed(context, GlobalDefine.RouteNameOption);
             },
           ),
-
           ListTile(
             leading: Icon(Icons.flashlight_on),
             title: Row(
