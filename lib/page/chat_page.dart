@@ -2,7 +2,7 @@ import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/models/chat_message.dart';
 import 'package:chat_playground/widgets/message_bubble.dart';
 import 'package:chat_playground/widgets/message_composer.dart';
-import 'package:chat_playground/widgets/side_drawer.dart';
+import 'package:chat_playground/page/side_drawer.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {

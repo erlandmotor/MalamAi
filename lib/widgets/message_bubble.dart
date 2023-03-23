@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({
@@ -30,7 +32,7 @@ class MessageBubble extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  isUserMessage ? 'You' : 'AI',
+                  isUserMessage ? '나의 말' : 'AI 답변',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
@@ -39,6 +41,26 @@ class MessageBubble extends StatelessWidget {
             MarkdownWidget(
               data: content,
               shrinkWrap: true,
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Spacer(),
+                IconButton(
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: content));
+                    },
+                    icon: const Icon(Icons.copy_rounded)),
+                IconButton(
+                    onPressed: () async {
+                      final box = context.findRenderObject() as RenderBox?;
+                      await Share.share(content,
+                          //subject: link,
+                          sharePositionOrigin:
+                              box!.localToGlobal(Offset.zero) & box.size);
+                    },
+                    icon: const Icon(Icons.share_rounded)),
+              ],
             ),
           ],
         ),

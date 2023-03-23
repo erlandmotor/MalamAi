@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:flutter/material.dart';
 
@@ -56,32 +57,64 @@ class MGSideDrawer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            // const ListTile(
+                            //     dense: true,
+                            //     title: SizedBox(
+                            //       width: 150,
+                            //       height: 50,
+                            //       child: AutoSizeText(
+                            //         'Chat Playground',
+                            //         textAlign: TextAlign.left,
+                            //         maxLines: 1,
+                            //         textScaleFactor: 1.0,
+                            //         overflow: TextOverflow.ellipsis,
+                            //         style: TextStyle(
+                            //           fontWeight: FontWeight.bold,
+                            //           fontSize: 10,
+                            //         ),
+                            //       ),
+                            //     )),
                             const ListTile(
                               dense: true,
                               title: Text(
                                 'Chat Playground',
                                 textAlign: TextAlign.left,
+                                textScaleFactor: 1.0,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                                  fontSize: 22,
                                   //fontFamily: 'SpoqaHanSansNeo',
                                   //color: colorScheme.onSecondary,
                                 ),
                               ),
                             ),
+                            // ListTile(
+                            //     dense: true,
+                            //     title: SizedBox(
+                            //       width: 150,
+                            //       height: 50,
+                            //       child: AutoSizeText(
+                            //         'Ver ${GlobalDefine.ver}',
+                            //         textAlign: TextAlign.left,
+                            //         maxLines: 1,
+                            //         overflow: TextOverflow.ellipsis,
+                            //         textScaleFactor: 1.0,
+                            //         style: TextStyle(
+                            //           letterSpacing: 0.5,
+                            //           fontSize: 12,
+                            //         ),
+                            //       ),
+                            //     )),
+
                             ListTile(
-                              // leading: Icon(Icons.add_alert_rounded,
-                              //     color: Colors.white),
                               dense: true,
                               title: Text(
                                 'Ver ${GlobalDefine.ver}',
                                 textAlign: TextAlign.left,
+                                textScaleFactor: 1.0,
                                 style: const TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 15,
                                   letterSpacing: 0.5,
-                                  //color: colorScheme.onSecondary,
-                                  //fontFamily: 'SpoqaHanSansNeo',
-                                  //fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -96,7 +129,16 @@ class MGSideDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('설정'),
+            title: const Text(
+              '설정',
+              textScaleFactor: 1.0,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                //fontFamily: 'SpoqaHanSansNeo',
+                //color: colorScheme.onSecondary,
+              ),
+            ),
             onTap: () {
               Navigator.pop(context);
               //Navigator.pushNamed(context, GlobalDefine.RouteNameShortcut);

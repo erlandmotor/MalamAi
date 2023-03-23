@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.studiomotorway.chat_playground">
    <application
-        android:label="chat_playground"
+        android:label="AI챗봇"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -30,5 +30,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-3445302802549723~6146026743"/>
+
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
