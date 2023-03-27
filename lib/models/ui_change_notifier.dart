@@ -24,12 +24,14 @@ class UIChangeNotifier with ChangeNotifier {
 
   setLightMode(bool lightMode) {
     isLightMode = lightMode;
+    isUseSystemOption = false;
     //materialThemeData = updateThemes(isLightMode);
     notifyListeners();
   }
 
   setTextScaleFactor(double argCustomTextScaleFactor) {
     customTextScaleFactor = argCustomTextScaleFactor;
+    isUseSystemOption = false;
     notifyListeners();
   }
 

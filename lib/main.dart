@@ -3,10 +3,12 @@ import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:chat_playground/page/page_setting.dart';
+import 'package:chat_playground/page/page_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -45,7 +47,8 @@ class _ChatAppState extends State<ChatApp> {
       },
       initialRoute: GlobalDefine.routeNameRoot,
       routes: {
-        GlobalDefine.routeNameRoot: (context) =>
+        GlobalDefine.routeNameRoot: (context) => SplashScreen(),
+        GlobalDefine.routeChatPage: (context) =>
             ChatPage(chatApi: widget.chatApi),
         GlobalDefine.routeNameOption: (context) => const PageSetting(),
       },

@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +38,7 @@ class MGSideDrawer extends StatelessWidget {
                     //mainAxisSize: MainAxisSize.min,
                     children: [
                       Image.asset(
-                        'assets/icons/robot2.png',
+                        GlobalDefine.logoImage,
                         width: 100,
                         height: 100,
                         //fit: BoxFit.cover,
