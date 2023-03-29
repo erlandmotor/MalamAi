@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "852677675867",
+    "project_id": "chat-playground-201a3",
+    "storage_bucket": "chat-playground-201a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852677675867:android:a4a6f303dad8913c59287e",
+        "android_client_info": {
+          "package_name": "com.studiomotorway.chat_playground"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852677675867-7q2f9oh8dfhpi2qdch5kqnjdkhh95uc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.studiomotorway.chat_playground",
+            "certificate_hash": "dd29e84d0d6c5db68e1c9005ec69856c74c75655"
+          }
+        },
+        {
+          "client_id": "852677675867-9du3nb58jf4g4j57up209eik2k2i9s42.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCavlo6NA9zxqX2mdvWZNdxhQ-_XAjPAdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852677675867-4cd9e68fjuiid50gb10ertpuo0r277l7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852677675867-d648id6ktp0lov8lkvmcltp2rg6qsi60.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fire"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

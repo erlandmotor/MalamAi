@@ -55,25 +55,8 @@ class MGSideDrawer extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // const ListTile(
-                            //     dense: true,
-                            //     title: SizedBox(
-                            //       width: 150,
-                            //       height: 50,
-                            //       child: AutoSizeText(
-                            //         'Chat Playground',
-                            //         textAlign: TextAlign.left,
-                            //         maxLines: 1,
-                            //         textScaleFactor: 1.0,
-                            //         overflow: TextOverflow.ellipsis,
-                            //         style: TextStyle(
-                            //           fontWeight: FontWeight.bold,
-                            //           fontSize: 10,
-                            //         ),
-                            //       ),
-                            //     )),
-                            const ListTile(
+                          children: const [
+                            ListTile(
                               dense: true,
                               title: Text(
                                 'Chat Playground',
@@ -87,31 +70,13 @@ class MGSideDrawer extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            // ListTile(
-                            //     dense: true,
-                            //     title: SizedBox(
-                            //       width: 150,
-                            //       height: 50,
-                            //       child: AutoSizeText(
-                            //         'Ver ${GlobalDefine.ver}',
-                            //         textAlign: TextAlign.left,
-                            //         maxLines: 1,
-                            //         overflow: TextOverflow.ellipsis,
-                            //         textScaleFactor: 1.0,
-                            //         style: TextStyle(
-                            //           letterSpacing: 0.5,
-                            //           fontSize: 12,
-                            //         ),
-                            //       ),
-                            //     )),
-
                             ListTile(
                               dense: true,
                               title: Text(
                                 'Ver ${GlobalDefine.ver}',
                                 textAlign: TextAlign.left,
                                 textScaleFactor: 1.0,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 15,
                                   letterSpacing: 0.5,
                                 ),
