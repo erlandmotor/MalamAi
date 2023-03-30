@@ -14,6 +14,12 @@ class FirebaseNotifier extends ChangeNotifier {
   bool loggedIn = false;
   FirebaseState state = FirebaseState.loading;
   bool isLoggingIn = false;
+  bool isSignOuting = false;
+
+  late User? user;
+  late DateTime? ctime;
+  late DateTime? lasttime;
+  late DateTime startDate;
 
   FirebaseNotifier() {
     load();
@@ -43,7 +49,16 @@ class FirebaseNotifier extends ChangeNotifier {
     try {
       await Firebase.initializeApp();
       _functions = FirebaseFunctions.instanceFor(region: cloudRegion);
-      loggedIn = FirebaseAuth.instance.currentUser != null;
+
+      user = FirebaseAuth.instance.currentUser;
+      loggedIn = user != null;
+
+      if (loggedIn) {
+        ctime = user?.metadata.creationTime;
+        lasttime = user?.metadata.lastSignInTime;
+        startDate = await NTP.now();
+      }
+
       state = FirebaseState.available;
       _isInitialized.complete(true);
       notifyListeners();
@@ -79,13 +94,12 @@ class FirebaseNotifier extends ChangeNotifier {
       UserCredential fbdata =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
-      DateTime? ctime = fbdata.user?.metadata.creationTime;
-      DateTime? lasttime = fbdata.user?.metadata.lastSignInTime;
-
-      DateTime startDate = await NTP.now();
-      print('NTP DateTime: ${startDate}');
-
-      DateTime.now();
+      user = fbdata.user;
+      ctime = fbdata.user?.metadata.creationTime;
+      lasttime = fbdata.user?.metadata.lastSignInTime;
+      startDate = await NTP.now();
+      //print('NTP DateTime: ${startDate}');
+      //DateTime.now();
 
       loggedIn = true;
       isLoggingIn = false;
@@ -95,5 +109,18 @@ class FirebaseNotifier extends ChangeNotifier {
       notifyListeners();
       return;
     }
+  }
+
+  Future<void> logout() async {
+    isSignOuting = true;
+    notifyListeners();
+
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
+
+    loggedIn = false;
+    isLoggingIn = false;
+    isSignOuting = true;
+    notifyListeners();
   }
 }
