@@ -15,6 +15,8 @@ const ver = "1.02.1";
 const routeNameRoot = '/';
 const routeChatPage = '/chat';
 const routeNameOption = '/option';
+const routeNamePurchase = '/purchase';
+
 const logoImage = 'assets/icons/robot5.png';
 
 const cloudRegion = 'europe-west1';

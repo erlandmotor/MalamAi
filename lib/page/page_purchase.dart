@@ -19,9 +19,9 @@ class PurchasePage extends StatelessWidget {
       return _PurchasesNotAvailable();
     }
 
-    if (!firebaseNotifier.loggedIn) {
-      return const LoginPage();
-    }
+    // if (!firebaseNotifier.loggedIn) {
+    //   return const LoginPage();
+    // }
 
     var upgrades = context.watch<DashPurchases>();
 

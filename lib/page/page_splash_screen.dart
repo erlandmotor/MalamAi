@@ -116,8 +116,10 @@ class SplashScreenState extends State<SplashScreen> {
       }
       _widgets.add(ElevatedButton(
           onPressed: () {
-            Future.microtask(
-                () => Navigator.pushReplacementNamed(context, routeChatPage));
+            Future.microtask(() =>
+                Navigator.pushReplacementNamed(context, routeNamePurchase));
+            // Future.microtask(
+            //     () => Navigator.pushReplacementNamed(context, routeChatPage));
           },
           child: Text("시작")));
       _widgets.add(TextButton(

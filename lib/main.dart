@@ -6,6 +6,7 @@ import 'package:chat_playground/page/chat_page.dart';
 import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
+import 'package:chat_playground/page/page_purchase.dart';
 import 'package:chat_playground/page/page_setting.dart';
 import 'package:chat_playground/page/page_splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,7 @@ class _ChatAppState extends State<ChatApp> {
       initialRoute: routeNameRoot,
       routes: {
         routeNameRoot: (context) => const SplashScreen(),
+        routeNamePurchase: (context) => const PurchasePage(),
         routeChatPage: (context) => ChatPage(chatApi: widget.chatApi),
         routeNameOption: (context) => const PageSetting(),
       },
