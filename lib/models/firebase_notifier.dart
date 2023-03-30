@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ntp/ntp.dart';
 
 class FirebaseNotifier extends ChangeNotifier {
   bool loggedIn = false;
@@ -41,8 +42,7 @@ class FirebaseNotifier extends ChangeNotifier {
   Future<void> load() async {
     try {
       await Firebase.initializeApp();
-      _functions =
-          FirebaseFunctions.instanceFor(region: GlobalDefine.cloudRegion);
+      _functions = FirebaseFunctions.instanceFor(region: cloudRegion);
       loggedIn = FirebaseAuth.instance.currentUser != null;
       state = FirebaseState.available;
       _isInitialized.complete(true);
@@ -76,7 +76,16 @@ class FirebaseNotifier extends ChangeNotifier {
       );
 
       // Once signed in, return the UserCredential
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential fbdata =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      DateTime? ctime = fbdata.user?.metadata.creationTime;
+      DateTime? lasttime = fbdata.user?.metadata.lastSignInTime;
+
+      DateTime startDate = await NTP.now();
+      print('NTP DateTime: ${startDate}');
+
+      DateTime.now();
 
       loggedIn = true;
       isLoggingIn = false;

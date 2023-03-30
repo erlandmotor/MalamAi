@@ -37,14 +37,14 @@ void main() {
         ChangeNotifierProvider<IAPRepo>(
           create: (context) => IAPRepo(context.read<FirebaseNotifier>()),
         ),
-        ChangeNotifierProvider<DashPurchases>(
-          create: (context) => DashPurchases(
-            context.read<DashCounter>(),
-            context.read<FirebaseNotifier>(),
-            context.read<IAPRepo>(),
-          ),
-          lazy: false,
-        ),
+        // ChangeNotifierProvider<DashPurchases>(
+        //   create: (context) => DashPurchases(
+        //     context.read<DashCounter>(),
+        //     context.read<FirebaseNotifier>(),
+        //     context.read<IAPRepo>(),
+        //   ),
+        //   lazy: false,
+        // ),
       ],
       child: MaterialApp(
           title: 'Chat Playground root', home: ChatApp(chatApi: ChatApi()))));
@@ -76,12 +76,11 @@ class _ChatAppState extends State<ChatApp> {
           child: childArg!,
         );
       },
-      initialRoute: GlobalDefine.routeNameRoot,
+      initialRoute: routeNameRoot,
       routes: {
-        GlobalDefine.routeNameRoot: (context) => const SplashScreen(),
-        GlobalDefine.routeChatPage: (context) =>
-            ChatPage(chatApi: widget.chatApi),
-        GlobalDefine.routeNameOption: (context) => const PageSetting(),
+        routeNameRoot: (context) => const SplashScreen(),
+        routeChatPage: (context) => ChatPage(chatApi: widget.chatApi),
+        routeNameOption: (context) => const PageSetting(),
       },
     );
   }

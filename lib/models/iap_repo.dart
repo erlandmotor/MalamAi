@@ -57,11 +57,11 @@ class IAPRepo extends ChangeNotifier {
       }).toList();
 
       hasActiveSubscription = purchases.any((element) =>
-          element.productId == GlobalDefine.storeKeySubscription &&
+          element.productId == storeKeySubscription &&
           element.status != Status.expired);
 
       hasUpgrade = purchases.any(
-        (element) => element.productId == GlobalDefine.storeKeyUpgrade,
+        (element) => element.productId == storeKeyUpgrade,
       );
 
       notifyListeners();

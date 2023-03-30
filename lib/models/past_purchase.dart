@@ -30,9 +30,9 @@ class PastPurchase {
 
   String get title {
     switch (productId) {
-      case GlobalDefine.storeKeyConsumable:
+      case storeKeyConsumable:
         return 'Consumable';
-      case GlobalDefine.storeKeySubscription:
+      case storeKeySubscription:
         return 'Subscription';
       default:
         return productId;

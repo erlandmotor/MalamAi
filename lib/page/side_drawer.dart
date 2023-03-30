@@ -38,7 +38,7 @@ class MGSideDrawer extends StatelessWidget {
                     //mainAxisSize: MainAxisSize.min,
                     children: [
                       Image.asset(
-                        GlobalDefine.logoImage,
+                        logoImage,
                         width: 100,
                         height: 100,
                         //fit: BoxFit.cover,
@@ -73,7 +73,7 @@ class MGSideDrawer extends StatelessWidget {
                             ListTile(
                               dense: true,
                               title: Text(
-                                'Ver ${GlobalDefine.ver}',
+                                'Ver ${ver}',
                                 textAlign: TextAlign.left,
                                 textScaleFactor: 1.0,
                                 style: TextStyle(
@@ -106,7 +106,7 @@ class MGSideDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               //Navigator.pushNamed(context, GlobalDefine.RouteNameShortcut);
-              Navigator.pushNamed(context, GlobalDefine.routeNameOption);
+              Navigator.pushNamed(context, routeNameOption);
             },
           ),
         ],

@@ -51,9 +51,9 @@ class DashPurchases extends ChangeNotifier {
     }
 
     const ids = <String>{
-      GlobalDefine.storeKeyConsumable,
-      GlobalDefine.storeKeySubscription,
-      GlobalDefine.storeKeyUpgrade,
+      storeKeyConsumable,
+      storeKeySubscription,
+      storeKeyUpgrade,
     };
     final response = await iapConnection.queryProductDetails(ids);
     products =
@@ -72,11 +72,11 @@ class DashPurchases extends ChangeNotifier {
   Future<void> buy(PurchasableProduct product) async {
     final purchaseParam = PurchaseParam(productDetails: product.productDetails);
     switch (product.id) {
-      case GlobalDefine.storeKeyConsumable:
+      case storeKeyConsumable:
         await iapConnection.buyConsumable(purchaseParam: purchaseParam);
         break;
-      case GlobalDefine.storeKeySubscription:
-      case GlobalDefine.storeKeyUpgrade:
+      case storeKeySubscription:
+      case storeKeyUpgrade:
         await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
         break;
       default:
@@ -101,13 +101,13 @@ class DashPurchases extends ChangeNotifier {
       if (validPurchase) {
         // Apply changes locally
         switch (purchaseDetails.productID) {
-          case GlobalDefine.storeKeySubscription:
+          case storeKeySubscription:
             counter.applyPaidMultiplier();
             break;
-          case GlobalDefine.storeKeyConsumable:
+          case storeKeyConsumable:
             counter.addBoughtDashes(2000);
             break;
-          case GlobalDefine.storeKeyUpgrade:
+          case storeKeyUpgrade:
             _beautifiedDashUpgrade = true;
             break;
         }
@@ -147,12 +147,10 @@ class DashPurchases extends ChangeNotifier {
     // This should be 1 per type.
     if (products.isNotEmpty) {
       subscriptions = products
-          .where((element) =>
-              element.productDetails.id == GlobalDefine.storeKeySubscription)
+          .where((element) => element.productDetails.id == storeKeySubscription)
           .toList();
       upgrades = products
-          .where((element) =>
-              element.productDetails.id == GlobalDefine.storeKeyUpgrade)
+          .where((element) => element.productDetails.id == storeKeyUpgrade)
           .toList();
     }
 
