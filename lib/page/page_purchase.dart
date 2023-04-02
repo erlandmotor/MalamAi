@@ -1,9 +1,8 @@
 import 'package:chat_playground/define/global_define.dart';
-import 'package:chat_playground/logics/dash_purchases.dart';
+import 'package:chat_playground/models/purchases_notifier.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/iap_repo.dart';
 import 'package:chat_playground/models/purchasable_product.dart';
-import 'package:chat_playground/page/page_login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,46 +11,56 @@ class PurchasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var firebaseNotifier = context.watch<FirebaseNotifier>();
-    if (firebaseNotifier.state == FirebaseState.loading) {
-      return _PurchasesLoading();
-    } else if (firebaseNotifier.state == FirebaseState.notAvailable) {
-      return _PurchasesNotAvailable();
-    }
+    // var firebaseNotifier = context.watch<FirebaseNotifier>();
+    // if (firebaseNotifier.state == FirebaseState.loading) {
+    //   return _PurchasesLoading();
+    // } else if (firebaseNotifier.state == FirebaseState.notAvailable) {
+    //   return _PurchasesNotAvailable();
+    // }
 
     // if (!firebaseNotifier.loggedIn) {
     //   return const LoginPage();
     // }
 
-    var upgrades = context.watch<DashPurchases>();
-
-    Widget storeWidget;
-    switch (upgrades.storeState) {
-      case StoreState.loading:
-        storeWidget = _PurchasesLoading();
-        break;
-      case StoreState.available:
-        storeWidget = _PurchaseList();
-        break;
-      case StoreState.notAvailable:
-        storeWidget = _PurchasesNotAvailable();
-        break;
-      default:
-        storeWidget = _PurchasesLoading();
-        break;
-    }
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      storeWidget,
-      const Padding(
-        padding: EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 0.0),
-        child: Text(
-          'Past purchases',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+    return Scaffold(
+      //backgroundColor: Colors.blue,
+      body: Center(
+        child: buildCenterWidgets(context),
       ),
-      const PastPurchasesWidget(),
-    ]);
+    );
   }
+}
+
+buildCenterWidgets(BuildContext context) {
+  var upgrades = context.watch<PurchasesNotifier>();
+
+  Widget storeWidget;
+  switch (upgrades.storeState) {
+    case StoreState.loading:
+      storeWidget = _PurchasesLoading();
+      break;
+    case StoreState.available:
+      storeWidget = _PurchaseList();
+      break;
+    case StoreState.notAvailable:
+      storeWidget = _PurchasesNotAvailable();
+      break;
+    default:
+      storeWidget = _PurchasesLoading();
+      break;
+  }
+  return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    Container(height: 60),
+    storeWidget,
+    const Padding(
+      padding: EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 0.0),
+      child: Text(
+        'Past purchases',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    ),
+    const PastPurchasesWidget(),
+  ]);
 }
 
 class _PurchasesLoading extends StatelessWidget {
@@ -71,7 +80,7 @@ class _PurchasesNotAvailable extends StatelessWidget {
 class _PurchaseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var purchases = context.watch<DashPurchases>();
+    var purchases = context.watch<PurchasesNotifier>();
     var products = purchases.products;
     return Column(
       children: products

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 //
-class DashPurchases extends ChangeNotifier {
+class PurchasesNotifier extends ChangeNotifier {
   DashCounter counter;
   FirebaseNotifier firebaseNotifier;
   IAPRepo iapRepo;
@@ -23,7 +23,7 @@ class DashPurchases extends ChangeNotifier {
   bool _beautifiedDashUpgrade = false;
   final iapConnection = IAPConnection.instance;
 
-  DashPurchases(this.counter, this.firebaseNotifier, this.iapRepo) {
+  PurchasesNotifier(this.counter, this.firebaseNotifier, this.iapRepo) {
     final purchaseUpdated = iapConnection.purchaseStream;
     _subscription = purchaseUpdated.listen(
       _onPurchaseUpdate,

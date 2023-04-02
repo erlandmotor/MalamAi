@@ -1,5 +1,5 @@
 import 'package:chat_playground/logics/dash_counter.dart';
-import 'package:chat_playground/logics/dash_purchases.dart';
+import 'package:chat_playground/models/purchases_notifier.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/iap_repo.dart';
 import 'package:chat_playground/page/chat_page.dart';
@@ -38,14 +38,14 @@ void main() {
         ChangeNotifierProvider<IAPRepo>(
           create: (context) => IAPRepo(context.read<FirebaseNotifier>()),
         ),
-        // ChangeNotifierProvider<DashPurchases>(
-        //   create: (context) => DashPurchases(
-        //     context.read<DashCounter>(),
-        //     context.read<FirebaseNotifier>(),
-        //     context.read<IAPRepo>(),
-        //   ),
-        //   lazy: false,
-        // ),
+        ChangeNotifierProvider<PurchasesNotifier>(
+          create: (context) => PurchasesNotifier(
+            context.read<DashCounter>(),
+            context.read<FirebaseNotifier>(),
+            context.read<IAPRepo>(),
+          ),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
           title: 'Chat Playground root', home: ChatApp(chatApi: ChatApi()))));

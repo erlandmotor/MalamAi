@@ -22,7 +22,6 @@ class SplashScreenState extends State<SplashScreen> {
 
   Future<void> _init() async {
     //오래걸리는 작업 수행
-
     //WILL
     await Future<void>.delayed(const Duration(seconds: 5));
     //Navigator.pushReplacementNamed(context, routeChatPage);
@@ -61,30 +60,6 @@ class SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  loginWidget() {
-    var firebaseNotifier = context.watch<FirebaseNotifier>();
-    if (firebaseNotifier.loggedIn) {
-      Future.microtask(
-          () => Navigator.pushReplacementNamed(context, routeChatPage));
-
-      return Container();
-    }
-
-    if (firebaseNotifier.isLoggingIn) {
-      return const Center(
-        child: Text('Logging in...'),
-      );
-    }
-
-    var uiNoti = context.watch<UIChangeNotifier>();
-    return SignInButton(
-      uiNoti.isLightMode ? Buttons.Google : Buttons.GoogleDark,
-      onPressed: () {
-        firebaseNotifier.login();
-      },
-    );
-  }
-
   buildCenterWidgets(BuildContext context) {
     List<Widget> _widgets = [];
 
@@ -116,17 +91,18 @@ class SplashScreenState extends State<SplashScreen> {
       }
       _widgets.add(ElevatedButton(
           onPressed: () {
-            Future.microtask(() =>
-                Navigator.pushReplacementNamed(context, routeNamePurchase));
+            // Future.microtask(() =>
+            //     Navigator.pushReplacementNamed(context, routeNamePurchase));
             // Future.microtask(
             //     () => Navigator.pushReplacementNamed(context, routeChatPage));
+            Navigator.pushReplacementNamed(context, routeNamePurchase);
           },
-          child: Text("시작")));
+          child: const Text("시작")));
       _widgets.add(TextButton(
           onPressed: () {
             firebaseNotifier.logout();
           },
-          child: Text("SignOut")));
+          child: const Text("SignOut")));
     }
 
     return _widgets;
