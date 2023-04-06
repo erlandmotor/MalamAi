@@ -1,10 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
+import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
+import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
+import 'package:chat_playground/widgets/paywell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
+//import 'package:purchases_flutter/models/offering_wrapper.dart';
+//import 'package:purchases_flutter/models/offerings_wrapper.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,19 +19,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    //Future.microtask(() => _init());
-  }
+  //   //Future.microtask(() => _init());
+  // }
 
-  Future<void> _init() async {
-    //오래걸리는 작업 수행
-    //WILL
-    await Future<void>.delayed(const Duration(seconds: 5));
-    //Navigator.pushReplacementNamed(context, routeChatPage);
-  }
+  // Future<void> _init() async {
+  //   //오래걸리는 작업 수행
+  //   //WILL
+  //   await Future<void>.delayed(const Duration(seconds: 5));
+  //   //Navigator.pushReplacementNamed(context, routeChatPage);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +67,11 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   buildCenterWidgets(BuildContext context) {
-    List<Widget> _widgets = [];
+    List<Widget> widgets = [];
 
     var firebaseNotifier = context.watch<FirebaseNotifier>();
+    var rcPurchaseNotifier = context.watch<RCPurchasesNotifier>();
+
     if (firebaseNotifier.loggedIn) {
       // Future.microtask(
       //     () => Navigator.pushReplacementNamed(context, routeChatPage));
@@ -71,45 +79,77 @@ class SplashScreenState extends State<SplashScreen> {
     }
 
     if (firebaseNotifier.loggedIn == false) {
-      _widgets.add(Image.asset(
+      widgets.add(Image.asset(
         logoImage,
         width: 120,
         height: 120,
       ));
 
       var uiNoti = context.watch<UIChangeNotifier>();
-      _widgets.add(SignInButton(
+      widgets.add(SignInButton(
         uiNoti.isLightMode ? Buttons.Google : Buttons.GoogleDark,
         onPressed: () {
-          firebaseNotifier.login();
+          rcPurchaseNotifier.logIn();
+          //firebaseNotifier.login();
         },
       ));
     } else {
       String url = firebaseNotifier.user?.photoURL ?? "";
       if (url != "") {
-        _widgets.add(CachedNetworkImage(imageUrl: url));
+        widgets.add(CachedNetworkImage(imageUrl: url));
       }
-      _widgets.add(ElevatedButton(
-          onPressed: () {
-            // Future.microtask(() =>
-            //     Navigator.pushReplacementNamed(context, routeNamePurchase));
+      widgets.add(ElevatedButton(
+          onPressed: () async {
             // Future.microtask(
             //     () => Navigator.pushReplacementNamed(context, routeChatPage));
-            Navigator.pushReplacementNamed(context, routeNamePurchase);
+            //Navigator.pushReplacementNamed(context, routeNamePurchase);
+
+            final navigator = Navigator.of(context);
+            final isActive = await rcPurchaseNotifier.isEntitlementActive();
+
+            if (isActive) {
+              navigator.pushReplacementNamed(routeChatPage);
+            } else {
+              Offering? offeringCurrent =
+                  await rcPurchaseNotifier.getOfferingCurrent();
+
+              if (offeringCurrent == null) {
+                mgLog('offering 못가져옴');
+              } else {
+                await showBuyPage(offeringCurrent);
+              }
+            }
           },
           child: const Text("시작")));
-      _widgets.add(TextButton(
+      widgets.add(TextButton(
           onPressed: () {
-            firebaseNotifier.logout();
+            //firebaseNotifier.logout();
+            rcPurchaseNotifier.logOut();
           },
           child: const Text("SignOut")));
     }
 
-    return _widgets;
-    // if (firebaseNotifier.isLoggingIn) {
-    //   return const Center(
-    //     child: Text('Logging in...'),
-    //   );
-    // }
+    return widgets;
+  }
+
+  Future<void> showBuyPage(Offering offering) async {
+    await showModalBottomSheet(
+      useRootNavigator: true,
+      isDismissible: true,
+      isScrollControlled: true,
+      //backgroundColor: kColorBackground,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setModalState) {
+          return Paywall(
+            offering: offering,
+          );
+        });
+      },
+    );
   }
 }

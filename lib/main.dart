@@ -1,17 +1,26 @@
-import 'package:chat_playground/logics/dash_counter.dart';
-import 'package:chat_playground/models/purchases_notifier.dart';
+import 'dart:io';
+//import 'dart:math';
+
+// import 'package:chat_playground/logics/dash_counter.dart';
+// import 'package:chat_playground/models/app_data.dart';
+//import 'package:chat_playground/models/purchases_notifier.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
-import 'package:chat_playground/models/iap_repo.dart';
+//import 'package:chat_playground/models/iap_repo.dart';
+import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/page/chat_page.dart';
 import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
-import 'package:chat_playground/page/page_purchase.dart';
+//import 'package:chat_playground/page/page_purchase.dart';
 import 'package:chat_playground/page/page_setting.dart';
 import 'package:chat_playground/page/page_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
+//import 'package:purchases_flutter/purchases_flutter.dart';
+
+import 'define/mg_handy.dart';
+import 'define/rc_store_config.dart';
 
 // Gives the option to override in tests.
 class IAPConnection {
@@ -28,21 +37,49 @@ class IAPConnection {
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // if (Platform.isIOS || Platform.isMacOS) {
+  //   RCStoreConfig(
+  //     store: Store.appleStore,
+  //     apiKey: appleApiKey,
+  //   );
+  // } else
+
+  if (Platform.isAndroid) {
+    RCStoreConfig(
+      store: RCStore.googlePlay,
+      apiKey: googleApiKey,
+    );
+  } else {
+    mgLog(" Platform.isAndroid == false ,  purchase not init");
+  }
+
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(
             create: (_) => UIChangeNotifier(isLightMode: true)),
         ChangeNotifierProvider<FirebaseNotifier>(
-            create: (_) => FirebaseNotifier()),
-        ChangeNotifierProvider<DashCounter>(create: (_) => DashCounter()),
-        ChangeNotifierProvider<IAPRepo>(
-          create: (context) => IAPRepo(context.read<FirebaseNotifier>()),
+          create: (context) =>
+              //FirebaseNotifier(context.read<RCPurchasesNotifier>()),
+              FirebaseNotifier(),
         ),
-        ChangeNotifierProvider<PurchasesNotifier>(
-          create: (context) => PurchasesNotifier(
-            context.read<DashCounter>(),
+        // ChangeNotifierProvider<DashCounter>(create: (_) => DashCounter()),
+        // ChangeNotifierProvider<IAPRepo>(
+        //   create: (context) => IAPRepo(context.read<FirebaseNotifier>()),
+        // ),
+        // ChangeNotifierProvider<PurchasesNotifier>(
+        //   create: (context) => PurchasesNotifier(
+        //     context.read<DashCounter>(),
+        //     context.read<FirebaseNotifier>(),
+        //     context.read<IAPRepo>(),
+        //   ),
+        //   lazy: false,
+        // ),
+
+        ChangeNotifierProvider<RCPurchasesNotifier>(
+          create: (context) => RCPurchasesNotifier(
+            //context.read<DashCounter>(),
             context.read<FirebaseNotifier>(),
-            context.read<IAPRepo>(),
           ),
           lazy: false,
         ),
@@ -80,7 +117,7 @@ class _ChatAppState extends State<ChatApp> {
       initialRoute: routeNameRoot,
       routes: {
         routeNameRoot: (context) => const SplashScreen(),
-        routeNamePurchase: (context) => const PurchasePage(),
+        //routeNamePurchase: (context) => const PurchasePage(),
         routeChatPage: (context) => ChatPage(chatApi: widget.chatApi),
         routeNameOption: (context) => const PageSetting(),
       },

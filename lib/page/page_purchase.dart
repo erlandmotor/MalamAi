@@ -1,151 +1,143 @@
-import 'package:chat_playground/define/global_define.dart';
-import 'package:chat_playground/models/purchases_notifier.dart';
-import 'package:chat_playground/models/firebase_notifier.dart';
-import 'package:chat_playground/models/iap_repo.dart';
-import 'package:chat_playground/models/purchasable_product.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+// import 'package:chat_playground/define/global_define.dart';
+// // import 'package:chat_playground/models/purchases_notifier.dart';
+// // import 'package:chat_playground/models/firebase_notifier.dart';
+// // import 'package:chat_playground/models/iap_repo.dart';
+// import 'package:chat_playground/models/purchasable_product.dart';
+// import 'package:chat_playground/models/rc_purchases_notifier.dart';
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
 
-class PurchasePage extends StatelessWidget {
-  const PurchasePage({super.key});
+// class PurchasePage extends StatelessWidget {
+//   const PurchasePage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    // var firebaseNotifier = context.watch<FirebaseNotifier>();
-    // if (firebaseNotifier.state == FirebaseState.loading) {
-    //   return _PurchasesLoading();
-    // } else if (firebaseNotifier.state == FirebaseState.notAvailable) {
-    //   return _PurchasesNotAvailable();
-    // }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       //backgroundColor: Colors.blue,
+//       body: Center(
+//         child: buildCenterWidgets(context),
+//       ),
+//     );
+//   }
+// }
 
-    // if (!firebaseNotifier.loggedIn) {
-    //   return const LoginPage();
-    // }
+// buildCenterWidgets(BuildContext context) {
+//   var upgrades = context.watch<RCPurchasesNotifier>();
 
-    return Scaffold(
-      //backgroundColor: Colors.blue,
-      body: Center(
-        child: buildCenterWidgets(context),
-      ),
-    );
-  }
-}
+//   Widget storeWidget;
+//   switch (upgrades.storeState) {
+//     case StoreState.loading:
+//       storeWidget = _PurchasesLoading();
+//       break;
+//     case StoreState.available:
+//       storeWidget = _PurchaseList();
+//       break;
+//     case StoreState.notAvailable:
+//       storeWidget = _PurchasesNotAvailable();
+//       break;
+//     default:
+//       storeWidget = _PurchasesLoading();
+//       break;
+//   }
+//   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+//     Container(height: 60),
+//     storeWidget,
+//     const Padding(
+//       padding: EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 0.0),
+//       child: Text(
+//         'Past purchases',
+//         style: TextStyle(fontWeight: FontWeight.bold),
+//       ),
+//     ),
+//     const PastPurchasesWidget(),
+//   ]);
+// }
 
-buildCenterWidgets(BuildContext context) {
-  var upgrades = context.watch<PurchasesNotifier>();
+// class _PurchasesLoading extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Center(child: Text('Store is loading'));
+//   }
+// }
 
-  Widget storeWidget;
-  switch (upgrades.storeState) {
-    case StoreState.loading:
-      storeWidget = _PurchasesLoading();
-      break;
-    case StoreState.available:
-      storeWidget = _PurchaseList();
-      break;
-    case StoreState.notAvailable:
-      storeWidget = _PurchasesNotAvailable();
-      break;
-    default:
-      storeWidget = _PurchasesLoading();
-      break;
-  }
-  return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    Container(height: 60),
-    storeWidget,
-    const Padding(
-      padding: EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 0.0),
-      child: Text(
-        'Past purchases',
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-    ),
-    const PastPurchasesWidget(),
-  ]);
-}
+// class _PurchasesNotAvailable extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Center(child: Text('Store not available'));
+//   }
+// }
 
-class _PurchasesLoading extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Store is loading'));
-  }
-}
+// class _PurchaseList extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Text('_PurchaseList');
+//     // var purchases = context.watch<RCPurchasesNotifier>();
+//     // //var products = purchases.products;
+//     // return Column(
+//     //   children: products
+//     //       .map((product) => _PurchaseWidget(
+//     //           product: product,
+//     //           onPressed: () {
+//     //             purchases.buy(product);
+//     //           }))
+//     //       .toList(),
+//     // );
+//   }
+// }
 
-class _PurchasesNotAvailable extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Store not available'));
-  }
-}
+// class _PurchaseWidget extends StatelessWidget {
+//   final PurchasableProduct product;
+//   final VoidCallback onPressed;
 
-class _PurchaseList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var purchases = context.watch<PurchasesNotifier>();
-    var products = purchases.products;
-    return Column(
-      children: products
-          .map((product) => _PurchaseWidget(
-              product: product,
-              onPressed: () {
-                purchases.buy(product);
-              }))
-          .toList(),
-    );
-  }
-}
+//   const _PurchaseWidget({
+//     required this.product,
+//     required this.onPressed,
+//   });
 
-class _PurchaseWidget extends StatelessWidget {
-  final PurchasableProduct product;
-  final VoidCallback onPressed;
+//   @override
+//   Widget build(BuildContext context) {
+//     var title = product.title;
+//     if (product.status == ProductStatus.purchased) {
+//       title += ' (purchased)';
+//     }
+//     return InkWell(
+//         onTap: onPressed,
+//         child: ListTile(
+//           title: Text(
+//             title,
+//           ),
+//           subtitle: Text(product.description),
+//           trailing: Text(_trailing()),
+//         ));
+//   }
 
-  const _PurchaseWidget({
-    required this.product,
-    required this.onPressed,
-  });
+//   String _trailing() {
+//     switch (product.status) {
+//       case ProductStatus.purchasable:
+//         return product.price;
+//       case ProductStatus.purchased:
+//         return 'purchased';
+//       case ProductStatus.pending:
+//         return 'buying...';
+//     }
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    var title = product.title;
-    if (product.status == ProductStatus.purchased) {
-      title += ' (purchased)';
-    }
-    return InkWell(
-        onTap: onPressed,
-        child: ListTile(
-          title: Text(
-            title,
-          ),
-          subtitle: Text(product.description),
-          trailing: Text(_trailing()),
-        ));
-  }
+// class PastPurchasesWidget extends StatelessWidget {
+//   const PastPurchasesWidget({super.key});
 
-  String _trailing() {
-    switch (product.status) {
-      case ProductStatus.purchasable:
-        return product.price;
-      case ProductStatus.purchased:
-        return 'purchased';
-      case ProductStatus.pending:
-        return 'buying...';
-    }
-  }
-}
-
-class PastPurchasesWidget extends StatelessWidget {
-  const PastPurchasesWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    var purchases = context.watch<IAPRepo>().purchases;
-    return ListView.separated(
-      shrinkWrap: true,
-      itemCount: purchases.length,
-      itemBuilder: (context, index) => ListTile(
-        title: Text(purchases[index].title),
-        subtitle: Text(purchases[index].status.toString()),
-      ),
-      separatorBuilder: (context, index) => const Divider(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Text('past purchase');
+//     //var purchases = context.watch<IAPRepo>().purchases;
+//     // return ListView.separated(
+//     //   shrinkWrap: true,
+//     //   itemCount: purchases.length,
+//     //   itemBuilder: (context, index) => ListTile(
+//     //     title: Text(purchases[index].title),
+//     //     subtitle: Text(purchases[index].status.toString()),
+//     //   ),
+//     //   separatorBuilder: (context, index) => const Divider(),
+//     // );
+//   }
+// }

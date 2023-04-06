@@ -35,5 +35,7 @@
            android:value="ca-app-pub-3445302802549723~6146026743"/>
 
     </application>
+    
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

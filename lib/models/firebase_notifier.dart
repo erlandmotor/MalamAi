@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:chat_playground/define/global_define.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
+// import 'package:chat_playground/models/rc_purchases_notifier.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,39 +17,42 @@ class FirebaseNotifier extends ChangeNotifier {
   bool isLoggingIn = false;
   bool isSignOuting = false;
 
+  //RCPurchasesNotifier rcPurchaseNotifier;
+
   late User? user;
   late DateTime? ctime;
   late DateTime? lasttime;
   late DateTime startDate;
 
+  //FirebaseNotifier(this.rcPurchaseNotifier) {
   FirebaseNotifier() {
     load();
   }
 
   late final Completer<bool> _isInitialized = Completer();
 
-  FirebaseFunctions? _functions;
+  // FirebaseFunctions? _functions;
 
-  Future<FirebaseFunctions> get functions async {
-    var isInitialized = await _isInitialized.future;
-    if (!isInitialized) {
-      throw Exception('Firebase is not initialized');
-    }
-    return _functions!;
-  }
+  // Future<FirebaseFunctions> get functions async {
+  //   var isInitialized = await _isInitialized.future;
+  //   if (!isInitialized) {
+  //     throw Exception('Firebase is not initialized');
+  //   }
+  //   return _functions!;
+  // }
 
-  Future<FirebaseFirestore> get firestore async {
-    var isInitialized = await _isInitialized.future;
-    if (!isInitialized) {
-      throw Exception('Firebase is not initialized');
-    }
-    return FirebaseFirestore.instance;
-  }
+  // Future<FirebaseFirestore> get firestore async {
+  //   var isInitialized = await _isInitialized.future;
+  //   if (!isInitialized) {
+  //     throw Exception('Firebase is not initialized');
+  //   }
+  //   return FirebaseFirestore.instance;
+  // }
 
   Future<void> load() async {
     try {
       await Firebase.initializeApp();
-      _functions = FirebaseFunctions.instanceFor(region: cloudRegion);
+      //_functions = FirebaseFunctions.instanceFor(region: cloudRegion);
 
       user = FirebaseAuth.instance.currentUser;
       loggedIn = user != null;
@@ -56,6 +60,7 @@ class FirebaseNotifier extends ChangeNotifier {
       if (loggedIn) {
         ctime = user?.metadata.creationTime;
         lasttime = user?.metadata.lastSignInTime;
+        //user?.uid
         startDate = await NTP.now();
       }
 
@@ -117,6 +122,7 @@ class FirebaseNotifier extends ChangeNotifier {
 
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
+    //await rcPurchaseNotifier.logOut();
 
     loggedIn = false;
     isLoggingIn = false;

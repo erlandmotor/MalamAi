@@ -29,3 +29,7 @@ const cloudRegion = 'asia-northeast3';
 const storeKeyConsumable = 'consumable1';
 const storeKeyUpgrade = 'dash_upgrade_3d';
 const storeKeySubscription = 'subscription1';
+
+// Revcat Android
+const googleApiKey = 'goog_VJqDaQSHfvEEFizPnFKTzqqrMOd';
+const entitlementID = 'week';

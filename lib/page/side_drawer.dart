@@ -73,7 +73,7 @@ class MGSideDrawer extends StatelessWidget {
                             ListTile(
                               dense: true,
                               title: Text(
-                                'Ver ${ver}',
+                                'Ver $ver',
                                 textAlign: TextAlign.left,
                                 textScaleFactor: 1.0,
                                 style: TextStyle(

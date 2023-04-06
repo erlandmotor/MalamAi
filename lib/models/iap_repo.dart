@@ -1,77 +1,77 @@
-import 'dart:async';
+// import 'dart:async';
 
-import 'package:chat_playground/define/global_define.dart';
-import 'package:chat_playground/models/firebase_notifier.dart';
-import 'package:chat_playground/models/past_purchase.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:chat_playground/define/global_define.dart';
+// import 'package:chat_playground/models/firebase_notifier.dart';
+// import 'package:chat_playground/models/past_purchase.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/cupertino.dart';
 
-class IAPRepo extends ChangeNotifier {
-  late FirebaseFirestore _firestore;
-  late FirebaseAuth _auth;
+// class IAPRepo extends ChangeNotifier {
+//   late FirebaseFirestore _firestore;
+//   late FirebaseAuth _auth;
 
-  bool get isLoggedIn => _user != null;
-  User? _user;
-  bool hasActiveSubscription = false;
-  bool hasUpgrade = false;
-  List<PastPurchase> purchases = [];
+//   bool get isLoggedIn => _user != null;
+//   User? _user;
+//   bool hasActiveSubscription = false;
+//   bool hasUpgrade = false;
+//   List<PastPurchase> purchases = [];
 
-  StreamSubscription<User?>? _userSubscription;
-  StreamSubscription<QuerySnapshot>? _purchaseSubscription;
+//   StreamSubscription<User?>? _userSubscription;
+//   StreamSubscription<QuerySnapshot>? _purchaseSubscription;
 
-  IAPRepo(FirebaseNotifier firebaseNotifier) {
-    firebaseNotifier.firestore.then((value) {
-      _auth = FirebaseAuth.instance;
-      _firestore = value;
-      updatePurchases();
-      listenToLogin();
-    });
-  }
+//   IAPRepo(FirebaseNotifier firebaseNotifier) {
+//     firebaseNotifier.firestore.then((value) {
+//       _auth = FirebaseAuth.instance;
+//       _firestore = value;
+//       updatePurchases();
+//       listenToLogin();
+//     });
+//   }
 
-  void listenToLogin() {
-    _user = _auth.currentUser;
-    _userSubscription = FirebaseAuth.instance.authStateChanges().listen((user) {
-      _user = user;
-      updatePurchases();
-    });
-  }
+//   void listenToLogin() {
+//     _user = _auth.currentUser;
+//     _userSubscription = FirebaseAuth.instance.authStateChanges().listen((user) {
+//       _user = user;
+//       updatePurchases();
+//     });
+//   }
 
-  void updatePurchases() {
-    _purchaseSubscription?.cancel();
-    var user = _user;
-    if (user == null) {
-      purchases = [];
-      hasActiveSubscription = false;
-      hasUpgrade = false;
-      return;
-    }
-    var purchaseStream = _firestore
-        .collection('purchases')
-        .where('userId', isEqualTo: user.uid)
-        .snapshots();
-    _purchaseSubscription = purchaseStream.listen((snapshot) {
-      purchases = snapshot.docs.map((document) {
-        var data = document.data();
-        return PastPurchase.fromJson(data);
-      }).toList();
+//   void updatePurchases() {
+//     _purchaseSubscription?.cancel();
+//     var user = _user;
+//     if (user == null) {
+//       purchases = [];
+//       hasActiveSubscription = false;
+//       hasUpgrade = false;
+//       return;
+//     }
+//     var purchaseStream = _firestore
+//         .collection('purchases')
+//         .where('userId', isEqualTo: user.uid)
+//         .snapshots();
+//     _purchaseSubscription = purchaseStream.listen((snapshot) {
+//       purchases = snapshot.docs.map((document) {
+//         var data = document.data();
+//         return PastPurchase.fromJson(data);
+//       }).toList();
 
-      hasActiveSubscription = purchases.any((element) =>
-          element.productId == storeKeySubscription &&
-          element.status != Status.expired);
+//       hasActiveSubscription = purchases.any((element) =>
+//           element.productId == storeKeySubscription &&
+//           element.status != Status.expired);
 
-      hasUpgrade = purchases.any(
-        (element) => element.productId == storeKeyUpgrade,
-      );
+//       hasUpgrade = purchases.any(
+//         (element) => element.productId == storeKeyUpgrade,
+//       );
 
-      notifyListeners();
-    });
-  }
+//       notifyListeners();
+//     });
+//   }
 
-  @override
-  void dispose() {
-    _userSubscription?.cancel();
-    _purchaseSubscription?.cancel();
-    super.dispose();
-  }
-}
+//   @override
+//   void dispose() {
+//     _userSubscription?.cancel();
+//     _purchaseSubscription?.cancel();
+//     super.dispose();
+//   }
+// }
