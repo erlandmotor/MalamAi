@@ -12,6 +12,8 @@ enum StoreState {
 
 const ver = "1.03.1";
 
+const trialDay = 3;
+
 const routeNameRoot = '/';
 const routeChatPage = '/chat';
 const routeNameOption = '/option';

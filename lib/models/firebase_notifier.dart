@@ -1,9 +1,6 @@
 import 'dart:async';
 
 import 'package:chat_playground/define/global_define.dart';
-// import 'package:chat_playground/models/rc_purchases_notifier.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,12 +14,11 @@ class FirebaseNotifier extends ChangeNotifier {
   bool isLoggingIn = false;
   bool isSignOuting = false;
 
-  //RCPurchasesNotifier rcPurchaseNotifier;
-
   late User? user;
   late DateTime? ctime;
   late DateTime? lasttime;
   late DateTime startDate;
+  bool isFreeTrial = false;
 
   //FirebaseNotifier(this.rcPurchaseNotifier) {
   FirebaseNotifier() {
@@ -62,6 +58,10 @@ class FirebaseNotifier extends ChangeNotifier {
         lasttime = user?.metadata.lastSignInTime;
         //user?.uid
         startDate = await NTP.now();
+
+        final createGap = startDate.difference(ctime!);
+        final inday = createGap.inDays;
+        isFreeTrial = !(inday >= trialDay);
       }
 
       state = FirebaseState.available;
@@ -103,6 +103,11 @@ class FirebaseNotifier extends ChangeNotifier {
       ctime = fbdata.user?.metadata.creationTime;
       lasttime = fbdata.user?.metadata.lastSignInTime;
       startDate = await NTP.now();
+
+      final createGap = startDate.difference(ctime!);
+      final inday = createGap.inDays;
+      isFreeTrial = !(inday >= trialDay);
+
       //print('NTP DateTime: ${startDate}');
       //DateTime.now();
 

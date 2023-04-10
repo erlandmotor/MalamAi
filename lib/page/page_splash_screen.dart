@@ -105,19 +105,13 @@ class SplashScreenState extends State<SplashScreen> {
             //Navigator.pushReplacementNamed(context, routeNamePurchase);
 
             final navigator = Navigator.of(context);
-            final isActive = await rcPurchaseNotifier.isEntitlementActive();
+            //final isActive = await rcPurchaseNotifier.isEntitlementActive();
+            final isActive = rcPurchaseNotifier.entitlementIsActive;
 
             if (isActive) {
               navigator.pushReplacementNamed(routeChatPage);
             } else {
-              Offering? offeringCurrent =
-                  await rcPurchaseNotifier.getOfferingCurrent();
-
-              if (offeringCurrent == null) {
-                mgLog('offering 못가져옴');
-              } else {
-                await showBuyPage(offeringCurrent);
-              }
+              await showBuyPage();
             }
           },
           child: const Text("시작")));
@@ -132,11 +126,14 @@ class SplashScreenState extends State<SplashScreen> {
     return widgets;
   }
 
-  Future<void> showBuyPage(Offering offering) async {
+  Future<void> showBuyPage() async {
     await showModalBottomSheet(
       useRootNavigator: true,
-      isDismissible: true,
       isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+      useSafeArea: true,
+
       //backgroundColor: kColorBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
@@ -145,9 +142,7 @@ class SplashScreenState extends State<SplashScreen> {
       builder: (BuildContext context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setModalState) {
-          return Paywall(
-            offering: offering,
-          );
+          return Paywall();
         });
       },
     );

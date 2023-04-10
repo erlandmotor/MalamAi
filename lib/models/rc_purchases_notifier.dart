@@ -11,6 +11,12 @@ import 'package:flutter/services.dart';
 
 import 'package:purchases_flutter/purchases_flutter.dart';
 
+// identifier "subscription1"
+// subscriptionPeriod "P1W"
+// "month1"
+// "P1M"
+// "month1 (com.studiomotorway.chat_playground (unreviewed))"
+
 class RCPurchasesNotifier extends ChangeNotifier {
   FirebaseNotifier firebaseNotifier;
   StoreState storeState = StoreState.loading;
@@ -22,6 +28,7 @@ class RCPurchasesNotifier extends ChangeNotifier {
 
   Offering? offeringCurrent;
   List<Package>? productList;
+  late CustomerInfo customerInfo;
 
   RCPurchasesNotifier(this.firebaseNotifier) {
     loadPurchases();
@@ -45,6 +52,9 @@ class RCPurchasesNotifier extends ChangeNotifier {
       entitlementIsActive = await isEntitlementActive();
       mgLog(
           "login rc - success, appUserID - $appUserID, active - $entitlementIsActive");
+
+      await loadOfferingCurrent();
+
       notifyListeners();
     });
   }
@@ -120,12 +130,8 @@ class RCPurchasesNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<CustomerInfo> getCustomerInfo() async {
-    return await Purchases.getCustomerInfo();
-  }
-
   Future<bool> isEntitlementActive() async {
-    var customerInfo = await getCustomerInfo();
+    customerInfo = await Purchases.getCustomerInfo();
 
     EntitlementInfo? entitlements =
         customerInfo.entitlements.all[entitlementID];
@@ -158,61 +164,56 @@ class RCPurchasesNotifier extends ChangeNotifier {
     }
   }
 
-  Future<Offering?> getOfferingCurrent() async {
-    var isEntilementActive = await isEntitlementActive();
-    if (isEntilementActive == false) {
-      Offerings offerings;
-      try {
-        offerings = await Purchases.getOfferings();
-        offeringCurrent = offerings.current;
+  Future<Offering?> loadOfferingCurrent() async {
+    // var isEntilementActive = await isEntitlementActive();
+    // if (isEntilementActive == false) {
+    Offerings offerings;
+    try {
+      offerings = await Purchases.getOfferings();
+      offeringCurrent = offerings.current;
 
-        if (offeringCurrent == null) {
-          mgLog("getOfferingCurrent null");
-        } else {
-          productList = offeringCurrent?.availablePackages;
-        }
-
-        return offeringCurrent;
-      } catch (e) {
-        // await showDialog(
-        //     context: context,
-        //     builder: (BuildContext context) => ShowDialogToDismiss(
-        //         title: "Error", content: e.message, buttonText: 'OK'));
-        mgLog("getOfferingCurrent error - $e");
-        return null;
+      //List<String> productIDs = ['subscription1', 'month1'];
+      //List<StoreProduct> products = await Purchases.getProducts(productIDs);
+      if (offeringCurrent == null) {
+        mgLog("getOfferingCurrent null");
+      } else {
+        productList = offeringCurrent?.availablePackages;
       }
-    } else {
-      mgLog("getOfferingCurrent isEntilementActive - true");
+
+      return offeringCurrent;
+    } catch (e) {
+      mgLog("getOfferingCurrent error - $e");
       return null;
     }
+    // } else {
+    //   mgLog("getOfferingCurrent isEntilementActive - true");
+    //   return null;
+    // }
+  }
+
+  Offering? getOfferingCurrent() {
+    return offeringCurrent;
   }
 
   Future<void> purchase(int index) async {
-    late CustomerInfo customInfo;
     try {
       if (productList == null) {
         throw Exception("productList is null");
       }
-      CustomerInfo customInfo =
-          await Purchases.purchasePackage(productList![index]);
+      customerInfo = await Purchases.purchasePackage(productList![index]);
     } catch (e) {
       mgLog("purchase error - $e");
     }
   }
 
-  // Future<void> buy(PurchasableProduct product) async {
-  //   // final purchaseParam = PurchaseParam(productDetails: product.productDetails);
-  //   // switch (product.id) {
-  //   //   case storeKeyConsumable:
-  //   //     //await iapConnection.buyConsumable(purchaseParam: purchaseParam);
-  //   //     break;
-  //   //   case storeKeySubscription:
-  //   //   case storeKeyUpgrade:
-  //   //     //await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
-  //   //     break;
-  //   //   default:
-  //   //     throw ArgumentError.value(
-  //   //         product.productDetails, '${product.id} is not a known product');
-  //   // }
-  // }
+  Future<void> purchasePackage(Package package) async {
+    try {
+      if (productList == null) {
+        throw Exception("productList is null");
+      }
+      customerInfo = await Purchases.purchasePackage(package);
+    } catch (e) {
+      mgLog("purchase error - $e");
+    }
+  }
 }

@@ -8,19 +8,15 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 // import 'package:magic_weather_flutter/src/model/styles.dart';
 
 class Paywall extends StatefulWidget {
-  final Offering offering;
-
-  const Paywall({super.key, required this.offering}); // : super(key: key);
-  //const Paywall({super.key}) : super(key: key);
-
   @override
   PaywallState createState() => PaywallState();
 }
 
 class PaywallState extends State<Paywall> {
+  late Future<List<Package>> packFuture;
+
   @override
   Widget build(BuildContext context) {
-    var rcPurchaseNotifier = context.watch<RCPurchasesNotifier>();
     return SingleChildScrollView(
       child: SafeArea(
         child: Wrap(
@@ -49,42 +45,54 @@ class PaywallState extends State<Paywall> {
                 ),
               ),
             ),
-            ListView.builder(
-              itemCount: widget.offering.availablePackages.length,
-              itemBuilder: (BuildContext context, int index) {
-                var myProductList = widget.offering.availablePackages;
-                return Card(
-                  color: Colors.black,
-                  child: ListTile(
-                      onTap: () async {
-                        try {
-                          //rcPurchaseNotifier.isEntitlementActive();
-                          rcPurchaseNotifier.purchase(index);
-                        } catch (e) {
-                          mgLog(' $e');
-                        }
-
-                        setState(() {});
-                        Navigator.pop(context);
-                      },
-                      title: Text(
-                        myProductList[index].storeProduct.title,
-                        //style: kTitleTextStyle,
-                      ),
-                      subtitle: Text(
-                        myProductList[index].storeProduct.description,
-                        // style: kDescriptionTextStyle.copyWith(
-                        //     fontSize: kFontSizeSuperSmall
-                        //     ),
-                      ),
-                      trailing: Text(
-                        myProductList[index].storeProduct.priceString,
-                        //style: kTitleTextStyle
-                      )),
-                );
-              },
+            ListView(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
+              children: buildPurchaseWidgets(),
+            ),
+            const Padding(
+              padding:
+                  EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  'footerText',
+                  //style: kDescriptionTextStyle,
+                ),
+              ),
+            ),
+            const Padding(
+              padding:
+                  EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  'footerText',
+                  //style: kDescriptionTextStyle,
+                ),
+              ),
+            ),
+            const Padding(
+              padding:
+                  EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  'footerText',
+                  //style: kDescriptionTextStyle,
+                ),
+              ),
+            ),
+            const Padding(
+              padding:
+                  EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  'footerText',
+                  //style: kDescriptionTextStyle,
+                ),
+              ),
             ),
             const Padding(
               padding:
@@ -101,5 +109,55 @@ class PaywallState extends State<Paywall> {
         ),
       ),
     );
+  }
+
+  List<Widget> buildPurchaseWidgets() {
+    var rcPurchaseNotifier = context.watch<RCPurchasesNotifier>();
+    List<Widget> widgets = [];
+    List<Package> packs = rcPurchaseNotifier.productList ?? [];
+
+    for (Package item in packs) {
+      widgets.add(Card(
+        //color: Colors.black,
+        child: ListTile(
+            onTap: () async {
+              final myPack = item;
+              try {
+                rcPurchaseNotifier.purchasePackage(myPack);
+              } catch (e) {
+                mgLog(' $e');
+              }
+
+              setState(() {});
+              Navigator.pop(context);
+            },
+            title: Text(
+              item.storeProduct.title,
+            ),
+            subtitle: Text(
+              item.storeProduct.description,
+            ),
+            trailing: Text(
+              item.storeProduct.priceString,
+            )),
+      ));
+    }
+
+    if (rcPurchaseNotifier.firebaseNotifier.isFreeTrial == true) {
+      widgets.add(Card(
+          //color: Colors.black,
+          child: ListTile(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        title: const Text(
+          'Free trial',
+        ),
+      )));
+    } else {
+      mgLog(' free trial end!');
+    }
+
+    return widgets;
   }
 }
