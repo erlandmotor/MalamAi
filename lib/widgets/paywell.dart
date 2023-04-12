@@ -1,11 +1,10 @@
+import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-// import 'package:magic_weather_flutter/src/constant.dart';
-// import 'package:magic_weather_flutter/src/model/singletons_data.dart';
-// import 'package:magic_weather_flutter/src/model/styles.dart';
 
 class Paywall extends StatefulWidget {
   @override
@@ -14,6 +13,7 @@ class Paywall extends StatefulWidget {
 
 class PaywallState extends State<Paywall> {
   late Future<List<Package>> packFuture;
+  late RCPurchasesNotifier rcPurchaseNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class PaywallState extends State<Paywall> {
                       BorderRadius.vertical(top: Radius.circular(25.0))),
               child: const Center(
                   child: Text(
-                '✨ Magic Weather Premium',
+                titleNameMain,
                 //style: kTitleTextStyle
               )),
             ),
@@ -40,67 +40,24 @@ class PaywallState extends State<Paywall> {
               child: SizedBox(
                 width: double.infinity,
                 child: Text(
-                  'MAGIC WEATHER PREMIUM',
+                  titleNameMain,
                   //style: kDescriptionTextStyle,
                 ),
               ),
             ),
-            ListView(
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
-              children: buildPurchaseWidgets(),
-            ),
+            buildPurchaseList(),
+            // ListView(
+            //   shrinkWrap: true,
+            //   physics: const ClampingScrollPhysics(),
+            //   children: buildPurchaseWidgets(),
+            // ),
             const Padding(
               padding:
                   EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
               child: SizedBox(
                 width: double.infinity,
                 child: Text(
-                  'footerText',
-                  //style: kDescriptionTextStyle,
-                ),
-              ),
-            ),
-            const Padding(
-              padding:
-                  EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  'footerText',
-                  //style: kDescriptionTextStyle,
-                ),
-              ),
-            ),
-            const Padding(
-              padding:
-                  EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  'footerText',
-                  //style: kDescriptionTextStyle,
-                ),
-              ),
-            ),
-            const Padding(
-              padding:
-                  EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  'footerText',
-                  //style: kDescriptionTextStyle,
-                ),
-              ),
-            ),
-            const Padding(
-              padding:
-                  EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  'footerText',
+                  'footer Text',
                   //style: kDescriptionTextStyle,
                 ),
               ),
@@ -111,41 +68,38 @@ class PaywallState extends State<Paywall> {
     );
   }
 
+  buildPurchaseList() {
+    //return LayoutBuilder(builder: builder)
+
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // direction: Axis.horizontal,
+          // clipBehavior: Clip.antiAliasWithSaveLayer,
+          children: buildPurchaseWidgets(),
+        ));
+
+    // return Wrap(
+    //   alignment: WrapAlignment.center,
+    //   // direction: Axis.horizontal,
+    //   // clipBehavior: Clip.antiAliasWithSaveLayer,
+    //   children: buildPurchaseWidgets(),
+    // );
+  }
+
   List<Widget> buildPurchaseWidgets() {
-    var rcPurchaseNotifier = context.watch<RCPurchasesNotifier>();
+    rcPurchaseNotifier = context.watch<RCPurchasesNotifier>();
     List<Widget> widgets = [];
     List<Package> packs = rcPurchaseNotifier.productList ?? [];
 
     for (Package item in packs) {
-      widgets.add(Card(
-        //color: Colors.black,
-        child: ListTile(
-            onTap: () async {
-              final myPack = item;
-              try {
-                rcPurchaseNotifier.purchasePackage(myPack);
-              } catch (e) {
-                mgLog(' $e');
-              }
-
-              setState(() {});
-              Navigator.pop(context);
-            },
-            title: Text(
-              item.storeProduct.title,
-            ),
-            subtitle: Text(
-              item.storeProduct.description,
-            ),
-            trailing: Text(
-              item.storeProduct.priceString,
-            )),
-      ));
+      widgets.add(buildPurchaseCard(item));
     }
 
     if (rcPurchaseNotifier.firebaseNotifier.isFreeTrial == true) {
+      /*
       widgets.add(Card(
-          //color: Colors.black,
           child: ListTile(
         onTap: () {
           Navigator.pop(context);
@@ -154,10 +108,75 @@ class PaywallState extends State<Paywall> {
           'Free trial',
         ),
       )));
+      */
     } else {
       mgLog(' free trial end!');
     }
 
     return widgets;
+  }
+
+  Widget buildPurchaseCard(Package item) {
+    final ButtonStyle style = ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 20), elevation: 12);
+    final isReq = item.storeProduct.identifier == 'month1';
+
+    TextStyle tStyle = TextStyle(fontSize: 12);
+
+    return Flexible(
+        child: GestureDetector(
+            //style: style,
+            onTap: () async {
+              final myPack = item;
+              try {
+                rcPurchaseNotifier.purchasePackage(myPack);
+              } catch (e) {
+                mgLog(' $e');
+              }
+              //setState(() {});
+              Navigator.pop(context);
+            },
+            child: Stack(alignment: AlignmentDirectional.center, children: [
+              Container(
+                decoration: isReq
+                    ? BoxDecoration(
+                        border: const GradientBoxBorder(
+                          gradient: LinearGradient(
+                              colors: [Colors.green, Colors.yellow]),
+                          width: 6,
+                        ),
+                        borderRadius: BorderRadius.circular(16))
+                    : null,
+              ),
+              Container(
+                  decoration: isReq
+                      ? BoxDecoration(
+                          border: const GradientBoxBorder(
+                            gradient: LinearGradient(
+                                colors: [Colors.green, Colors.yellow]),
+                            width: 6,
+                          ),
+                          borderRadius: BorderRadius.circular(16))
+                      : null,
+                  child: Card(
+                    elevation: 12,
+                    color: isReq ? Colors.cyan : Colors.orangeAccent,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 10.0, left: 6.0, right: 6.0, bottom: 6.0),
+                      child: Column(
+                        //title: Text('Birth of Universe'),
+                        children: <Widget>[
+                          Text(item.storeProduct.identifier),
+                          Text(item.storeProduct.title,
+                              //overflow: TextOverflow.ellipsis,
+                              style: tStyle),
+                          //const Spacer(),
+                          Text(item.storeProduct.priceString),
+                        ],
+                      ),
+                    ),
+                  ))
+            ])));
   }
 }

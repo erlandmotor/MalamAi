@@ -10,6 +10,7 @@ enum StoreState {
   notAvailable,
 }
 
+const titleNameMain = '✨ Chat-Playground';
 const ver = "1.03.1";
 
 const trialDay = 3;

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
-import 'package:chat_playground/define/mg_handy.dart';
+//import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
 //import 'package:purchases_flutter/models/offering_wrapper.dart';
 //import 'package:purchases_flutter/models/offerings_wrapper.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+//import 'package:purchases_flutter/purchases_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
