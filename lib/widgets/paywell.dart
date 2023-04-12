@@ -72,9 +72,12 @@ class PaywallState extends State<Paywall> {
     //return LayoutBuilder(builder: builder)
 
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
+          //mainAxisAlignment: MainAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
+
+          //crossAxisAlignment: CrossAxisAlignment.center,
           // direction: Axis.horizontal,
           // clipBehavior: Clip.antiAliasWithSaveLayer,
           children: buildPurchaseWidgets(),
@@ -93,8 +96,10 @@ class PaywallState extends State<Paywall> {
     List<Widget> widgets = [];
     List<Package> packs = rcPurchaseNotifier.productList ?? [];
 
+    //widgets.add(Spacer());
     for (Package item in packs) {
       widgets.add(buildPurchaseCard(item));
+      //widgets.add(Spacer());
     }
 
     if (rcPurchaseNotifier.firebaseNotifier.isFreeTrial == true) {
@@ -117,11 +122,10 @@ class PaywallState extends State<Paywall> {
   }
 
   Widget buildPurchaseCard(Package item) {
-    final ButtonStyle style = ElevatedButton.styleFrom(
-        textStyle: const TextStyle(fontSize: 20), elevation: 12);
+    // final ButtonStyle style = ElevatedButton.styleFrom(
+    //     textStyle: const TextStyle(fontSize: 20), elevation: 12);
+    TextStyle tStyle = const TextStyle(fontSize: 12);
     final isReq = item.storeProduct.identifier == 'month1';
-
-    TextStyle tStyle = TextStyle(fontSize: 12);
 
     return Flexible(
         child: GestureDetector(
@@ -137,32 +141,40 @@ class PaywallState extends State<Paywall> {
               Navigator.pop(context);
             },
             child: Stack(alignment: AlignmentDirectional.center, children: [
+              // Container(
+              //   decoration: isReq
+              //       ? BoxDecoration(
+              //           border: const GradientBoxBorder(
+              //             gradient: LinearGradient(
+              //                 colors: [Colors.green, Colors.yellow]),
+              //             width: 6,
+              //           ),
+              //           borderRadius: BorderRadius.circular(16))
+              //       : null,
+              // ),
               Container(
                 decoration: isReq
-                    ? BoxDecoration(
-                        border: const GradientBoxBorder(
+                    ? const BoxDecoration(
+                        border: GradientBoxBorder(
                           gradient: LinearGradient(
                               colors: [Colors.green, Colors.yellow]),
                           width: 6,
                         ),
-                        borderRadius: BorderRadius.circular(16))
-                    : null,
-              ),
-              Container(
-                  decoration: isReq
-                      ? BoxDecoration(
-                          border: const GradientBoxBorder(
-                            gradient: LinearGradient(
-                                colors: [Colors.green, Colors.yellow]),
-                            width: 6,
-                          ),
-                          borderRadius: BorderRadius.circular(16))
-                      : null,
-                  child: Card(
-                    elevation: 12,
-                    color: isReq ? Colors.cyan : Colors.orangeAccent,
+                        //borderRadius: BorderRadius.circular(15)
+                        borderRadius: BorderRadius.all(Radius.circular(20)))
+                    : const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12))),
+
+                //elevation: 12,
+                //color: isReq ? Colors.cyan : Colors.orangeAccent,
+                child: Container(
+                    //color: isReq ? Colors.cyan : Colors.orangeAccent,
+                    decoration: BoxDecoration(
+                        color: isReq ? Colors.cyan : Colors.orangeAccent,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12))),
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           top: 10.0, left: 6.0, right: 6.0, bottom: 6.0),
                       child: Column(
                         //title: Text('Birth of Universe'),
@@ -175,8 +187,8 @@ class PaywallState extends State<Paywall> {
                           Text(item.storeProduct.priceString),
                         ],
                       ),
-                    ),
-                  ))
+                    )),
+              )
             ])));
   }
 }
