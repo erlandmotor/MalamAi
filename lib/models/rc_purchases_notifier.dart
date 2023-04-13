@@ -17,6 +17,18 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 // "P1M"
 // "month1 (com.studiomotorway.chat_playground (unreviewed))"
 
+class ProductUIDesc {
+  String title;
+  String desc;
+  String priceString;
+  double price;
+  ProductUIDesc(
+      {this.title = 'null',
+      this.desc = 'null',
+      this.priceString = 'null',
+      this.price = 10000});
+}
+
 class RCPurchasesNotifier extends ChangeNotifier {
   FirebaseNotifier firebaseNotifier;
   StoreState storeState = StoreState.loading;
@@ -27,8 +39,10 @@ class RCPurchasesNotifier extends ChangeNotifier {
   bool isLogining = false;
 
   Offering? offeringCurrent;
-  List<Package>? productList;
+  List<Package> productList = [];
   late CustomerInfo customerInfo;
+
+  Map<String, ProductUIDesc> productDescs = <String, ProductUIDesc>{};
 
   RCPurchasesNotifier(this.firebaseNotifier) {
     loadPurchases();
@@ -177,7 +191,35 @@ class RCPurchasesNotifier extends ChangeNotifier {
       if (offeringCurrent == null) {
         mgLog("getOfferingCurrent null");
       } else {
-        productList = offeringCurrent?.availablePackages;
+        productList = offeringCurrent?.availablePackages ?? [];
+
+        for (Package item in productList) {
+          switch (item.storeProduct.identifier) {
+            case 'subscription1':
+              productDescs[item.storeProduct.identifier] = ProductUIDesc(
+                  title: '주간',
+                  desc: 'desc1',
+                  priceString: item.storeProduct.priceString,
+                  price: item.storeProduct.price);
+              break;
+
+            case 'month1':
+              productDescs[item.storeProduct.identifier] = ProductUIDesc(
+                  title: '월간',
+                  desc: 'desc1',
+                  priceString: item.storeProduct.priceString,
+                  price: item.storeProduct.price);
+              break;
+
+            case 'year1':
+              productDescs[item.storeProduct.identifier] = ProductUIDesc(
+                  title: '연간',
+                  desc: 'desc1',
+                  priceString: item.storeProduct.priceString,
+                  price: item.storeProduct.price);
+              break;
+          }
+        }
       }
 
       return offeringCurrent;
@@ -197,10 +239,10 @@ class RCPurchasesNotifier extends ChangeNotifier {
 
   Future<void> purchase(int index) async {
     try {
-      if (productList == null) {
-        throw Exception("productList is null");
-      }
-      customerInfo = await Purchases.purchasePackage(productList![index]);
+      // if (productList == null) {
+      //   throw Exception("productList is null");
+      // }
+      customerInfo = await Purchases.purchasePackage(productList[index]);
     } catch (e) {
       mgLog("purchase error - $e");
     }
@@ -208,9 +250,6 @@ class RCPurchasesNotifier extends ChangeNotifier {
 
   Future<void> purchasePackage(Package package) async {
     try {
-      if (productList == null) {
-        throw Exception("productList is null");
-      }
       customerInfo = await Purchases.purchasePackage(package);
     } catch (e) {
       mgLog("purchase error - $e");

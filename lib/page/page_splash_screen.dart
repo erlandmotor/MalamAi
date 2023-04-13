@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
+import 'package:chat_playground/define/mg_handy.dart';
 //import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
@@ -112,6 +113,8 @@ class SplashScreenState extends State<SplashScreen> {
               navigator.pushReplacementNamed(routeChatPage);
             } else {
               await showBuyPage();
+
+              navigator.pushReplacementNamed(routeChatPage);
             }
           },
           child: const Text("시작")));
@@ -126,8 +129,11 @@ class SplashScreenState extends State<SplashScreen> {
     return widgets;
   }
 
+  // Future<void> showBuyPage() async {
+  // await showModalBottomSheet(
+
   Future<void> showBuyPage() async {
-    await showModalBottomSheet(
+    var result = await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,
       isDismissible: false,
@@ -142,9 +148,11 @@ class SplashScreenState extends State<SplashScreen> {
       builder: (BuildContext context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setModalState) {
-          return Paywall();
+          return const Paywall();
         });
       },
     );
+
+    mgLog(result);
   }
 }

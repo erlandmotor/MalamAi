@@ -45,6 +45,19 @@ class FirebaseNotifier extends ChangeNotifier {
   //   return FirebaseFirestore.instance;
   // }
 
+  CompareTrial() async {
+    ctime = user?.metadata.creationTime;
+    lasttime = user?.metadata.lastSignInTime;
+    startDate = await NTP.now();
+
+    final createGap = startDate.difference(ctime!);
+    final inday = createGap.inDays;
+    isFreeTrial = !(inday >= trialDay);
+
+    //WILL
+    isFreeTrial = true;
+  }
+
   Future<void> load() async {
     try {
       await Firebase.initializeApp();
@@ -54,14 +67,14 @@ class FirebaseNotifier extends ChangeNotifier {
       loggedIn = user != null;
 
       if (loggedIn) {
-        ctime = user?.metadata.creationTime;
-        lasttime = user?.metadata.lastSignInTime;
-        //user?.uid
-        startDate = await NTP.now();
+        await CompareTrial();
+        // ctime = user?.metadata.creationTime;
+        // lasttime = user?.metadata.lastSignInTime;
+        // startDate = await NTP.now();
 
-        final createGap = startDate.difference(ctime!);
-        final inday = createGap.inDays;
-        isFreeTrial = !(inday >= trialDay);
+        // final createGap = startDate.difference(ctime!);
+        // final inday = createGap.inDays;
+        // isFreeTrial = !(inday >= trialDay);
       }
 
       state = FirebaseState.available;
@@ -100,13 +113,15 @@ class FirebaseNotifier extends ChangeNotifier {
           await FirebaseAuth.instance.signInWithCredential(credential);
 
       user = fbdata.user;
-      ctime = fbdata.user?.metadata.creationTime;
-      lasttime = fbdata.user?.metadata.lastSignInTime;
-      startDate = await NTP.now();
 
-      final createGap = startDate.difference(ctime!);
-      final inday = createGap.inDays;
-      isFreeTrial = !(inday >= trialDay);
+      await CompareTrial();
+      // ctime = user?.metadata.creationTime;
+      // lasttime = user?.metadata.lastSignInTime;
+      // startDate = await NTP.now();
+
+      // final createGap = startDate.difference(ctime!);
+      // final inday = createGap.inDays;
+      // isFreeTrial = !(inday >= trialDay);
 
       //print('NTP DateTime: ${startDate}');
       //DateTime.now();
