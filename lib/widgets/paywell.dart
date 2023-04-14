@@ -278,17 +278,8 @@ class PaywallState extends State<Paywall> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: FilledButton(
           onPressed: isFreeTrial
-              ? () async {
-                  // final navigator = Navigator.of(context);
-                  // navigator.pop();
-                  String? t;
-                  t = 'result free';
-                  Navigator.pop<String>(context, t);
-
-                  //mgLog(t ?? 'null');
-
-                  //navigator.pushReplacementNamed(routeChatPage);
-                  //navigator.pushNamed(routeChatPage);
+              ? () {
+                  Navigator.pop<String>(context);
                 }
               : null,
           child: const Text('지금 체험하기'),

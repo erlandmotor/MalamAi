@@ -45,7 +45,7 @@ class FirebaseNotifier extends ChangeNotifier {
   //   return FirebaseFirestore.instance;
   // }
 
-  CompareTrial() async {
+  compareTrial() async {
     ctime = user?.metadata.creationTime;
     lasttime = user?.metadata.lastSignInTime;
     startDate = await NTP.now();
@@ -67,7 +67,7 @@ class FirebaseNotifier extends ChangeNotifier {
       loggedIn = user != null;
 
       if (loggedIn) {
-        await CompareTrial();
+        await compareTrial();
         // ctime = user?.metadata.creationTime;
         // lasttime = user?.metadata.lastSignInTime;
         // startDate = await NTP.now();
@@ -114,7 +114,7 @@ class FirebaseNotifier extends ChangeNotifier {
 
       user = fbdata.user;
 
-      await CompareTrial();
+      await compareTrial();
       // ctime = user?.metadata.creationTime;
       // lasttime = user?.metadata.lastSignInTime;
       // startDate = await NTP.now();

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
-import 'package:chat_playground/define/mg_handy.dart';
+//import 'package:chat_playground/define/mg_handy.dart';
 //import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
@@ -105,17 +105,14 @@ class SplashScreenState extends State<SplashScreen> {
             //     () => Navigator.pushReplacementNamed(context, routeChatPage));
             //Navigator.pushReplacementNamed(context, routeNamePurchase);
 
-            final navigator = Navigator.of(context);
-            //final isActive = await rcPurchaseNotifier.isEntitlementActive();
             final isActive = rcPurchaseNotifier.entitlementIsActive;
+            final navigator = Navigator.of(context);
 
-            if (isActive) {
-              navigator.pushReplacementNamed(routeChatPage);
-            } else {
+            if (!isActive) {
               await showBuyPage();
-
-              navigator.pushReplacementNamed(routeChatPage);
             }
+
+            navigator.pushReplacementNamed(routeChatPage);
           },
           child: const Text("시작")));
       widgets.add(TextButton(
@@ -129,11 +126,8 @@ class SplashScreenState extends State<SplashScreen> {
     return widgets;
   }
 
-  // Future<void> showBuyPage() async {
-  // await showModalBottomSheet(
-
   Future<void> showBuyPage() async {
-    var result = await showModalBottomSheet(
+    await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,
       isDismissible: false,
@@ -152,7 +146,5 @@ class SplashScreenState extends State<SplashScreen> {
         });
       },
     );
-
-    mgLog(result);
   }
 }
