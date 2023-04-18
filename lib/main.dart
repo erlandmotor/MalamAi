@@ -15,7 +15,8 @@ import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:chat_playground/page/page_setting.dart';
 import 'package:chat_playground/page/page_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+//import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 //import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -23,20 +24,21 @@ import 'define/mg_handy.dart';
 import 'define/rc_store_config.dart';
 
 // Gives the option to override in tests.
-class IAPConnection {
-  static InAppPurchase? _instance;
-  static set instance(InAppPurchase value) {
-    _instance = value;
-  }
+// class IAPConnection {
+//   static InAppPurchase? _instance;
+//   static set instance(InAppPurchase value) {
+//     _instance = value;
+//   }
 
-  static InAppPurchase get instance {
-    _instance ??= InAppPurchase.instance;
-    return _instance!;
-  }
-}
+//   static InAppPurchase get instance {
+//     _instance ??= InAppPurchase.instance;
+//     return _instance!;
+//   }
+// }
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
 
   // if (Platform.isIOS || Platform.isMacOS) {
   //   RCStoreConfig(
