@@ -3,7 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PageSetting extends StatelessWidget {
-  const PageSetting({Key? key}) : super(key: key);
+  PageSetting({Key? key}) : super(key: key);
+
+  final MaterialStateProperty<Icon?> thumbIcon =
+      MaterialStateProperty.resolveWith<Icon?>((states) {
+    if (states.contains(MaterialState.selected)) {
+      return const Icon(Icons.check);
+    }
+    return const Icon(Icons.close);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +38,7 @@ class PageSetting extends StatelessWidget {
                         )),
                     const Spacer(),
                     Switch(
+                      thumbIcon: thumbIcon,
                       value: uiNoti.isUseSystemOption,
                       onChanged: (bool value) =>
                           uiNoti.isUseSystemOption = value,
@@ -49,6 +58,7 @@ class PageSetting extends StatelessWidget {
                         )),
                     const Spacer(),
                     Switch(
+                      thumbIcon: thumbIcon,
                       value: !uiNoti.isLightMode,
                       //activeColor: Colors.red,
                       onChanged:
@@ -70,8 +80,8 @@ class PageSetting extends StatelessWidget {
                     ),
                     Slider(
                         min: 0.8,
-                        max: 3.2,
-                        divisions: 8,
+                        max: 2.6,
+                        divisions: 10,
                         label: uiNoti.customTextScaleFactor.toStringAsFixed(2),
                         onChanged:
                             // uiNoti.isUseSystemOption
@@ -85,7 +95,7 @@ class PageSetting extends StatelessWidget {
               ),
               const Divider(),
               Container(
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.centerLeft,
                   child: Padding(
                       padding: const EdgeInsets.only(left: 40.0), //.all(20),
                       child: Card(

@@ -126,7 +126,7 @@ class _ChatAppState extends State<ChatApp> {
         routeNameRoot: (context) => const SplashScreen(),
         //routeNamePurchase: (context) => const PurchasePage(),
         routeChatPage: (context) => ChatPage(chatApi: widget.chatApi),
-        routeNameOption: (context) => const PageSetting(),
+        routeNameOption: (context) => PageSetting(),
       },
     );
   }

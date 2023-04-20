@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
 //import 'package:chat_playground/define/mg_handy.dart';
 //import 'package:chat_playground/define/mg_handy.dart';
@@ -36,8 +36,10 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final uiNoti = context.watch<UIChangeNotifier>();
     return Scaffold(
-      backgroundColor: Colors.blue,
+      //backgroundColor: Colors.blue,
+      backgroundColor: uiNoti.materialThemeData.colorScheme.primaryContainer,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -97,7 +99,11 @@ class SplashScreenState extends State<SplashScreen> {
     } else {
       String url = firebaseNotifier.user?.photoURL ?? "";
       if (url != "") {
-        widgets.add(CachedNetworkImage(imageUrl: url));
+        //widgets.add(CachedNetworkImage(imageUrl: url));
+        widgets.add(ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: firebaseNotifier.photoImage));
+        widgets.add(const SizedBox(height: 20));
       }
       widgets.add(ElevatedButton(
           onPressed: () async {
@@ -114,13 +120,13 @@ class SplashScreenState extends State<SplashScreen> {
 
             navigator.pushReplacementNamed(routeChatPage);
           },
-          child: const Text("시작")));
+          child: const Text("시작", textScaleFactor: 1.0)));
       widgets.add(TextButton(
           onPressed: () {
             //firebaseNotifier.logout();
             rcPurchaseNotifier.logOut();
           },
-          child: const Text("SignOut")));
+          child: const Text("SignOut", textScaleFactor: 1.0)));
     }
 
     return widgets;

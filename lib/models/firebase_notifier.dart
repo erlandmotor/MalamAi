@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,6 +20,8 @@ class FirebaseNotifier extends ChangeNotifier {
   late DateTime? lasttime;
   late DateTime startDate;
   bool isFreeTrial = false;
+
+  late CachedNetworkImage photoImage;
 
   //FirebaseNotifier(this.rcPurchaseNotifier) {
   FirebaseNotifier() {
@@ -67,6 +70,7 @@ class FirebaseNotifier extends ChangeNotifier {
       loggedIn = user != null;
 
       if (loggedIn) {
+        photoImage = CachedNetworkImage(imageUrl: user!.photoURL!);
         await compareTrial();
         // ctime = user?.metadata.creationTime;
         // lasttime = user?.metadata.lastSignInTime;
