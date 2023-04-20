@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:chat_playground/api/chat_api.dart';
+import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/chat_message.dart';
 import 'package:chat_playground/widgets/message_bubble.dart';
 import 'package:chat_playground/widgets/message_composer.dart';
@@ -28,6 +31,10 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     makeBubbleWidget();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _controller.jumpTo(_controller.position.maxScrollExtent);
+    // });
+
     super.initState();
   }
 
@@ -78,13 +85,15 @@ class _ChatPageState extends State<ChatPage> {
       //_scrollDown();
       _awaitingResponse = true;
     });
+
+    _controller.jumpTo(_controller.position.maxScrollExtent);
+
     try {
       final response = await widget.chatApi.completeChat(_messages);
       setState(() {
         _messages.add(ChatMessage(response, false));
         makeBubbleWidget();
         _awaitingResponse = false;
-        //_scrollDown();
       });
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -92,21 +101,11 @@ class _ChatPageState extends State<ChatPage> {
       );
       setState(() {
         _awaitingResponse = false;
-        //_scrollDown();
       });
     }
-  }
 
-  void _scrollDown() {
-    //return;
-    // _controller.animateTo(
-    //   _controller.position.maxScrollExtent + 800,
-    //   duration: const Duration(milliseconds: 200),
-    //   curve: Curves.fastOutSlowIn,
-    // );
-    //_controller.jumpTo(_controller.position.maxScrollExtent);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      //_controller.scrollToEnd();
+    Timer(const Duration(milliseconds: 200), () {
+      mgLog("잠시 대기");
       _controller.jumpTo(_controller.position.maxScrollExtent);
     });
   }
@@ -124,20 +123,20 @@ class _ChatPageState extends State<ChatPage> {
       }
     }
 
-/*
-    int init = (bubbleWidgets.length + bubbleWidgets.length / 6).toInt();    
+    /*
+    final int length = bubbleWidgets.length;
+    final int init = (length + length / 6).toInt();
     for (int i = init; i < _messages.length; i++) {
       bubbleWidgets.add(MessageBubble(
         content: _messages[i].content,
         isUserMessage: _messages[i].isUserMessage,
       ));
 
-      if (i != 0 && i % 6 == 0) {
+      if (bubbleWidgets.isNotEmpty && bubbleWidgets.length % 6 == 0) {
         bubbleWidgets.add(const MgAdWidget());
       }
     }
-*/
-    _scrollDown();
+    */
   }
 
   List<Widget> bubbleWidgets = [];

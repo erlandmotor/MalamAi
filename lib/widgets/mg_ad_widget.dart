@@ -32,9 +32,9 @@ class MgAdWidgetState extends State<MgAdWidget> {
     BannerAd(
       adUnitId: _adUnitId,
       request: const AdRequest(),
-      //size: AdSize.banner,
+      size: AdSize.banner,
       //size: AdSize.largeBanner,
-      size: AdSize.mediumRectangle,
+      //size: AdSize.mediumRectangle,
 
       listener: BannerAdListener(
         // Called when an ad is successfully received.
@@ -73,7 +73,9 @@ class MgAdWidgetState extends State<MgAdWidget> {
             ),
           ));
     } else {
-      return Container();
+      return Container(
+        height: 50, // banner height
+      );
     }
   }
 }
