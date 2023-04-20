@@ -1,6 +1,8 @@
+import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -16,6 +18,7 @@ class MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+    final uiNoti = context.watch<UIChangeNotifier>();
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -41,6 +44,9 @@ class MessageBubble extends StatelessWidget {
             MarkdownWidget(
               data: content,
               shrinkWrap: true,
+              config: uiNoti.isLightMode
+                  ? MarkdownConfig.defaultConfig
+                  : MarkdownConfig.darkConfig,
             ),
             const SizedBox(height: 8),
             Row(
@@ -48,7 +54,15 @@ class MessageBubble extends StatelessWidget {
                 const Spacer(),
                 IconButton(
                     onPressed: () {
-                      Clipboard.setData(ClipboardData(text: content));
+                      String adjust = content;
+                      //adjust = adjust.replaceAll(RegExp(r'^.*[`].*$'), '\n\n');
+
+                      adjust = adjust
+                          .split("\n")
+                          .where((line) => !line.contains("```"))
+                          .join("\n");
+
+                      Clipboard.setData(ClipboardData(text: adjust));
                     },
                     icon: const Icon(Icons.copy_rounded)),
                 IconButton(

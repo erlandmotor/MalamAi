@@ -31,7 +31,8 @@ class PagePurchase extends StatelessWidget {
                     const Spacer(),
                     Switch(
                       value: uiNoti.isUseSystemOption,
-                      onChanged: (bool value) => uiNoti.setSystemOption(value),
+                      onChanged: (bool value) =>
+                          uiNoti.isUseSystemOption = value,
                     ),
                   ],
                 ),
@@ -54,7 +55,7 @@ class PagePurchase extends StatelessWidget {
                           // uiNoti.isUseSystemOption
                           // ? null
                           // :
-                          (bool value) => uiNoti.setLightMode(!value),
+                          (bool value) => uiNoti.isLightMode = !value,
                     ),
                   ],
                 ),
@@ -76,7 +77,8 @@ class PagePurchase extends StatelessWidget {
                             // uiNoti.isUseSystemOption
                             // ? null
                             // :
-                            (double value) => uiNoti.setTextScaleFactor(value),
+                            (double value) =>
+                                uiNoti.customTextScaleFactor = value,
                         value: uiNoti.customTextScaleFactor),
                   ],
                 ),

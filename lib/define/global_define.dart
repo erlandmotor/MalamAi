@@ -36,3 +36,5 @@ const storeKeySubscription = 'subscription1';
 // Revcat Android
 const googleApiKey = 'goog_VJqDaQSHfvEEFizPnFKTzqqrMOd';
 const entitlementID = 'week';
+
+const uiSettingDB = 'ui_setting';

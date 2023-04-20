@@ -4,6 +4,7 @@ import 'dart:io';
 // import 'package:chat_playground/logics/dash_counter.dart';
 // import 'package:chat_playground/models/app_data.dart';
 //import 'package:chat_playground/models/purchases_notifier.dart';
+import 'package:chat_playground/define/ui_setting.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 //import 'package:chat_playground/models/iap_repo.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
@@ -16,6 +17,7 @@ import 'package:chat_playground/page/page_setting.dart';
 import 'package:chat_playground/page/page_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 //import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 //import 'package:purchases_flutter/purchases_flutter.dart';
@@ -36,10 +38,14 @@ import 'define/rc_store_config.dart';
 //   }
 // }
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
 
+  await Hive.initFlutter(); // Directory Initialize
+  Hive.registerAdapter(UIOptionAdapter());
+
+  await Hive.openBox<UIOption>(uiSettingDB); //Open Box
   // if (Platform.isIOS || Platform.isMacOS) {
   //   RCStoreConfig(
   //     store: Store.appleStore,
@@ -58,8 +64,7 @@ void main() {
 
   runApp(MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (_) => UIChangeNotifier(isLightMode: true)),
+        ChangeNotifierProvider(create: (_) => UIChangeNotifier()),
         ChangeNotifierProvider<FirebaseNotifier>(
           create: (context) =>
               //FirebaseNotifier(context.read<RCPurchasesNotifier>()),

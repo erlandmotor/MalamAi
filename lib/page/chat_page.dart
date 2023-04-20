@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:chat_playground/api/chat_api.dart';
-import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/chat_message.dart';
 import 'package:chat_playground/widgets/message_bubble.dart';
 import 'package:chat_playground/widgets/message_composer.dart';
@@ -42,20 +41,6 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Expanded(
-            // child: ListView(
-            //   //reverse: true,
-            //   controller: _controller,
-            //   children: getChatBubbles(),
-            //   //[
-            //   // ..._messages.map(
-            //   //   (msg) => MessageBubble(
-            //   //     content: msg.content,
-            //   //     isUserMessage: msg.isUserMessage,
-            //   //   ),
-            //   // ),
-            //   //],
-            // ),
-
             child: ListView.builder(
               //reverse: true,
               controller: _controller,
@@ -100,10 +85,6 @@ class _ChatPageState extends State<ChatPage> {
         _awaitingResponse = false;
       });
     }
-
-    // Timer(const Duration(milliseconds: 200), () {
-    //   _controller.jumpTo(_controller.position.maxScrollExtent);
-    // });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.jumpTo(_controller.position.maxScrollExtent);
