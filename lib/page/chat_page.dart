@@ -27,14 +27,11 @@ class _ChatPageState extends State<ChatPage> {
   ];
   var _awaitingResponse = false;
   final ScrollController _controller = ScrollController();
+  List<Widget> bubbleWidgets = [];
 
   @override
   void initState() {
     makeBubbleWidget();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _controller.jumpTo(_controller.position.maxScrollExtent);
-    // });
-
     super.initState();
   }
 
@@ -104,8 +101,11 @@ class _ChatPageState extends State<ChatPage> {
       });
     }
 
-    Timer(const Duration(milliseconds: 200), () {
-      mgLog("잠시 대기");
+    // Timer(const Duration(milliseconds: 200), () {
+    //   _controller.jumpTo(_controller.position.maxScrollExtent);
+    // });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.jumpTo(_controller.position.maxScrollExtent);
     });
   }
@@ -137,28 +137,5 @@ class _ChatPageState extends State<ChatPage> {
       }
     }
     */
-  }
-
-  List<Widget> bubbleWidgets = [];
-  List<Widget> getChatBubbles() {
-    //List<Widget> widgets = [];
-
-    // for (int i = 0; i < _messages.length; i++) {
-    //   bubbleWidgets.add(MessageBubble(
-    //     content: _messages[i].content,
-    //     isUserMessage: _messages[i].isUserMessage,
-    //   ));
-
-    //   if (i != 0 && i % 6 == 0) {
-    //     bubbleWidgets.add(const MgAdWidget());
-    //   }
-    // }
-
-    // setState(() {
-    //   _scrollDown();
-    // });
-
-    //return widgets.reversed.toList();
-    return bubbleWidgets;
   }
 }
