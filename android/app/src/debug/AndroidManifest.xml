@@ -3,7 +3,7 @@
    <application
         android:label="AI챗봇"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -35,7 +35,10 @@
            android:value="ca-app-pub-1457387674173388~6438378620"/>  <!--metalgeni21 -->
            <!--android:value="ca-app-pub-3445302802549723~6146026743"/>  motorway--> 
 
+           
+
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

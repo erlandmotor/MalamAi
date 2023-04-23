@@ -22,6 +22,7 @@ class FirebaseNotifier extends ChangeNotifier {
   bool isFreeTrial = false;
 
   late CachedNetworkImage photoImage;
+  late CachedNetworkImage photoImageChat;
 
   //FirebaseNotifier(this.rcPurchaseNotifier) {
   FirebaseNotifier() {
@@ -71,6 +72,8 @@ class FirebaseNotifier extends ChangeNotifier {
 
       if (loggedIn) {
         photoImage = CachedNetworkImage(imageUrl: user!.photoURL!);
+        photoImageChat = CachedNetworkImage(
+            imageUrl: user!.photoURL!, width: 30, height: 30);
         await compareTrial();
         // ctime = user?.metadata.creationTime;
         // lasttime = user?.metadata.lastSignInTime;

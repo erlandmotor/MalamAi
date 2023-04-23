@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chat_playground/api/chat_api.dart';
+import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/models/chat_message.dart';
 import 'package:chat_playground/widgets/message_bubble.dart';
 import 'package:chat_playground/widgets/message_composer.dart';
@@ -37,7 +38,8 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat Playground')),
+      //appBar: AppBar(title: const Text('Chat Playground')),
+      appBar: AppBar(title: const Text(titleNameMain)),
       body: Column(
         children: [
           Expanded(

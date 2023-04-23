@@ -37,12 +37,14 @@ class MGSideDrawer extends StatelessWidget {
 
                     //mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset(
-                        logoImage,
-                        width: 100,
-                        height: 100,
-                        //fit: BoxFit.cover,
-                      ),
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            logoImage,
+                            width: 100,
+                            height: 100,
+                            //fit: BoxFit.cover,
+                          )),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 100),
                         child: VerticalDivider(
@@ -59,7 +61,8 @@ class MGSideDrawer extends StatelessWidget {
                             ListTile(
                               dense: true,
                               title: Text(
-                                'Chat Playground',
+                                //'Chat Playground',
+                                titleNameMain,
                                 textAlign: TextAlign.left,
                                 textScaleFactor: 1.0,
                                 style: TextStyle(

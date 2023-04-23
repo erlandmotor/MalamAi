@@ -1,3 +1,5 @@
+import 'package:chat_playground/define/global_define.dart';
+import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +21,7 @@ class MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final uiNoti = context.watch<UIChangeNotifier>();
+    final firebaseNotifier = context.read<FirebaseNotifier>();
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -34,6 +37,19 @@ class MessageBubble extends StatelessWidget {
           children: [
             Row(
               children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: isUserMessage
+                        ? firebaseNotifier.photoImageChat
+                        : Image.asset(
+                            logoImage,
+                            width: 30,
+                            height: 30,
+                            //fit: BoxFit.cover,
+                          )),
+                const SizedBox(
+                  width: 10,
+                ),
                 Text(
                   isUserMessage ? '나의 말' : 'AI 답변',
                   style: const TextStyle(fontWeight: FontWeight.bold),
