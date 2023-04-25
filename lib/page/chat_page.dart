@@ -22,7 +22,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final _messages = <ChatMessage>[
+  List<ChatMessage> _messages = <ChatMessage>[
     ChatMessage('안녕하세요?', false),
   ];
   var _awaitingResponse = false;
@@ -38,8 +38,33 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(title: const Text('Chat Playground')),
-      appBar: AppBar(title: const Text(titleNameMain)),
+      appBar: AppBar(
+          title: const Text(titleNameMain, textScaleFactor: 0.7),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.delete),
+              //tooltip: 'Hi!',
+              onPressed: () {
+                openDialog(context);
+                // setState(() {
+                //   _messages.clear();
+                //   _messages = <ChatMessage>[
+                //     ChatMessage('안녕하세요?', false),
+                //   ];
+                //   makeBubbleWidget();
+                // });
+              },
+            ),
+            IconButton(
+              //icon: const Icon(Icons.assistant_sharp),
+              icon: const Icon(Icons.help),
+
+              //tooltip: 'Hi!',
+              onPressed: () {
+                openDialog(context);
+              },
+            ),
+          ]),
       body: Column(
         children: [
           Expanded(
@@ -120,5 +145,34 @@ class _ChatPageState extends State<ChatPage> {
       }
     }
     */
+  }
+
+  void openDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('대화내용 삭제'),
+        content: const Text('모두 삭제 하시겠습니까?'),
+        actions: <Widget>[
+          TextButton(
+              child: const Text('삭제'),
+              onPressed: () {
+                Navigator.of(context).pop();
+
+                setState(() {
+                  _messages.clear();
+                  _messages = <ChatMessage>[
+                    ChatMessage('안녕하세요?', false),
+                  ];
+                  makeBubbleWidget();
+                });
+              }),
+          FilledButton(
+            child: const Text('취소'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
   }
 }

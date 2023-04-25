@@ -1,28 +1,42 @@
 import 'package:chat_playground/define/global_define.dart';
+import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MGSideDrawer extends StatelessWidget {
   const MGSideDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var uiNoti = context.watch<UIChangeNotifier>();
     return Drawer(
+      backgroundColor: uiNoti.materialThemeData.colorScheme.secondaryContainer,
+      shape: const RoundedRectangleBorder(
+          // borderRadius: BorderRadius.only(
+          //   topRight: Radius.circular(40),
+          //   bottomRight: Radius.circular(40),
+          //   topLeft: Radius.circular(40),
+          //   bottomLeft: Radius.circular(40),
+          // ),
+          ),
       elevation: 8,
       child: Column(
         //crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
-              //color: colorScheme.secondary,
-              // image: DecorationImage(
-              //     fit: BoxFit.cover,
-              //     opacity: 0.3,
-              //     image: AssetImage('assets/images/lake.jpg')),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
+            decoration: BoxDecoration(
+              //color: uiNoti.materialThemeData.colorScheme.secondary,
+              color: uiNoti.materialThemeData.colorScheme.secondary,
+              image: const DecorationImage(
+                  fit: BoxFit.cover,
+                  opacity: 1.0,
+                  image: AssetImage(wallpaperImage)),
+              // borderRadius: const BorderRadius.only(
+              //   topRight: Radius.circular(16),
+              //   // bottomLeft: Radius.circular(10),
+              //   // bottomRight: Radius.circular(10),
+              // ),
             ),
             //),
             child: Row(
@@ -61,30 +75,33 @@ class MGSideDrawer extends StatelessWidget {
                             ListTile(
                               dense: true,
                               title: Text(
-                                //'Chat Playground',
                                 titleNameMain,
                                 textAlign: TextAlign.left,
                                 textScaleFactor: 1.0,
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                  //fontFamily: 'SpoqaHanSansNeo',
-                                  //color: colorScheme.onSecondary,
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    // color: uiNoti.materialThemeData.colorScheme
+                                    //      .onSecondary,
+
+                                    //color: Color.fromARGB(255, 29, 1, 80),
+                                    color: Colors.white),
                               ),
                             ),
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                'Ver $ver',
-                                textAlign: TextAlign.left,
-                                textScaleFactor: 1.0,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                            ),
+                            // ListTile(
+                            //   dense: true,
+                            //   title: Text(
+                            //     'Ver $ver',
+                            //     textAlign: TextAlign.left,
+                            //     textScaleFactor: 1.0,
+                            //     style: TextStyle(
+                            //       fontSize: 10,
+                            //       letterSpacing: 0.5,
+                            //       color: uiNoti.materialThemeData.colorScheme
+                            //           .onSecondary,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -96,14 +113,15 @@ class MGSideDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text(
+            title: Text(
               '설정',
               textScaleFactor: 1.0,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 22,
+                fontSize: 15,
                 //fontFamily: 'SpoqaHanSansNeo',
-                //color: colorScheme.onSecondary,
+                color:
+                    uiNoti.materialThemeData.colorScheme.onSecondaryContainer,
               ),
             ),
             onTap: () {
@@ -112,6 +130,33 @@ class MGSideDrawer extends StatelessWidget {
               Navigator.pushNamed(context, routeNameOption);
             },
           ),
+          const Spacer(),
+          Align(
+              //alignment: FractionalOffset.bottomCenter,
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: const <Widget>[
+                  //Divider(),
+                  ListTile(
+                      // tileColor: uiNoti.materialThemeData.colorScheme.secondary,
+                      // textColor:
+                      //     uiNoti.materialThemeData.colorScheme.onSecondary,
+                      // iconColor:
+                      //     uiNoti.materialThemeData.colorScheme.onSecondary,
+                      leading: Icon(Icons.info),
+                      title: Text(
+                        'Ver $ver',
+                        textAlign: TextAlign.right,
+                        textScaleFactor: 1.0,
+                        style: TextStyle(
+                          fontSize: 12,
+                          //letterSpacing: 1.0,
+                          // color: uiNoti.materialThemeData.colorScheme
+                          //     .onSecondaryContainer,
+                        ),
+                      )),
+                ],
+              )),
         ],
       ),
     );

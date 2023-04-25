@@ -10,7 +10,7 @@ enum StoreState {
   notAvailable,
 }
 
-const titleNameMain = '✨ ChatBot-Playground';
+const titleNameMain = '✨ AI ChatBot-Playground';
 const ver = "1.03.1";
 
 const trialDay = 3;
@@ -22,6 +22,7 @@ const routeNamePurchase = '/purchase';
 
 //const logoImage = 'assets/icons/robot5.png';
 const logoImage = 'assets/icons/icon.jfif';
+const wallpaperImage = 'assets/image/drawer_wall.jfif';
 
 //const cloudRegion = 'europe-west1';
 const cloudRegion = 'asia-northeast3';

@@ -12,6 +12,9 @@ class UIChangeNotifier with ChangeNotifier {
   // bool isLightMode = false;
   // bool isCupertinoUI = false;
   // double customTextScaleFactor = 1.0;
+
+  static const String uiSetBoxName = 'myOption';
+
   UIOption _uiOption = UIOption(true, false, false, 1.0);
 
   late final Box<UIOption> uiSettingBox;
@@ -63,7 +66,7 @@ class UIChangeNotifier with ChangeNotifier {
 
   loadUISetting() {
     uiSettingBox = Hive.box(uiSettingDB);
-    UIOption? option = uiSettingBox.get('myOption');
+    UIOption? option = uiSettingBox.get(uiSetBoxName);
     if (option == null) {
       //uiOption = UIOption(true, false, false, 1.0);
       // setDefault().whenComplete(() {
@@ -76,7 +79,7 @@ class UIChangeNotifier with ChangeNotifier {
 
   Future<void> saveOption() async {
     //UIOption defaultOption = UIOption(true, false, false, 1.0);
-    await uiSettingBox.put('myOption', _uiOption);
+    await uiSettingBox.put(uiSetBoxName, _uiOption);
     mgLog("uioption saved");
 
     //UIOption? option = uiSettingBox.get('myOption');

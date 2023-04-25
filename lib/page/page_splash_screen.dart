@@ -133,12 +133,15 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> showBuyPage() async {
+    var uiNoti = context.read<UIChangeNotifier>();
+
     await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,
       isDismissible: false,
       enableDrag: false,
       useSafeArea: true,
+      backgroundColor: uiNoti.materialThemeData.colorScheme.tertiaryContainer,
 
       //backgroundColor: kColorBackground,
       shape: const RoundedRectangleBorder(
