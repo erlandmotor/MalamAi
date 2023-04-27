@@ -15,53 +15,54 @@ class UIChangeNotifier with ChangeNotifier {
 
   static const String uiSetBoxName = 'myOption';
 
-  UIOption _uiOption = UIOption(true, false, false, 1.0);
+  UIOption uiOption = UIOption(true, false, false, 1.0);
 
   late final Box<UIOption> uiSettingBox;
 
   late ThemeData materialThemeData;
 
-  bool get isUseSystemOption => _uiOption.isUseSystemOption;
-  bool get isLightMode => _uiOption.isLightMode;
-  bool get isCupertinoUI => _uiOption.isCupertinoUI;
-  double get customTextScaleFactor => _uiOption.customTextScaleFactor;
+  bool get isUseSystemOption => uiOption.isUseSystemOption;
+  bool get isLightMode => uiOption.isLightMode;
+  bool get isCupertinoUI => uiOption.isCupertinoUI;
+  double get customTextScaleFactor => uiOption.customTextScaleFactor;
 
   bool isSetChange = false;
 
   set isUseSystemOption(bool avalue) {
-    _uiOption.isUseSystemOption = avalue;
+    uiOption.isUseSystemOption = avalue;
     isSetChange = true;
     notifyListeners();
     //SaveOption();
   }
 
   set isLightMode(bool avalue) {
-    _uiOption.isLightMode = avalue;
-    _uiOption.isUseSystemOption = false;
+    uiOption.isLightMode = avalue;
+    uiOption.isUseSystemOption = false;
     isSetChange = true;
     notifyListeners();
     //SaveOption();
   }
 
   set isCupertinoUI(bool avalue) {
-    _uiOption.isCupertinoUI = avalue;
-    _uiOption.isUseSystemOption = false;
+    uiOption.isCupertinoUI = avalue;
+    uiOption.isUseSystemOption = false;
     isSetChange = true;
     notifyListeners();
     //SaveOption();
   }
 
   set customTextScaleFactor(double avalue) {
-    _uiOption.customTextScaleFactor = avalue;
-    _uiOption.isUseSystemOption = false;
+    uiOption.customTextScaleFactor = avalue;
+    uiOption.isUseSystemOption = false;
     isSetChange = true;
     notifyListeners();
     //SaveOption();
   }
 
   UIChangeNotifier() {
+    mgLog('UIChangeNotifier notifier init.......');
     loadUISetting();
-    materialThemeData = updateThemes(_uiOption.isLightMode);
+    materialThemeData = updateThemes(uiOption.isLightMode);
   }
 
   loadUISetting() {
@@ -73,13 +74,13 @@ class UIChangeNotifier with ChangeNotifier {
       //   mgLog('set degault');
       // });
     } else {
-      _uiOption = option;
+      uiOption = option;
     }
   }
 
   Future<void> saveOption() async {
     //UIOption defaultOption = UIOption(true, false, false, 1.0);
-    await uiSettingBox.put(uiSetBoxName, _uiOption);
+    await uiSettingBox.put(uiSetBoxName, uiOption);
     mgLog("uioption saved");
 
     //UIOption? option = uiSettingBox.get('myOption');
@@ -91,24 +92,6 @@ class UIChangeNotifier with ChangeNotifier {
         useMaterial3: true,
         brightness: useLightMode ? Brightness.light : Brightness.dark);
   }
-
-  // setLightMode(bool lightMode) {
-  //   uiOption.isLightMode = lightMode;
-  //   uiOption.isUseSystemOption = false;
-  //   //materialThemeData = updateThemes(isLightMode);
-  //   notifyListeners();
-  // }
-
-  // setTextScaleFactor(double argCustomTextScaleFactor) {
-  //   customTextScaleFactor = argCustomTextScaleFactor;
-  //   isUseSystemOption = false;
-  //   notifyListeners();
-  // }
-
-  // setSystemOption(bool systemOption) {
-  //   isUseSystemOption() = systemOption;
-  //   notifyListeners();
-  // }
 
   enumUIOption(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -137,9 +120,9 @@ class UIChangeNotifier with ChangeNotifier {
 
       //curTextScaleFactor = textScaleFactor;
 
-      _uiOption.isLightMode = isCurLightMode;
-      _uiOption.isCupertinoUI = isCurCupertino;
-      _uiOption.customTextScaleFactor = textScaleFactor;
+      uiOption.isLightMode = isCurLightMode;
+      uiOption.isCupertinoUI = isCurCupertino;
+      uiOption.customTextScaleFactor = textScaleFactor;
     } else {
       isCurLightMode = isLightMode;
       isCurCupertino = isCupertinoUI;

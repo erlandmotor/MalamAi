@@ -40,3 +40,5 @@ const googleApiKey = 'goog_VJqDaQSHfvEEFizPnFKTzqqrMOd';
 const entitlementID = 'week';
 
 const uiSettingDB = 'ui_setting';
+const otherDB = 'other_set';
+const chatGroupDB = 'chat_group';

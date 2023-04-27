@@ -45,6 +45,7 @@ class RCPurchasesNotifier extends ChangeNotifier {
   Map<String, ProductUIDesc> productDescs = <String, ProductUIDesc>{};
 
   RCPurchasesNotifier(this.firebaseNotifier) {
+    mgLog('RCPurchasesNotifier notifier init.......');
     loadPurchases();
   }
 

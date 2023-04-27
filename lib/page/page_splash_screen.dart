@@ -1,5 +1,7 @@
 //import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
+import 'package:chat_playground/define/hive_chat_massage.dart';
+import 'package:chat_playground/define/ui_setting.dart';
 //import 'package:chat_playground/define/mg_handy.dart';
 //import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
@@ -8,6 +10,8 @@ import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:chat_playground/widgets/paywell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 //import 'package:purchases_flutter/models/offering_wrapper.dart';
 //import 'package:purchases_flutter/models/offerings_wrapper.dart';
@@ -24,46 +28,35 @@ class SplashScreenState extends State<SplashScreen> {
   // void initState() {
   //   super.initState();
 
-  //   //Future.microtask(() => _init());
+  //   Future.microtask(() => _init());
   // }
 
   // Future<void> _init() async {
   //   //오래걸리는 작업 수행
   //   //WILL
-  //   await Future<void>.delayed(const Duration(seconds: 5));
+  //   //await Future<void>.delayed(const Duration(seconds: 5));
   //   //Navigator.pushReplacementNamed(context, routeChatPage);
+
+  //   MobileAds.instance.initialize();
+
+  //   await Hive.initFlutter(); // Directory Initialize
+  //   Hive.registerAdapter(UIOptionAdapter());
+  //   Hive.registerAdapter(HiveChatGroupAdapter());
+
+  //   await Hive.openBox(otherDB);
+  //   await Hive.openBox<HiveChatGroup>(chatGroupDB);
+  //   await Hive.openBox<UIOption>(uiSettingDB);
   // }
 
   @override
   Widget build(BuildContext context) {
-    final uiNoti = context.watch<UIChangeNotifier>();
+    final uiNoti = context.read<UIChangeNotifier>();
     return Scaffold(
-      //backgroundColor: Colors.blue,
       backgroundColor: uiNoti.materialThemeData.colorScheme.primaryContainer,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: buildCenterWidgets(context),
-          //<Widget>[
-          // Image.asset(
-          //   logoImage,
-          //   width: 120,
-          //   height: 120,
-          // ),
-          // const SizedBox(height: 80),
-          // const Text('정보 확인중...',
-          //     style: TextStyle(
-          //       fontSize: 20,
-          //       fontWeight: FontWeight.w700,
-          //       color: Colors.white,
-          //     )),
-          //const SizedBox(height: 30),
-          // const CircularProgressIndicator(
-          //     backgroundColor: Colors.white, strokeWidth: 3),
-          // const SizedBox(height: 30),
-          // loginWidget(),
-
-          //],
         ),
       ),
     );
@@ -75,11 +68,11 @@ class SplashScreenState extends State<SplashScreen> {
     var firebaseNotifier = context.watch<FirebaseNotifier>();
     var rcPurchaseNotifier = context.watch<RCPurchasesNotifier>();
 
-    if (firebaseNotifier.loggedIn) {
-      // Future.microtask(
-      //     () => Navigator.pushReplacementNamed(context, routeChatPage));
-      //return Container();
-    }
+    // if (firebaseNotifier.loggedIn) {
+    //   // Future.microtask(
+    //   //     () => Navigator.pushReplacementNamed(context, routeChatPage));
+    //   //return Container();
+    // }
 
     if (firebaseNotifier.loggedIn == false) {
       widgets.add(Image.asset(
@@ -93,13 +86,11 @@ class SplashScreenState extends State<SplashScreen> {
         uiNoti.isLightMode ? Buttons.Google : Buttons.GoogleDark,
         onPressed: () {
           rcPurchaseNotifier.logIn();
-          //firebaseNotifier.login();
         },
       ));
     } else {
       String url = firebaseNotifier.user?.photoURL ?? "";
       if (url != "") {
-        //widgets.add(CachedNetworkImage(imageUrl: url));
         widgets.add(ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: firebaseNotifier.photoImage));
@@ -107,23 +98,16 @@ class SplashScreenState extends State<SplashScreen> {
       }
       widgets.add(ElevatedButton(
           onPressed: () async {
-            // Future.microtask(
-            //     () => Navigator.pushReplacementNamed(context, routeChatPage));
-            //Navigator.pushReplacementNamed(context, routeNamePurchase);
-
             final isActive = rcPurchaseNotifier.entitlementIsActive;
             final navigator = Navigator.of(context);
-
             if (!isActive) {
               await showBuyPage();
             }
-
             navigator.pushReplacementNamed(routeChatPage);
           },
           child: const Text("시작", textScaleFactor: 1.0)));
       widgets.add(TextButton(
           onPressed: () {
-            //firebaseNotifier.logout();
             rcPurchaseNotifier.logOut();
           },
           child: const Text("SignOut", textScaleFactor: 1.0)));

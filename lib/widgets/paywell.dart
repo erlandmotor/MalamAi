@@ -23,7 +23,7 @@ class PaywallState extends State<Paywall> {
 
   @override
   Widget build(BuildContext context) {
-    uiNotifier = context.watch<UIChangeNotifier>();
+    uiNotifier = context.read<UIChangeNotifier>();
 
     return SingleChildScrollView(
       child: SafeArea(
@@ -42,7 +42,7 @@ class PaywallState extends State<Paywall> {
                       decoration: const BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Text(
+                      child: const Text(
                         '이용권 구매',
                         //maxLines: 1,
                         textAlign: TextAlign.center,

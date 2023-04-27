@@ -8,7 +8,7 @@ class MGSideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var uiNoti = context.watch<UIChangeNotifier>();
+    var uiNoti = context.read<UIChangeNotifier>();
     return Drawer(
       backgroundColor: uiNoti.materialThemeData.colorScheme.secondaryContainer,
       shape: const RoundedRectangleBorder(
@@ -26,7 +26,6 @@ class MGSideDrawer extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              //color: uiNoti.materialThemeData.colorScheme.secondary,
               color: uiNoti.materialThemeData.colorScheme.secondary,
               image: const DecorationImage(
                   fit: BoxFit.cover,
@@ -88,20 +87,6 @@ class MGSideDrawer extends StatelessWidget {
                                     color: Colors.white),
                               ),
                             ),
-                            // ListTile(
-                            //   dense: true,
-                            //   title: Text(
-                            //     'Ver $ver',
-                            //     textAlign: TextAlign.left,
-                            //     textScaleFactor: 1.0,
-                            //     style: TextStyle(
-                            //       fontSize: 10,
-                            //       letterSpacing: 0.5,
-                            //       color: uiNoti.materialThemeData.colorScheme
-                            //           .onSecondary,
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),

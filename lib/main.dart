@@ -4,7 +4,10 @@ import 'dart:io';
 // import 'package:chat_playground/logics/dash_counter.dart';
 // import 'package:chat_playground/models/app_data.dart';
 //import 'package:chat_playground/models/purchases_notifier.dart';
+import 'package:chat_playground/define/hive_chat_massage.dart';
 import 'package:chat_playground/define/ui_setting.dart';
+import 'package:chat_playground/models/app_data_notifier.dart';
+import 'package:chat_playground/models/chatgroup_notifier.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 //import 'package:chat_playground/models/iap_repo.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
@@ -40,12 +43,23 @@ import 'define/rc_store_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   MobileAds.instance.initialize();
 
   await Hive.initFlutter(); // Directory Initialize
-  Hive.registerAdapter(UIOptionAdapter());
 
-  await Hive.openBox<UIOption>(uiSettingDB); //Open Box
+  Hive.registerAdapter(UIOptionAdapter());
+  await Hive.openBox<UIOption>(uiSettingDB);
+
+  // MobileAds.instance.initialize();
+
+  // await Hive.initFlutter(); // Directory Initialize
+  // Hive.registerAdapter(UIOptionAdapter());
+  // Hive.registerAdapter(HiveChatGroupAdapter());
+
+  // await Hive.openBox(otherDB);
+  // await Hive.openBox<HiveChatGroup>(chatGroupDB);
+  // await Hive.openBox<UIOption>(uiSettingDB);
   // if (Platform.isIOS || Platform.isMacOS) {
   //   RCStoreConfig(
   //     store: Store.appleStore,
@@ -62,14 +76,25 @@ void main() async {
     mgLog(" Platform.isAndroid == false ,  purchase not init");
   }
 
+  // mgLog : AppDataNotifier notifier init.......
+  // mgLog : UIChangeNotifier notifier init.......
+  // mgLog : firebase notifier init.......
+  // mgLog : RCPurchasesNotifier notifier init.......
+
   runApp(MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AppDataNotifier(), lazy: false),
         ChangeNotifierProvider(create: (_) => UIChangeNotifier()),
-        ChangeNotifierProvider<FirebaseNotifier>(
-          create: (context) =>
-              //FirebaseNotifier(context.read<RCPurchasesNotifier>()),
-              FirebaseNotifier(),
-        ),
+        // ChangeNotifierProxyProvider<AppDataNotifier, UIChangeNotifier>(
+        //   create: (_) => UIChangeNotifier(),
+        //   update: (context, appData, uidata) {
+        //     if (uidata == null) throw ArgumentError.notNull('uidata');
+        //     //uidata.uiOption =
+        //     return uidata;
+        //   },
+        //   lazy: false,
+        // ),
+        ChangeNotifierProvider(create: (_) => FirebaseNotifier()),
         // ChangeNotifierProvider<DashCounter>(create: (_) => DashCounter()),
         // ChangeNotifierProvider<IAPRepo>(
         //   create: (context) => IAPRepo(context.read<FirebaseNotifier>()),
@@ -82,14 +107,14 @@ void main() async {
         //   ),
         //   lazy: false,
         // ),
-
         ChangeNotifierProvider<RCPurchasesNotifier>(
           create: (context) => RCPurchasesNotifier(
-            //context.read<DashCounter>(),
             context.read<FirebaseNotifier>(),
           ),
           lazy: false,
         ),
+
+        ChangeNotifierProvider(create: (_) => ChatGroupNotifier(), lazy: false),
       ],
       child: MaterialApp(
           title: 'Chat Playground root', home: ChatApp(chatApi: ChatApi()))));

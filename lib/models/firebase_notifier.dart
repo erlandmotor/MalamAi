@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
+import 'package:chat_playground/define/mg_handy.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +27,7 @@ class FirebaseNotifier extends ChangeNotifier {
 
   //FirebaseNotifier(this.rcPurchaseNotifier) {
   FirebaseNotifier() {
+    mgLog('firebase notifier init.......');
     load();
   }
 
