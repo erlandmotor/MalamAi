@@ -8,6 +8,7 @@ import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:chat_playground/widgets/paywell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -85,7 +86,12 @@ class SplashScreenState extends State<SplashScreen> {
       widgets.add(SignInButton(
         uiNoti.isLightMode ? Buttons.Google : Buttons.GoogleDark,
         onPressed: () {
-          rcPurchaseNotifier.logIn();
+          if (kIsWeb == false) {
+            rcPurchaseNotifier.logIn();
+          } else {
+            final navigator = Navigator.of(context);
+            navigator.pushReplacementNamed(routeChatPage);
+          }
         },
       ));
     } else {

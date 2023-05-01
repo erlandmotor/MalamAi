@@ -7,6 +7,7 @@ import 'package:chat_playground/widgets/message_bubble.dart';
 import 'package:chat_playground/widgets/message_composer.dart';
 import 'package:chat_playground/page/side_drawer.dart';
 import 'package:chat_playground/widgets/mg_ad_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
@@ -126,8 +127,10 @@ class _ChatPageState extends State<ChatPage> {
         isUserMessage: _messages[i].isUserMessage,
       ));
 
-      if (i != 0 && i % 6 == 0) {
-        bubbleWidgets.add(const MgAdWidget());
+      if (kIsWeb == false) {
+        if (i != 0 && i % 6 == 0) {
+          bubbleWidgets.add(const MgAdWidget());
+        }
       }
     }
 

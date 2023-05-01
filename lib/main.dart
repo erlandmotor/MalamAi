@@ -4,7 +4,7 @@ import 'dart:io';
 // import 'package:chat_playground/logics/dash_counter.dart';
 // import 'package:chat_playground/models/app_data.dart';
 //import 'package:chat_playground/models/purchases_notifier.dart';
-import 'package:chat_playground/define/hive_chat_massage.dart';
+//import 'package:chat_playground/define/hive_chat_massage.dart';
 import 'package:chat_playground/define/ui_setting.dart';
 import 'package:chat_playground/models/app_data_notifier.dart';
 import 'package:chat_playground/models/chatgroup_notifier.dart';
@@ -18,6 +18,7 @@ import 'package:chat_playground/models/ui_change_notifier.dart';
 //import 'package:chat_playground/page/page_purchase.dart';
 import 'package:chat_playground/page/page_setting.dart';
 import 'package:chat_playground/page/page_splash_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -44,37 +45,22 @@ import 'define/rc_store_config.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  MobileAds.instance.initialize();
+  if (kIsWeb == false) {
+    MobileAds.instance.initialize();
+    if (Platform.isAndroid) {
+      RCStoreConfig(
+        store: RCStore.googlePlay,
+        apiKey: googleApiKey,
+      );
+    } else {
+      mgLog(" Platform.isAndroid == false ,  purchase not init");
+    }
+  }
 
   await Hive.initFlutter(); // Directory Initialize
 
   Hive.registerAdapter(UIOptionAdapter());
   await Hive.openBox<UIOption>(uiSettingDB);
-
-  // MobileAds.instance.initialize();
-
-  // await Hive.initFlutter(); // Directory Initialize
-  // Hive.registerAdapter(UIOptionAdapter());
-  // Hive.registerAdapter(HiveChatGroupAdapter());
-
-  // await Hive.openBox(otherDB);
-  // await Hive.openBox<HiveChatGroup>(chatGroupDB);
-  // await Hive.openBox<UIOption>(uiSettingDB);
-  // if (Platform.isIOS || Platform.isMacOS) {
-  //   RCStoreConfig(
-  //     store: Store.appleStore,
-  //     apiKey: appleApiKey,
-  //   );
-  // } else
-
-  if (Platform.isAndroid) {
-    RCStoreConfig(
-      store: RCStore.googlePlay,
-      apiKey: googleApiKey,
-    );
-  } else {
-    mgLog(" Platform.isAndroid == false ,  purchase not init");
-  }
 
   // mgLog : AppDataNotifier notifier init.......
   // mgLog : UIChangeNotifier notifier init.......
@@ -117,7 +103,9 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ChatGroupNotifier(), lazy: false),
       ],
       child: MaterialApp(
-          title: 'Chat Playground root', home: ChatApp(chatApi: ChatApi()))));
+          debugShowCheckedModeBanner: false,
+          title: 'Chat Playground root',
+          home: ChatApp(chatApi: ChatApi()))));
 }
 
 class ChatApp extends StatefulWidget {
@@ -137,6 +125,7 @@ class _ChatAppState extends State<ChatApp> {
     uiNoti.enumUIOption(context);
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Chat Playground',
       theme: uiNoti.materialThemeData,
       builder: (BuildContext context, Widget? childArg) {

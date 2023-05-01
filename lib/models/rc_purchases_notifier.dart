@@ -46,7 +46,10 @@ class RCPurchasesNotifier extends ChangeNotifier {
 
   RCPurchasesNotifier(this.firebaseNotifier) {
     mgLog('RCPurchasesNotifier notifier init.......');
-    loadPurchases();
+
+    if (kIsWeb == false) {
+      loadPurchases();
+    }
   }
 
   Future<void> loadPurchases() async {

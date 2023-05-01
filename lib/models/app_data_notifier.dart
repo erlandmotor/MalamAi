@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chat_playground/define/global_define.dart';
+//import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/define/hive_chat_massage.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 // import 'package:chat_playground/define/rc_store_config.dart';
@@ -16,7 +16,9 @@ class AppDataNotifier with ChangeNotifier {
   static const chatGroupDB = 'chat_group';
 
   int curIndex = 0;
-  List<String> chatGroups = [];
+  int lastTabIndex = 0;
+  late List<String> chatGroups;
+  late List<Box<HiveChatGroup>> chatGroupBoxs;
 
   AppDataNotifier() {
     mgLog('AppDataNotifier notifier init.......');
@@ -32,27 +34,61 @@ class AppDataNotifier with ChangeNotifier {
     // await Hive.openBox<UIOption>(uiSettingDB);
 
     Hive.registerAdapter(HiveChatGroupAdapter());
+    Hive.registerAdapter(MessageItemAdapter());
     await Hive.openBox(otherDB);
-    await Hive.openBox<HiveChatGroup>(chatGroupDB);
 
     // uiSettingBox = Hive.box(uiSettingDB);
     // UIOption? option = uiSettingBox.get(uiSetBoxName);
 
-    Box uiSettingBox = Hive.box(otherDB);
+    var otherDBBox = Hive.box(otherDB);
+    //chatGroups = uiSettingBox.get(uiSettingDB) ?? ['DEFAULT',];
 
-    List<String> chatGroups = uiSettingBox.get('chatGroups') ?? [];
+    var chatTabs = otherDBBox.get('chatTabs');
+    if (chatTabs == null) {
+      chatGroups = [
+        'DEF_TAB',
+      ];
+      otherDBBox.put('chatTabs', chatGroups);
+    } else {
+      chatGroups = chatTabs;
+    }
 
-    chatGroups.forEach((element) {
-      Box<HiveChatGroup> t = Hive.box<HiveChatGroup>(element);
+    var lastTabs = otherDBBox.get('lastTab');
+    if (lastTabs == null) {
+      lastTabIndex = 0;
+      otherDBBox.put('lastTab', lastTabIndex);
+    } else {
+      lastTabIndex = lastTabs;
+    }
+
+    await Hive.openBox<HiveChatGroup>(chatGroupDB);
+    chatGroupBoxs = [];
+    chatGroups.forEach((element) async {
+      // await Hive.openBox<HiveChatGroup>(element);
+      // var groupBox = Hive.box<HiveChatGroup>(element);
+      // chatGroupBoxs.add(groupBox);
     });
+
+    await openBox(index: 0);
   }
 
   Future<void> openBox({required int index}) async {
     //assert(curIndex != null);
     //chatGroups[index]
     //curIndex
-    Box myBox = await Hive.openBox(chatGroups[index]);
-    curIndex = index;
-    notifyListeners();
+    late Box myBox;
+
+    // bool exist = Hive.isBoxOpen(chatGroups[index]);
+    // var exist2 = await Hive.boxExists(chatGroups[index]);
+
+    if (Hive.isBoxOpen(chatGroups[index]) == false) {
+      await Hive.openBox(chatGroups[index]);
+    }
+    myBox = Hive.box(chatGroups[index]);
+
+    // myBox = Hive.box(chatGroups[index]);
+    // myBox ??= await Hive.openBox(chatGroups[index]);
+
+    //notifyListeners();
   }
 }
