@@ -1,30 +1,56 @@
-import 'package:chat_playground/define/global_define.dart';
+//import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/define/hive_chat_massage.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ChatGroupNotifier with ChangeNotifier {
-  //late final Box<HiveChatGroup> uiSettingBox;
+  static const otherDB = 'other_set';
+  static const chatGroupDB = 'chat_group';
 
-  late final Box<HiveChatGroup> uiSettingBox;
+  int curIndex = 0;
+  int lastTabIndex = 0;
+  late List<String> chatGroups;
 
   ChatGroupNotifier() {
     mgLog('ChatGroupNotifier notifier init.......');
-    loadUISetting();
+    appDataInit();
   }
 
-  loadUISetting() {
-    //uiSettingBox = Hive.box(chatGroupDB);
+  appDataInit() async {
+    Hive.registerAdapter(HiveChatGroupAdapter());
+    Hive.registerAdapter(MessageItemAdapter());
+    await Hive.openBox(otherDB);
+    var otherDBBox = Hive.box(otherDB);
 
-    // HiveChatGroup? option = uiSettingBox.get(uiSetBoxName);
-    // if (option == null) {
-    //   //uiOption = UIOption(true, false, false, 1.0);
-    //   // setDefault().whenComplete(() {
-    //   //   mgLog('set degault');
-    //   // });
-    // } else {
-    //   //_uiOption = option;
-    // }
+    var chatTabs = otherDBBox.get('chatTabs');
+    if (chatTabs == null) {
+      chatGroups = [
+        'DEF_TAB',
+      ];
+      otherDBBox.put('chatTabs', chatGroups);
+    } else {
+      chatGroups = chatTabs;
+    }
+
+    var lastTabs = otherDBBox.get('lastTab');
+    if (lastTabs == null) {
+      lastTabIndex = 0;
+      otherDBBox.put('lastTab', lastTabIndex);
+    } else {
+      lastTabIndex = lastTabs;
+    }
+
+    await Hive.openBox<HiveChatGroup>(chatGroupDB);
+
+    for (String element in chatGroups) {
+      await Hive.openBox<MessageItem>(element);
+    }
+  }
+
+  Box<MessageItem> openChatBox({required int index}) {
+    Box<MessageItem> myBox = Hive.box(chatGroups[index]);
+
+    return myBox;
   }
 }

@@ -6,7 +6,7 @@ import 'package:chat_playground/define/rc_store_config.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:purchases_flutter/purchases_flutter.dart';

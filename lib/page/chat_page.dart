@@ -2,13 +2,18 @@ import 'dart:async';
 
 import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/define/global_define.dart';
-import 'package:chat_playground/models/chat_message.dart';
+import 'package:chat_playground/define/hive_chat_massage.dart';
+import 'package:chat_playground/define/mg_handy.dart';
+
+import 'package:chat_playground/models/chatgroup_notifier.dart';
 import 'package:chat_playground/widgets/message_bubble.dart';
 import 'package:chat_playground/widgets/message_composer.dart';
 import 'package:chat_playground/page/side_drawer.dart';
 import 'package:chat_playground/widgets/mg_ad_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -23,21 +28,25 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  List<ChatMessage> _messages = <ChatMessage>[
-    ChatMessage('안녕하세요?', false),
-  ];
   var _awaitingResponse = false;
   final ScrollController _controller = ScrollController();
   List<Widget> bubbleWidgets = [];
 
+  static const int adWidgetTerm = 6;
+
+  late Box<MessageItem> chatBox;
+
   @override
   void initState() {
-    makeBubbleWidget();
+    //makeBubbleWidget();
+    chatBox = context.read<ChatGroupNotifier>().openChatBox(index: 0);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    //var chatGroupNotifier = context.read<ChatGroupNotifier>();
+
     return Scaffold(
       appBar: AppBar(
           title: const Text(titleNameMain, textScaleFactor: 0.7),
@@ -47,20 +56,11 @@ class _ChatPageState extends State<ChatPage> {
               //tooltip: 'Hi!',
               onPressed: () {
                 openDialog(context);
-                // setState(() {
-                //   _messages.clear();
-                //   _messages = <ChatMessage>[
-                //     ChatMessage('안녕하세요?', false),
-                //   ];
-                //   makeBubbleWidget();
-                // });
               },
             ),
             IconButton(
               //icon: const Icon(Icons.assistant_sharp),
               icon: const Icon(Icons.help),
-
-              //tooltip: 'Hi!',
               onPressed: () {
                 openDialog(context);
               },
@@ -69,15 +69,58 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              //reverse: true,
-              controller: _controller,
-              itemCount: bubbleWidgets.length,
-              itemBuilder: (context, index) {
-                return bubbleWidgets[index];
-              },
-            ),
+            child:
+                //  Consumer<ChatGroupNotifier>(
+                //    builder: (context, chatGroupNotifier, _) {
+                ValueListenableBuilder(
+                    valueListenable: chatBox.listenable(),
+                    builder: (context, Box<MessageItem> box, _) {
+                      if (box.values.isEmpty) {
+                        return const Center(
+                          child: Text("No contacts"),
+                        );
+                      }
+
+                      final int myItemCount =
+                          box.length + (box.length ~/ adWidgetTerm);
+
+                      return ListView.builder(
+                        controller: _controller,
+                        itemCount: myItemCount,
+                        itemBuilder: (context, index) {
+                          if (index > adWidgetTerm - 1 &&
+                              index % adWidgetTerm == 0) {
+                            mgLog('index - $index, ad');
+
+                            if (kIsWeb == false) {
+                              return const MgAdWidget();
+                            } else {
+                              return const Divider(height: 10);
+                            }
+                          } else {
+                            // final dataindex =
+                            //     index - (index / adWidgetTerm).toInt();
+
+                            final dataindex = index - index ~/ adWidgetTerm;
+
+                            MessageItem? data = box.get(dataindex);
+
+                            mgLog('index - $index, dataindex - $dataindex');
+
+                            return MessageBubble(
+                              // content: _messages[dataindex].content,
+                              // isUserMessage: _messages[dataindex].isUserMessage,
+
+                              content: data!.content,
+                              isUserMessage: data.isUserMessage,
+                            );
+                          }
+                        },
+                      );
+                    }),
           ),
+          //}),
+
           MessageComposer(
             onSubmitted: _onSubmitted,
             awaitingResponse: _awaitingResponse,
@@ -89,25 +132,28 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _onSubmitted(String message) async {
+    //box.
+    await chatBox.add(MessageItem(message, true));
+
     setState(() {
-      _messages.add(ChatMessage(message, true));
-      makeBubbleWidget();
-      //_scrollDown();
       _awaitingResponse = true;
     });
 
-    _controller.jumpTo(_controller.position.maxScrollExtent);
+    if (chatBox.length > 0) {
+      _controller.jumpTo(_controller.position.maxScrollExtent);
+    }
+
+    final List<MessageItem> msgs = chatBox.values.toList();
 
     try {
-      final response = await widget.chatApi.completeChat(_messages);
+      final response = await widget.chatApi.completeChat(msgs);
+      await chatBox.add(MessageItem(response, false));
       setState(() {
-        _messages.add(ChatMessage(response, false));
-        makeBubbleWidget();
         _awaitingResponse = false;
       });
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('An error occurred. Please try again.')),
+        const SnackBar(content: Text('에러가 발생했습니다. 다시 시도하세요.')),
       );
       setState(() {
         _awaitingResponse = false;
@@ -119,43 +165,12 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  makeBubbleWidget() {
-    bubbleWidgets.clear();
-    for (int i = 0; i < _messages.length; i++) {
-      bubbleWidgets.add(MessageBubble(
-        content: _messages[i].content,
-        isUserMessage: _messages[i].isUserMessage,
-      ));
-
-      if (kIsWeb == false) {
-        if (i != 0 && i % 6 == 0) {
-          bubbleWidgets.add(const MgAdWidget());
-        }
-      }
-    }
-
-    /*
-    final int length = bubbleWidgets.length;
-    final int init = (length + length / 6).toInt();
-    for (int i = init; i < _messages.length; i++) {
-      bubbleWidgets.add(MessageBubble(
-        content: _messages[i].content,
-        isUserMessage: _messages[i].isUserMessage,
-      ));
-
-      if (bubbleWidgets.isNotEmpty && bubbleWidgets.length % 6 == 0) {
-        bubbleWidgets.add(const MgAdWidget());
-      }
-    }
-    */
-  }
-
   void openDialog(BuildContext context) {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('대화내용 삭제'),
-        content: const Text('모두 삭제 하시겠습니까?'),
+        content: const Text('대화내용을 모두 삭제 하시겠습니까?'),
         actions: <Widget>[
           TextButton(
               child: const Text('삭제'),
@@ -163,11 +178,8 @@ class _ChatPageState extends State<ChatPage> {
                 Navigator.of(context).pop();
 
                 setState(() {
-                  _messages.clear();
-                  _messages = <ChatMessage>[
-                    ChatMessage('안녕하세요?', false),
-                  ];
-                  makeBubbleWidget();
+                  chatBox.clear();
+                  chatBox.add(MessageItem('안녕하세요?', false));
                 });
               }),
           FilledButton(

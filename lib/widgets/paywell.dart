@@ -1,4 +1,3 @@
-import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
