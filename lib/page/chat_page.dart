@@ -60,9 +60,9 @@ class _ChatPageState extends State<ChatPage> {
             ),
             IconButton(
               //icon: const Icon(Icons.assistant_sharp),
-              icon: const Icon(Icons.help),
+              icon: const Icon(Icons.add),
               onPressed: () {
-                openDialog(context);
+                Navigator.pushNamed(context, routeNameChatTab);
               },
             ),
           ]),

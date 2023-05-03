@@ -104,15 +104,30 @@ class MGSideDrawer extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
-                //fontFamily: 'SpoqaHanSansNeo',
                 color:
                     uiNoti.materialThemeData.colorScheme.onSecondaryContainer,
               ),
             ),
             onTap: () {
               Navigator.pop(context);
-              //Navigator.pushNamed(context, GlobalDefine.RouteNameShortcut);
               Navigator.pushNamed(context, routeNameOption);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add),
+            title: Text(
+              '채팅 그룹 관리',
+              textScaleFactor: 1.0,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color:
+                    uiNoti.materialThemeData.colorScheme.onSecondaryContainer,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, routeNameChatTab);
             },
           ),
           const Spacer(),

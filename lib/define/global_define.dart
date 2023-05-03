@@ -19,7 +19,7 @@ const routeNameRoot = '/';
 const routeChatPage = '/chat';
 const routeNameOption = '/option';
 const routeNamePurchase = '/purchase';
-const routeNameChatTab = '/purchase';
+const routeNameChatTab = '/chattabs';
 
 //const logoImage = 'assets/icons/robot5.png';
 const logoImage = 'assets/icons/icon.jfif';

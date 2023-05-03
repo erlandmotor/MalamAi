@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 
-class MyAddress extends StatefulWidget {
-  MyAddress({Key? key}) : super(key: key);
+class ChatTabList extends StatefulWidget {
+  const ChatTabList({Key? key}) : super(key: key);
 
   @override
-  State<MyAddress> createState() => _MyAddressState();
+  State<ChatTabList> createState() => ChatTabListState();
 }
 
-class _MyAddressState extends State<MyAddress> {
+class ChatTabListState extends State<ChatTabList> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  final Color appBarIconsColor = Color(0xFF212121);
-  final Color _backgroundColor = Color(0xFFf0f0f0);
+  final Color appBarIconsColor = const Color(0xFF212121);
+  final Color backgroundColor = const Color(0xFFf0f0f0);
 
   bool _isEdit = false;
 
@@ -30,7 +30,7 @@ class _MyAddressState extends State<MyAddress> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('챗 리스트'),
+          title: const Text('챗 리스트'),
           actions: [
             TextButton(
                 child: _isEdit ? const Text('완료') : const Text('편집'),
@@ -48,25 +48,24 @@ class _MyAddressState extends State<MyAddress> {
           strokeWidth: 4.0,
           onRefresh: () async {
             if (isRemoving == true) {
-              await OnRemove(_context, _index);
+              await onRemove(_context, _index);
               isRemoving = false;
             }
 
             if (isSwapping == true) {
-              await OnSwap(_oldIndex, _newIndex);
+              await onSwap(_oldIndex, _newIndex);
               isSwapping = false;
             }
 
             //return Future<void>.delayed(const Duration(seconds: 3));
           },
           // Pull from top to show refresh indicator.
-          child: Container(
-              child: Flex(direction: Axis.vertical, children: <Widget>[
+          child: Flex(direction: Axis.vertical, children: <Widget>[
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: ReorderableListView(
-                header: _isEdit ? Text('위치를 이동하거나 좌우로 지우세요') : null,
+                header: _isEdit ? const Text('위치를 이동하거나 좌우로 지우세요') : null,
                 buildDefaultDragHandles: _isEdit,
                 children: buildListAll(context),
                 onReorder: (int oldIndex, int newIndex) {
@@ -81,7 +80,7 @@ class _MyAddressState extends State<MyAddress> {
                 footer: buildButton(context, 1),
               ),
             )),
-          ])),
+          ]),
         ));
   }
 
@@ -91,7 +90,7 @@ class _MyAddressState extends State<MyAddress> {
   late int _oldIndex;
   late int _newIndex;
 
-  OnSwap(int oldIndex, int newIndex) async {
+  onSwap(int oldIndex, int newIndex) async {
     // await _notifierLocation.OnReorder(oldIndex, newIndex);
     // await _notifierDay.SwapChange(oldIndex, newIndex);
     setState(() {
@@ -101,7 +100,7 @@ class _MyAddressState extends State<MyAddress> {
 
   bool isRemoving = false;
 
-  OnRemove(BuildContext context, int index) async {
+  onRemove(BuildContext context, int index) async {
     //isRemoving = true;
     //final notifierLocation = context.read<LocationChangeNotifier>();
     //final deletedItem = await notifierLocation.OnRemove(index);
@@ -111,13 +110,13 @@ class _MyAddressState extends State<MyAddress> {
 
     setState(() {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('1111 이(가) 삭제되었습니다.')),
+        const SnackBar(content: Text('1111 이(가) 삭제되었습니다.')),
       );
     });
     //isRemoving = false;
   }
 
-  Color mainTextColor = Color(0xFF083e64);
+  Color mainTextColor = const Color(0xFF083e64);
   late BuildContext _context;
   late int _index;
 
@@ -126,6 +125,8 @@ class _MyAddressState extends State<MyAddress> {
     //final keys = notifierLocation.locationNameList;
 
     List<Widget> widgets = [];
+    // TEST
+    List<String> keys = ['0', '1', '2'];
 
     if (_isEdit) {
       for (int i = 0; i < keys.length; i++) {
@@ -156,27 +157,24 @@ class _MyAddressState extends State<MyAddress> {
   }
 
   buildItem(BuildContext context, int index) {
-    final notifierLocation = context.read<LocationChangeNotifier>();
-    final map = notifierLocation.addressesMap;
-    final keys = notifierLocation.locationNameList;
-    final NameAddress? address = map[keys[index]];
+    // final notifierLocation = context.read<LocationChangeNotifier>();
+    // final map = notifierLocation.addressesMap;
+    // final keys = notifierLocation.locationNameList;
+    // final NameAddress? address = map[keys[index]];
 
     return Card(
         key: Key('${index + 200}'),
         child: ListTile(
-            key: Key('${index}'),
+            key: Key('$index'),
             trailing: _isEdit
                 ? ReorderableDragStartListener(
                     index: index, child: const Icon(Icons.drag_handle))
                 : null,
             title: Row(children: [
-              Container(
-                //color: Colors.blueAccent,
-                child: Icon(Icons.map_rounded),
-              ),
-              SizedBox(width: 20),
-              Text(address!.addressName),
-              Spacer(),
+              const Icon(Icons.map_rounded),
+              const SizedBox(width: 20),
+              const Text('address!.addressName'),
+              const Spacer(),
               _isEdit
                   ? IconButton(
                       onPressed: () {
@@ -189,7 +187,8 @@ class _MyAddressState extends State<MyAddress> {
                         _refreshIndicatorKey.currentState?.show();
                         //OnRemove(context, index);
                       },
-                      icon: Icon(Icons.remove_circle, color: Colors.redAccent))
+                      icon: const Icon(Icons.remove_circle,
+                          color: Colors.redAccent))
                   : Container(),
               //SizedBox(width: 30),
             ])));
@@ -198,7 +197,7 @@ class _MyAddressState extends State<MyAddress> {
   buildButton(BuildContext context, int index) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         TextButton(
