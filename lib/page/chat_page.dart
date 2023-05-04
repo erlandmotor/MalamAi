@@ -39,7 +39,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     //makeBubbleWidget();
-    chatBox = context.read<ChatGroupNotifier>().openChatBox(index: 0);
+    chatBox = context.read<ChatGroupNotifier>().openLatest();
     super.initState();
   }
 
@@ -102,15 +102,9 @@ class _ChatPageState extends State<ChatPage> {
                             //     index - (index / adWidgetTerm).toInt();
 
                             final dataindex = index - index ~/ adWidgetTerm;
-
-                            MessageItem? data = box.get(dataindex);
-
+                            final MessageItem? data = box.get(dataindex);
                             mgLog('index - $index, dataindex - $dataindex');
-
                             return MessageBubble(
-                              // content: _messages[dataindex].content,
-                              // isUserMessage: _messages[dataindex].isUserMessage,
-
                               content: data!.content,
                               isUserMessage: data.isUserMessage,
                             );
