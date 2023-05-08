@@ -1,5 +1,6 @@
+import 'package:chat_playground/models/chatgroup_notifier.dart';
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 class ChatTabList extends StatefulWidget {
   const ChatTabList({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class ChatTabListState extends State<ChatTabList> {
   final Color backgroundColor = const Color(0xFFf0f0f0);
 
   bool _isEdit = false;
+  late ChatGroupNotifier groupNotifier;
 
   @override
   void initState() {
@@ -24,9 +26,7 @@ class ChatTabListState extends State<ChatTabList> {
 
   @override
   Widget build(BuildContext context) {
-    // final notifierLocation = context.read<LocationChangeNotifier>();
-    // final notifierDay = context.read<DayChangeNotifier>();
-    // final map = notifierLocation.addressesMap;
+    groupNotifier = context.read<ChatGroupNotifier>();
 
     return Scaffold(
         appBar: AppBar(
@@ -46,17 +46,17 @@ class ChatTabListState extends State<ChatTabList> {
           notificationPredicate: (_) => false,
           backgroundColor: Colors.blue,
           strokeWidth: 4.0,
-          onRefresh: () async {
+          onRefresh: () {
             if (isRemoving == true) {
-              await onRemove(_context, _index);
+              onRemove(_context, _index);
               isRemoving = false;
             }
 
             if (isSwapping == true) {
-              await onSwap(_oldIndex, _newIndex);
+              onSwap(_oldIndex, _newIndex);
               isSwapping = false;
             }
-
+            return Future<void>.sync(() => null);
             //return Future<void>.delayed(const Duration(seconds: 3));
           },
           // Pull from top to show refresh indicator.
@@ -85,35 +85,20 @@ class ChatTabListState extends State<ChatTabList> {
   }
 
   bool isSwapping = false;
-  // late LocationChangeNotifier _notifierLocation;
-  // late DayChangeNotifier _notifierDay;
   late int _oldIndex;
   late int _newIndex;
 
-  onSwap(int oldIndex, int newIndex) async {
-    // await _notifierLocation.OnReorder(oldIndex, newIndex);
-    // await _notifierDay.SwapChange(oldIndex, newIndex);
-    setState(() {
-      //_notifierLocation.notifyListeners();
-    });
+  onSwap(int oldIndex, int newIndex) {
+    groupNotifier.swapTab(oldIndex, newIndex);
   }
 
   bool isRemoving = false;
 
-  onRemove(BuildContext context, int index) async {
-    //isRemoving = true;
-    //final notifierLocation = context.read<LocationChangeNotifier>();
-    //final deletedItem = await notifierLocation.OnRemove(index);
-
-    //final notifierDay = context.read<DayChangeNotifier>();
-    //notifierDay.RemoveLocationData(deletedItem);
-
-    setState(() {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('1111 이(가) 삭제되었습니다.')),
-      );
-    });
-    //isRemoving = false;
+  onRemove(BuildContext context, int index) {
+    groupNotifier.removeTab(index);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('1111 이(가) 삭제되었습니다.')),
+    );
   }
 
   Color mainTextColor = const Color(0xFF083e64);
@@ -121,9 +106,6 @@ class ChatTabListState extends State<ChatTabList> {
   late int _index;
 
   buildListAll(BuildContext context) {
-    //final notifierLocation = context.read<LocationChangeNotifier>();
-    //final keys = notifierLocation.locationNameList;
-
     List<Widget> widgets = [];
     // TEST
     List<String> keys = ['0', '1', '2'];
@@ -143,7 +125,7 @@ class ChatTabListState extends State<ChatTabList> {
                   _index = i;
                   isRemoving = true;
                   _refreshIndicatorKey.currentState?.show();
-                  //OnRemove(context, i);
+                  onRemove(context, i);
                 },
                 child: buildItem(context, i))));
       }
@@ -157,10 +139,8 @@ class ChatTabListState extends State<ChatTabList> {
   }
 
   buildItem(BuildContext context, int index) {
-    // final notifierLocation = context.read<LocationChangeNotifier>();
-    // final map = notifierLocation.addressesMap;
-    // final keys = notifierLocation.locationNameList;
-    // final NameAddress? address = map[keys[index]];
+    // double value = context.select<ChatGroupNotifier, double>
+    // ((provider) => provider.value!);
 
     return Card(
         key: Key('${index + 200}'),
@@ -178,19 +158,15 @@ class ChatTabListState extends State<ChatTabList> {
               _isEdit
                   ? IconButton(
                       onPressed: () {
-                        // notifierLocation.OnRemove(index)
-                        //     .then((value) => setState(() {}));
-
                         _context = context;
                         _index = index;
                         isRemoving = true;
                         _refreshIndicatorKey.currentState?.show();
-                        //OnRemove(context, index);
+                        onRemove(context, index);
                       },
                       icon: const Icon(Icons.remove_circle,
                           color: Colors.redAccent))
                   : Container(),
-              //SizedBox(width: 30),
             ])));
   }
 

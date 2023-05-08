@@ -77,7 +77,7 @@ class _ChatPageState extends State<ChatPage> {
                     builder: (context, Box<MessageItem> box, _) {
                       if (box.values.isEmpty) {
                         return const Center(
-                          child: Text("No contacts"),
+                          child: Text("메시지 없음"),
                         );
                       }
 

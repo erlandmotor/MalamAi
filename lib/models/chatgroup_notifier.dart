@@ -70,7 +70,7 @@ class ChatGroupNotifier with ChangeNotifier {
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
   }
 
-  deleteTab(int index) async {
+  removeTab(int index) {
     var tab = chatGroups[index];
     chatGroups.removeAt(index);
     otherDBBox.put(keyTabLists, chatGroups);
@@ -80,6 +80,12 @@ class ChatGroupNotifier with ChangeNotifier {
 
     lastTabIndex = lastTabIndex.clamp(0, chatGroups.length - 1);
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
+  }
+
+  swapTab(int oldIndex, int newIndex) {
+    final oldval = chatGroups[oldIndex];
+    chatGroups[oldIndex] = chatGroups[newIndex];
+    chatGroups[newIndex] = oldval;
   }
 
   Box<MessageItem> openLatest() {
