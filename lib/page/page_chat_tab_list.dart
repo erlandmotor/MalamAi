@@ -26,7 +26,7 @@ class ChatTabListState extends State<ChatTabList> {
 
   @override
   Widget build(BuildContext context) {
-    groupNotifier = context.read<ChatGroupNotifier>();
+    groupNotifier = context.watch<ChatGroupNotifier>();
 
     return Scaffold(
         appBar: AppBar(
@@ -46,19 +46,21 @@ class ChatTabListState extends State<ChatTabList> {
           notificationPredicate: (_) => false,
           backgroundColor: Colors.blue,
           strokeWidth: 4.0,
-          onRefresh: () {
-            if (isRemoving == true) {
-              onRemove(_context, _index);
-              isRemoving = false;
-            }
 
-            if (isSwapping == true) {
-              onSwap(_oldIndex, _newIndex);
-              isSwapping = false;
-            }
+          onRefresh: () {
+            // if (isRemoving == true) {
+            //   onRemove(_context, _index);
+            //   isRemoving = false;
+            // }
+
+            // if (isSwapping == true) {
+            //   onSwap(_oldIndex, _newIndex);
+            //   isSwapping = false;
+            // }
             return Future<void>.sync(() => null);
             //return Future<void>.delayed(const Duration(seconds: 3));
           },
+
           // Pull from top to show refresh indicator.
           child: Flex(direction: Axis.vertical, children: <Widget>[
             Expanded(
@@ -71,13 +73,24 @@ class ChatTabListState extends State<ChatTabList> {
                 onReorder: (int oldIndex, int newIndex) {
                   _oldIndex = oldIndex;
                   _newIndex = newIndex;
-                  // _notifierLocation = notifierLocation;
-                  // _notifierDay = notifierDay;
                   isSwapping = true;
                   _refreshIndicatorKey.currentState?.show();
                 },
-                //footer: buildButton(context, map.length),
-                footer: buildButton(context, 1),
+                footer: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        onAddTab(context);
+                      },
+                      child: const Text(
+                        '추가하기',
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )),
           ]),
@@ -94,10 +107,17 @@ class ChatTabListState extends State<ChatTabList> {
 
   bool isRemoving = false;
 
+  onAddTab(BuildContext context) {
+    groupNotifier.addTab();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('챗 탭이 추가되었습니다.')),
+    );
+  }
+
   onRemove(BuildContext context, int index) {
     groupNotifier.removeTab(index);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('1111 이(가) 삭제되었습니다.')),
+      const SnackBar(content: Text('챗 탭이 삭제되었습니다.')),
     );
   }
 
@@ -108,17 +128,17 @@ class ChatTabListState extends State<ChatTabList> {
   buildListAll(BuildContext context) {
     List<Widget> widgets = [];
     // TEST
-    List<String> keys = ['0', '1', '2'];
+    //List<String> keys = ['0', '1', '2'];
 
     if (_isEdit) {
-      for (int i = 0; i < keys.length; i++) {
+      for (int i = 0; i < groupNotifier.chatGroups.length; i++) {
         widgets.add(Container(
             key: Key('$i'),
             child: Dismissible(
                 background: Container(
                   color: Colors.red,
                 ),
-                key: ValueKey<String>(keys[i]),
+                key: ValueKey<String>(groupNotifier.chatGroups[i].toString()),
                 onDismissed: (DismissDirection direction) {
                   //notifierLocation.OnRemove(i).then((value) => setState(() {}));
                   _context = context;
@@ -130,7 +150,7 @@ class ChatTabListState extends State<ChatTabList> {
                 child: buildItem(context, i))));
       }
     } else {
-      for (int i = 0; i < keys.length; i++) {
+      for (int i = 0; i < groupNotifier.chatGroups.length; i++) {
         widgets.add(buildItem(context, i));
       }
     }
@@ -141,6 +161,8 @@ class ChatTabListState extends State<ChatTabList> {
   buildItem(BuildContext context, int index) {
     // double value = context.select<ChatGroupNotifier, double>
     // ((provider) => provider.value!);
+
+    var label = groupNotifier.getChatTabLebel(index);
 
     return Card(
         key: Key('${index + 200}'),
@@ -153,7 +175,7 @@ class ChatTabListState extends State<ChatTabList> {
             title: Row(children: [
               const Icon(Icons.map_rounded),
               const SizedBox(width: 20),
-              const Text('address!.addressName'),
+              Text(label),
               const Spacer(),
               _isEdit
                   ? IconButton(
@@ -168,33 +190,5 @@ class ChatTabListState extends State<ChatTabList> {
                           color: Colors.redAccent))
                   : Container(),
             ])));
-  }
-
-  buildButton(BuildContext context, int index) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 20,
-        ),
-        TextButton(
-          onPressed: () {},
-          // => Navigator.popAndPushNamed(
-          //     //Navigator.pushNamed(
-          //     context,
-          //     GlobalDefine.RouteNameAddAddress),
-          child: const Text(
-            '추가하기',
-            //   style: TextStyle(
-            //     //color: mainTextColor,
-            //     fontFamily: 'SpoqaHanSansNeo',
-            //     fontSize: 20,
-            //     fontWeight: FontWeight.bold,
-            //     letterSpacing: 1,
-            //     //package: App.pkg
-            //   ),
-          ),
-        ),
-      ],
-    );
   }
 }

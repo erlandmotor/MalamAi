@@ -101,7 +101,8 @@ void main() async {
           lazy: false,
         ),
 
-        ChangeNotifierProvider(create: (_) => ChatGroupNotifier(), lazy: false),
+        ChangeNotifierProvider(
+            create: (_) => ChatGroupNotifier()..appDataInit(), lazy: false),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

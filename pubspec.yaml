@@ -42,7 +42,7 @@ dependencies:
   # shared_preferences: ^2.0.20
   google_mobile_ads: ^2.4.0
   flutter_platform_widgets: ^3.2.0
-  share_plus: ^6.3.1
+  # share_plus: ^6.3.4
   auto_size_text: ^3.0.0
   # in_app_purchase: ^3.1.5
   # cloud_firestore: ^4.4.5
@@ -54,12 +54,14 @@ dependencies:
   ntp: ^2.0.0
   flutter_signin_button: ^2.0.0
   cached_network_image: ^3.2.3
-  purchases_flutter: ^4.11.1
+  # purchases_flutter: ^4.11.1
+  purchases_flutter: ^4.12.0
   gradient_borders: ^1.0.0
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.0
   build_runner: ^2.3.3
   flutter_launcher_icons: ^0.13.1
+  share_plus: ^4.5.3
 
 dev_dependencies:
   flutter_test:

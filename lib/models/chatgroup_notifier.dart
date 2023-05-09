@@ -18,7 +18,6 @@ class ChatGroupNotifier with ChangeNotifier {
 
   ChatGroupNotifier() {
     mgLog('ChatGroupNotifier notifier init.......');
-    appDataInit();
   }
 
   appDataInit() async {
@@ -44,7 +43,6 @@ class ChatGroupNotifier with ChangeNotifier {
     } else {
       lastTabIndex = lastTabs;
     }
-
     //await Hive.openBox<HiveChatGroup>(keychatGroupDB);
 
     for (var element in chatGroups) {
@@ -65,9 +63,15 @@ class ChatGroupNotifier with ChangeNotifier {
     chatGroups.add(resultTabKey);
     await Hive.openBox<MessageItem>(resultTabKey.toString());
 
+    Box<MessageItem> myBox = Hive.box(resultTabKey.toString());
+    myBox.add(MessageItem('안녕하세요?', false));
+    //myBox.close();
+
     // 열려면
     lastTabIndex = chatGroups.length - 1;
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
+
+    notifyListeners();
   }
 
   removeTab(int index) {
@@ -80,16 +84,31 @@ class ChatGroupNotifier with ChangeNotifier {
 
     lastTabIndex = lastTabIndex.clamp(0, chatGroups.length - 1);
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
+
+    notifyListeners();
   }
 
   swapTab(int oldIndex, int newIndex) {
     final oldval = chatGroups[oldIndex];
     chatGroups[oldIndex] = chatGroups[newIndex];
     chatGroups[newIndex] = oldval;
+
+    //notifyListeners();
   }
 
   Box<MessageItem> openLatest() {
+    if (lastTabIndex >= chatGroups.length) {
+      lastTabIndex = 0;
+    }
     Box<MessageItem> myBox = Hive.box(chatGroups[lastTabIndex].toString());
+
+    // try{
+    //    myBox = Hive.box(chatGroups[lastTabIndex].toString());
+    // }
+    // catch{
+
+    // }
+
     return myBox;
   }
 
@@ -98,7 +117,23 @@ class ChatGroupNotifier with ChangeNotifier {
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
 
     Box<MessageItem> myBox = Hive.box(chatGroups[index].toString());
-
     return myBox;
+  }
+
+  String getChatTabLebel(int index) {
+    lastTabIndex = index;
+    otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
+
+    Box<MessageItem> myBox = Hive.box(chatGroups[index].toString());
+
+    if (myBox.values.length <= 1) {
+      return '새 탭';
+    }
+
+    try {
+      return myBox.values.toList()[1].content;
+    } catch (e) {
+      return '새 탭';
+    }
   }
 }
