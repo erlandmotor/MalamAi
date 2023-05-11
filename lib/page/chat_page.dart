@@ -15,8 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-class ChatPage extends StatefulWidget {
-  const ChatPage({
+class PageChatMain extends StatefulWidget {
+  const PageChatMain({
     required this.chatApi,
     super.key,
   });
@@ -24,10 +24,10 @@ class ChatPage extends StatefulWidget {
   final ChatApi chatApi;
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  State<PageChatMain> createState() => _PageChatMainState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _PageChatMainState extends State<PageChatMain> {
   var _awaitingResponse = false;
   final ScrollController _controller = ScrollController();
   List<Widget> bubbleWidgets = [];

@@ -48,17 +48,11 @@ class ChatTabListState extends State<ChatTabList> {
           strokeWidth: 4.0,
 
           onRefresh: () {
-            // if (isRemoving == true) {
-            //   onRemove(_context, _index);
-            //   isRemoving = false;
-            // }
-
-            // if (isSwapping == true) {
-            //   onSwap(_oldIndex, _newIndex);
-            //   isSwapping = false;
-            // }
+            if (isSwapping == true) {
+              onSwap(_oldIndex, _newIndex);
+              isSwapping = false;
+            }
             return Future<void>.sync(() => null);
-            //return Future<void>.delayed(const Duration(seconds: 3));
           },
 
           // Pull from top to show refresh indicator.
@@ -115,6 +109,12 @@ class ChatTabListState extends State<ChatTabList> {
   }
 
   onRemove(BuildContext context, int index) {
+    if (groupNotifier.chatGroupsOrder.length <= 1) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('삭제 할 수 없는 탭입니다.')),
+      );
+      return;
+    }
     groupNotifier.removeTab(index);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('챗 탭이 삭제되었습니다.')),
@@ -131,14 +131,34 @@ class ChatTabListState extends State<ChatTabList> {
     //List<String> keys = ['0', '1', '2'];
 
     if (_isEdit) {
-      for (int i = 0; i < groupNotifier.chatGroups.length; i++) {
+      for (int i = 0; i < groupNotifier.chatGroupsOrder.length; i++) {
         widgets.add(Container(
             key: Key('$i'),
             child: Dismissible(
                 background: Container(
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   color: Colors.red,
+                  alignment: Alignment.centerLeft,
+                  child: const Icon(
+                    Icons.delete,
+                    size: 36,
+                    color: Colors.white,
+                  ),
                 ),
-                key: ValueKey<String>(groupNotifier.chatGroups[i].toString()),
+                secondaryBackground: Container(
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  child: const Icon(
+                    Icons.delete,
+                    size: 36,
+                    color: Colors.white,
+                  ),
+                ),
+                key: ValueKey<String>(
+                    groupNotifier.chatGroupsOrder[i].toString()),
                 onDismissed: (DismissDirection direction) {
                   //notifierLocation.OnRemove(i).then((value) => setState(() {}));
                   _context = context;
@@ -147,15 +167,72 @@ class ChatTabListState extends State<ChatTabList> {
                   _refreshIndicatorKey.currentState?.show();
                   onRemove(context, i);
                 },
+                confirmDismiss: (direction) =>
+                    _confirmDismiss(direction, context, i),
                 child: buildItem(context, i))));
       }
     } else {
-      for (int i = 0; i < groupNotifier.chatGroups.length; i++) {
+      for (int i = 0; i < groupNotifier.chatGroupsOrder.length; i++) {
         widgets.add(buildItem(context, i));
       }
     }
 
     return widgets;
+  }
+
+  Future<bool> _confirmDismiss(
+    DismissDirection direction,
+    BuildContext context,
+    int index,
+  ) {
+    if (direction == DismissDirection.endToStart) {
+      return showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              //title: const Text('삭제'),
+              content: Text('정말로 해당 챗 그룹을 삭제하시겠습니까? $index'),
+              actions: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    return Navigator.of(context).pop(false);
+                  },
+                  child: const Text('취소'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    return Navigator.of(context).pop(true);
+                  },
+                  child: const Text('삭제'),
+                ),
+              ],
+            );
+          }).then((value) => Future.value(value));
+    } else if (direction == DismissDirection.startToEnd) {
+      return showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              title: const Text('Are you sure?'),
+              content: Text('Now saving ${[index]}'),
+              actions: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    return Navigator.of(context).pop(false);
+                  },
+                  child: const Text('CANCEL'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    return Navigator.of(context).pop(true);
+                  },
+                  child: const Text('SAVE'),
+                ),
+              ],
+            );
+          }).then((value) => Future.value(value));
+    }
+    return Future.value(false);
   }
 
   buildItem(BuildContext context, int index) {

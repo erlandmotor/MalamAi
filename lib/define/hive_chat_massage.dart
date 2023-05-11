@@ -26,3 +26,14 @@ class HiveChatGroup {
 
   HiveChatGroup(this.groupName, this.contens);
 }
+
+@HiveType(typeId: 3)
+class HiveChatTab {
+  @HiveField(0)
+  String groupName;
+
+  @HiveField(1)
+  DateTime updateTime;
+
+  HiveChatTab(this.groupName, this.updateTime);
+}

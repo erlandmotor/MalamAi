@@ -10,11 +10,13 @@ class ChatGroupNotifier with ChangeNotifier {
   //static const keychatGroupDB = 'chat_group';
   static const keyLatestOpenIndex = 'latest_open_index';
   static const keyTabLists = 'key_tab_lists';
+  static const keyTabUpdateTime = 'key_tab_update';
 
   late Box otherDBBox;
   int curIndex = 0;
   int lastTabIndex = 0;
-  late List<int> chatGroups;
+  late List<int> chatGroupsOrder;
+  late Map<int, DateTime> chatTimes;
 
   ChatGroupNotifier() {
     mgLog('ChatGroupNotifier notifier init.......');
@@ -27,13 +29,29 @@ class ChatGroupNotifier with ChangeNotifier {
     otherDBBox = Hive.box(keyOtherDB);
 
     List<int>? chatTabs = otherDBBox.get(keyTabLists);
-    if (chatTabs == null) {
-      chatGroups = [
+    if (chatTabs == null || chatTabs.isEmpty) {
+      chatGroupsOrder = [
         0,
       ];
-      otherDBBox.put(keyTabLists, chatGroups);
+      otherDBBox.put(keyTabLists, chatGroupsOrder);
     } else {
-      chatGroups = chatTabs;
+      chatGroupsOrder = chatTabs;
+    }
+
+    Map<dynamic, dynamic>? chatUpdateTimes = otherDBBox.get(keyTabUpdateTime);
+    chatTimes = {};
+    if (chatUpdateTimes == null || chatUpdateTimes.isEmpty) {
+      //chatTimes = {0: DateTime.now()};
+      for (var item in chatGroupsOrder) {
+        chatTimes[item] = DateTime.now();
+      }
+
+      otherDBBox.put(keyTabUpdateTime, chatTimes);
+    } else {
+      //chatTimes = chatUpdateTimes;
+      chatUpdateTimes.forEach((key, value) {
+        chatTimes[key] = value;
+      });
     }
 
     int? lastTabs = otherDBBox.get(keyLatestOpenIndex);
@@ -45,7 +63,7 @@ class ChatGroupNotifier with ChangeNotifier {
     }
     //await Hive.openBox<HiveChatGroup>(keychatGroupDB);
 
-    for (var element in chatGroups) {
+    for (var element in chatGroupsOrder) {
       await Hive.openBox<MessageItem>(element.toString());
     }
   }
@@ -54,13 +72,14 @@ class ChatGroupNotifier with ChangeNotifier {
     int resultTabKey = 0;
     late bool isFind;
     do {
-      isFind = chatGroups.contains(resultTabKey);
+      isFind = chatGroupsOrder.contains(resultTabKey);
       if (isFind == true) {
         resultTabKey++;
       }
-    } while (isFind == false);
+    } while (isFind == true);
 
-    chatGroups.add(resultTabKey);
+    chatGroupsOrder.add(resultTabKey);
+    otherDBBox.put(keyTabLists, chatGroupsOrder);
     await Hive.openBox<MessageItem>(resultTabKey.toString());
 
     Box<MessageItem> myBox = Hive.box(resultTabKey.toString());
@@ -68,39 +87,55 @@ class ChatGroupNotifier with ChangeNotifier {
     //myBox.close();
 
     // 열려면
-    lastTabIndex = chatGroups.length - 1;
+    lastTabIndex = chatGroupsOrder.length - 1;
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
 
     notifyListeners();
   }
 
   removeTab(int index) {
-    var tab = chatGroups[index];
-    chatGroups.removeAt(index);
-    otherDBBox.put(keyTabLists, chatGroups);
+    if (chatGroupsOrder.length <= 1) {
+      mgLog('챗 그룹이 하나이하');
+      notifyListeners();
+      return;
+    }
+
+    var tab = chatGroupsOrder[index];
+    chatGroupsOrder.removeAt(index);
+    otherDBBox.put(keyTabLists, chatGroupsOrder);
 
     Box<MessageItem> myBox = Hive.box(tab.toString());
     myBox.deleteFromDisk();
 
-    lastTabIndex = lastTabIndex.clamp(0, chatGroups.length - 1);
+    lastTabIndex = lastTabIndex.clamp(0, chatGroupsOrder.length - 1);
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
 
     notifyListeners();
   }
 
   swapTab(int oldIndex, int newIndex) {
-    final oldval = chatGroups[oldIndex];
-    chatGroups[oldIndex] = chatGroups[newIndex];
-    chatGroups[newIndex] = oldval;
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
 
-    //notifyListeners();
+    final oldval = chatGroupsOrder[oldIndex];
+    chatGroupsOrder[oldIndex] = chatGroupsOrder[newIndex];
+    chatGroupsOrder[newIndex] = oldval;
+
+    otherDBBox.put(keyTabLists, chatGroupsOrder);
+    notifyListeners();
   }
 
   Box<MessageItem> openLatest() {
-    if (lastTabIndex >= chatGroups.length) {
+    if (lastTabIndex >= chatGroupsOrder.length) {
       lastTabIndex = 0;
     }
-    Box<MessageItem> myBox = Hive.box(chatGroups[lastTabIndex].toString());
+    Box<MessageItem> myBox = Hive.box(chatGroupsOrder[lastTabIndex].toString());
+
+    if (myBox.isEmpty) {
+      //myBox.put(key, value);
+      myBox.add(MessageItem('안녕하세요?', false));
+    }
 
     // try{
     //    myBox = Hive.box(chatGroups[lastTabIndex].toString());
@@ -116,7 +151,7 @@ class ChatGroupNotifier with ChangeNotifier {
     lastTabIndex = index;
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
 
-    Box<MessageItem> myBox = Hive.box(chatGroups[index].toString());
+    Box<MessageItem> myBox = Hive.box(chatGroupsOrder[index].toString());
     return myBox;
   }
 
@@ -124,7 +159,7 @@ class ChatGroupNotifier with ChangeNotifier {
     lastTabIndex = index;
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
 
-    Box<MessageItem> myBox = Hive.box(chatGroups[index].toString());
+    Box<MessageItem> myBox = Hive.box(chatGroupsOrder[index].toString());
 
     if (myBox.values.length <= 1) {
       return '새 탭';
