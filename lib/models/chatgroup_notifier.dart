@@ -161,6 +161,8 @@ class ChatGroupNotifier with ChangeNotifier {
 
     Box<MessageItem> myBox = Hive.box(chatGroupsOrder[index].toString());
 
+    //chatTimes[index];
+
     if (myBox.values.length <= 1) {
       return '새 탭';
     }

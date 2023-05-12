@@ -240,6 +240,7 @@ class ChatTabListState extends State<ChatTabList> {
     // ((provider) => provider.value!);
 
     var label = groupNotifier.getChatTabLebel(index);
+    var subLabel = groupNotifier.chatTimes[index].toString();
 
     return Card(
         key: Key('${index + 200}'),
@@ -249,9 +250,11 @@ class ChatTabListState extends State<ChatTabList> {
                 ? ReorderableDragStartListener(
                     index: index, child: const Icon(Icons.drag_handle))
                 : null,
+            subtitle: Text(subLabel),
+            leading: const Icon(Icons.chat),
             title: Row(children: [
-              const Icon(Icons.map_rounded),
-              const SizedBox(width: 20),
+              //const Icon(Icons.map_rounded),
+              //const SizedBox(width: 20),
               Text(label),
               const Spacer(),
               _isEdit
