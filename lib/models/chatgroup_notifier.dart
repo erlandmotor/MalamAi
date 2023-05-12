@@ -156,13 +156,9 @@ class ChatGroupNotifier with ChangeNotifier {
   }
 
   String getChatTabLebel(int index) {
-    lastTabIndex = index;
-    otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
-
+    // lastTabIndex = index;
+    // otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
     Box<MessageItem> myBox = Hive.box(chatGroupsOrder[index].toString());
-
-    //chatTimes[index];
-
     if (myBox.values.length <= 1) {
       return '새 탭';
     }

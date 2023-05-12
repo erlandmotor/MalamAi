@@ -1,5 +1,6 @@
 import 'package:chat_playground/models/chatgroup_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ChatTabList extends StatefulWidget {
@@ -240,7 +241,10 @@ class ChatTabListState extends State<ChatTabList> {
     // ((provider) => provider.value!);
 
     var label = groupNotifier.getChatTabLebel(index);
-    var subLabel = groupNotifier.chatTimes[index].toString();
+    //var subLabel = groupNotifier.chatTimes[index].toString();
+
+    DateTime? chatdate = groupNotifier.chatTimes[index] ?? DateTime.now();
+    var subLabel = DateFormat('yyyy-MM-dd hh:mm').format(chatdate);
 
     return Card(
         key: Key('${index + 200}'),
