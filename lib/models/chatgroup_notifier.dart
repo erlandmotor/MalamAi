@@ -87,8 +87,8 @@ class ChatGroupNotifier with ChangeNotifier {
     //myBox.close();
 
     // 열려면
-    lastTabIndex = chatGroupsOrder.length - 1;
-    otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
+    // lastTabIndex = chatGroupsOrder.length - 1;
+    // otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
 
     notifyListeners();
   }
@@ -123,6 +123,11 @@ class ChatGroupNotifier with ChangeNotifier {
     chatGroupsOrder[newIndex] = oldval;
 
     otherDBBox.put(keyTabLists, chatGroupsOrder);
+    notifyListeners();
+  }
+
+  setTabIndex(int tabindex) {
+    lastTabIndex = tabindex;
     notifyListeners();
   }
 

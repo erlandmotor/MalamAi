@@ -28,7 +28,7 @@ class ChatTabListState extends State<ChatTabList> {
 
   @override
   Widget build(BuildContext context) {
-    groupNotifier = context.watch<ChatGroupNotifier>();
+    groupNotifier = context.read<ChatGroupNotifier>();
 
     return Scaffold(
         appBar: AppBar(
@@ -100,43 +100,49 @@ class ChatTabListState extends State<ChatTabList> {
   // }
 
   reorderListViewBuild() {
-    return ReorderableListView.builder(
-      header: _isEdit
-          ? const Text('위치를 이동하거나 좌우로 지우세요')
-          : const Text('이동할 탭을 선택하세요.'),
-      buildDefaultDragHandles: _isEdit,
-      onReorder: (int oldIndex, int newIndex) {
-        _oldIndex = oldIndex;
-        _newIndex = newIndex;
-        isSwapping = true;
-        _refreshIndicatorKey.currentState?.show();
-      },
-      itemCount: groupNotifier.chatGroupsOrder.length,
-      itemBuilder: (BuildContext context, int index) {
-        return buildItem2(context, index);
-      },
-      footer: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          TextButton(
-            onPressed: () {
-              onAddTab(context);
+    return Selector<ChatGroupNotifier, int>(
+        selector: (_, provider) => provider.chatGroupsOrder.length,
+        builder: (context, chatGroupsOrderlength, child) {
+          return ReorderableListView.builder(
+            header: _isEdit
+                ? const Text('위치를 이동하거나 좌우로 지우세요')
+                : const Text('이동할 탭을 선택하세요.'),
+            buildDefaultDragHandles: _isEdit,
+            onReorder: (int oldIndex, int newIndex) {
+              _oldIndex = oldIndex;
+              _newIndex = newIndex;
+              isSwapping = true;
+              _refreshIndicatorKey.currentState?.show();
             },
-            child: const Text(
-              '추가하기',
+            itemCount: chatGroupsOrderlength,
+            itemBuilder: (BuildContext context, int index) {
+              return buildItem2(context, index);
+            },
+            footer: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                TextButton(
+                  onPressed: () {
+                    onAddTab(context);
+                  },
+                  child: const Text(
+                    '추가하기',
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 
   buildItem2(BuildContext context, int index) {
     var label = groupNotifier.getChatTabLebel(index);
     DateTime? chatdate = groupNotifier.chatTimes[index] ?? DateTime.now();
     var subLabel = DateFormat('yyyy-MM-dd hh:mm').format(chatdate);
+
+    //var groupID = groupNotifier.chatGroupsOrder[index];
 
     return _isEdit
         ? Container(
@@ -167,8 +173,8 @@ class ChatTabListState extends State<ChatTabList> {
                 key: ValueKey<String>(
                     groupNotifier.chatGroupsOrder[index].toString()),
                 onDismissed: (DismissDirection direction) async {
-                  _context = context;
-                  _index = index;
+                  //_context = context;
+                  //_index = index;
                   isRemoving = true;
                   _refreshIndicatorKey.currentState?.show();
                   onRemove(context, index);
@@ -187,8 +193,8 @@ class ChatTabListState extends State<ChatTabList> {
                       subtitle: Text(subLabel),
                       leading: IconButton(
                           onPressed: () {
-                            _context = context;
-                            _index = index;
+                            //_context = context;
+                            //_index = index;
                             isRemoving = true;
                             _refreshIndicatorKey.currentState?.show();
                             onRemove(context, index);
@@ -199,30 +205,37 @@ class ChatTabListState extends State<ChatTabList> {
                     ))))
         : Card(
             key: Key('${index + 200}'),
-            child: RadioListTile<int>(
-                value: index,
-                groupValue: index,
-                key: Key('$index'),
-                subtitle: Text(subLabel),
-                onChanged: (value) {
-                  value = value;
-                },
-                title: Row(children: [
-                  Text(label),
-                  const Spacer(),
-                  _isEdit
-                      ? IconButton(
-                          onPressed: () {
-                            _context = context;
-                            _index = index;
-                            isRemoving = true;
-                            _refreshIndicatorKey.currentState?.show();
-                            onRemove(context, index);
-                          },
-                          icon: const Icon(Icons.remove_circle,
-                              color: Colors.redAccent))
-                      : Container(),
-                ])));
+            child: Selector<ChatGroupNotifier, int>(
+                selector: (_, provider) => provider.lastTabIndex,
+                builder: (context, lastTabIndex, child) {
+                  return RadioListTile<int>(
+                      value: index,
+                      groupValue: lastTabIndex,
+                      key: Key('$index'),
+                      subtitle: Text(subLabel),
+                      onChanged: (value) {
+                        if (value != null) {
+                          groupNotifier.setTabIndex(value);
+                        }
+                      },
+                      title: Row(children: [
+                        Text(label),
+                        const Spacer(),
+                        _isEdit
+                            ? IconButton(
+                                onPressed: () {
+                                  //_context = context;
+                                  //_index = index;
+                                  isRemoving = true;
+                                  _refreshIndicatorKey.currentState?.show();
+                                  onRemove(context, index);
+                                },
+                                icon: const Icon(Icons.remove_circle,
+                                    color: Colors.redAccent))
+                            : Container(),
+                      ]));
+                }),
+          );
   }
 
   bool isSwapping = false;
@@ -256,8 +269,8 @@ class ChatTabListState extends State<ChatTabList> {
   }
 
   Color mainTextColor = const Color(0xFF083e64);
-  late BuildContext _context;
-  late int _index;
+  //late BuildContext _context;
+  //late int _index;
 
   // buildListAll(BuildContext context) {
   //   List<Widget> widgets = [];
@@ -426,8 +439,8 @@ class ChatTabListState extends State<ChatTabList> {
               _isEdit
                   ? IconButton(
                       onPressed: () {
-                        _context = context;
-                        _index = index;
+                        //_context = context;
+                        //_index = index;
                         isRemoving = true;
                         _refreshIndicatorKey.currentState?.show();
                         onRemove(context, index);
