@@ -1,9 +1,4 @@
-//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
-// import 'package:chat_playground/define/hive_chat_massage.dart';
-// import 'package:chat_playground/define/ui_setting.dart';
-//import 'package:chat_playground/define/mg_handy.dart';
-//import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
@@ -11,12 +6,7 @@ import 'package:chat_playground/widgets/paywell.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
-// import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-//import 'package:purchases_flutter/models/offering_wrapper.dart';
-//import 'package:purchases_flutter/models/offerings_wrapper.dart';
-//import 'package:purchases_flutter/purchases_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

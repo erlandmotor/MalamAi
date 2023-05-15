@@ -28,10 +28,6 @@ const wallpaperImage = 'assets/image/drawer_wall.jfif';
 //const cloudRegion = 'europe-west1';
 const cloudRegion = 'asia-northeast3';
 
-// const storeKeyConsumable = 'dash_consumable_2k';
-// const storeKeyUpgrade = 'dash_upgrade_3d';
-// const storeKeySubscription = 'dash_subscription_doubler';
-
 const storeKeyConsumable = 'consumable1';
 const storeKeyUpgrade = 'dash_upgrade_3d';
 const storeKeySubscription = 'subscription1';

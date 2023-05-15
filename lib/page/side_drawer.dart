@@ -66,11 +66,11 @@ class MGSideDrawer extends StatelessWidget {
                       ),
 
                       /*2*/
-                      Expanded(
+                      const Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
+                          children: [
                             ListTile(
                               dense: true,
                               title: Text(
@@ -131,11 +131,11 @@ class MGSideDrawer extends StatelessWidget {
             },
           ),
           const Spacer(),
-          Align(
+          const Align(
               //alignment: FractionalOffset.bottomCenter,
               alignment: Alignment.bottomCenter,
               child: Column(
-                children: const <Widget>[
+                children: <Widget>[
                   //Divider(),
                   ListTile(
                       // tileColor: uiNoti.materialThemeData.colorScheme.secondary,
