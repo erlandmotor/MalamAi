@@ -161,7 +161,7 @@ class PaywallState extends State<Paywall> {
         } catch (e) {
           mgLog(' $e');
         }
-        Navigator.pop(context);
+        Navigator.pop<String>(context, 'purchased');
       },
       child: Container(
         //color: uiNotifier.materialThemeData.colorScheme.tertiary,
@@ -297,7 +297,7 @@ class PaywallState extends State<Paywall> {
         child: FilledButton(
           onPressed: isFreeTrial
               ? () {
-                  Navigator.pop<String>(context);
+                  Navigator.pop<String>(context, '체험하기');
                 }
               : null,
           child: const Text('지금 체험하기'),

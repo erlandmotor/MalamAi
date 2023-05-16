@@ -1,4 +1,5 @@
 import 'package:chat_playground/define/global_define.dart';
+import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
@@ -95,11 +96,26 @@ class SplashScreenState extends State<SplashScreen> {
       widgets.add(ElevatedButton(
           onPressed: () async {
             final isActive = rcPurchaseNotifier.entitlementIsActive;
-            final navigator = Navigator.of(context);
+
+            // 기존 버텀업
+            // final navigator = Navigator.of(context);
+            // if (!isActive) {
+            //   await showBuyPage();
+            // }
+            // navigator.pushReplacementNamed(routeChatPage);
+
+            //Navigator.pop(context);
+            Object? ret;
             if (!isActive) {
-              await showBuyPage();
+              final navigator = Navigator.of(context);
+              ret = await Navigator.pushNamed(context, routeNamePurchase);
+              mgLog('returned purchase widget - $ret');
+              if (ret != null) {
+                navigator.pushReplacementNamed(routeChatPage);
+              }
+            } else {
+              Navigator.pushReplacementNamed(context, routeChatPage);
             }
-            navigator.pushReplacementNamed(routeChatPage);
           },
           child: const Text("시작", textScaleFactor: 1.0)));
       widgets.add(TextButton(

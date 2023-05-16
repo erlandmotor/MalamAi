@@ -15,6 +15,7 @@ import 'package:chat_playground/page/chat_page.dart';
 import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
+import 'package:chat_playground/page/page_purchase.dart';
 //import 'package:chat_playground/page/page_purchase.dart';
 import 'package:chat_playground/page/page_setting.dart';
 import 'package:chat_playground/page/page_splash_screen.dart';
@@ -141,6 +142,7 @@ class _ChatAppState extends State<ChatApp> {
       routes: {
         routeNameRoot: (context) => const SplashScreen(),
         //routeNamePurchase: (context) => const PurchasePage(),
+        routeNamePurchase: (context) => const PagePurchase(),
         routeChatPage: (context) => PageChatMain(chatApi: widget.chatApi),
         routeNameChatTab: (context) => const ChatTabList(),
         routeNameOption: (context) => PageSetting(),

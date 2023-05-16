@@ -2,8 +2,8 @@ import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PagePurchase extends StatelessWidget {
-  const PagePurchase({Key? key}) : super(key: key);
+class PageIAP extends StatelessWidget {
+  const PageIAP({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
