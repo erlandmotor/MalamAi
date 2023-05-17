@@ -157,11 +157,25 @@ class PaywallState extends State<Paywall> {
       onTap: () async {
         final myPack = item;
         try {
-          rcPurchaseNotifier.purchasePackage(myPack);
+          Future<bool> future = rcPurchaseNotifier.purchasePackage(myPack);
+          future.then((value) {
+            mgLog('purchased - result $value,  pckage -  $myPack');
+            if (value) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('구매가 완료되었습니다. 감사합니다.')),
+              );
+
+              Navigator.pop<String>(context, 'purchased');
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('에러가 발생했습니다. 다시 시도하세요.')),
+              );
+            }
+          });
         } catch (e) {
           mgLog(' $e');
         }
-        Navigator.pop<String>(context, 'purchased');
+        //Navigator.pop<String>(context, 'purchased');
       },
       child: Container(
         //color: uiNotifier.materialThemeData.colorScheme.tertiary,
@@ -220,10 +234,12 @@ class PaywallState extends State<Paywall> {
         color: uiNotifier.materialThemeData.colorScheme.onSecondary);
     //TextStyle tStyle2 = const TextStyle(fontSize: 10);
 
-    TextStyle tStyle2 = TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        color: uiNotifier.materialThemeData.colorScheme.secondary);
+    TextStyle tStyle2 = const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      //color: uiNotifier.materialThemeData.colorScheme.secondary
+      color: Colors.black87,
+    );
 
     if (isReq) {
       widgets.add(Container(
@@ -297,6 +313,10 @@ class PaywallState extends State<Paywall> {
         child: FilledButton(
           onPressed: isFreeTrial
               ? () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('체험중에도 언제든 구매가능합니다.')),
+                  );
+
                   Navigator.pop<String>(context, '체험하기');
                 }
               : null,

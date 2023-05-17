@@ -130,6 +130,23 @@ class MGSideDrawer extends StatelessWidget {
               Navigator.pushNamed(context, routeNameChatTab);
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.payment),
+            title: Text(
+              '구매',
+              textScaleFactor: 1.0,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color:
+                    uiNoti.materialThemeData.colorScheme.onSecondaryContainer,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, routeNamePurchase);
+            },
+          ),
           const Spacer(),
           const Align(
               //alignment: FractionalOffset.bottomCenter,

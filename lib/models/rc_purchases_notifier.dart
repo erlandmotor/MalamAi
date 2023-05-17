@@ -241,22 +241,24 @@ class RCPurchasesNotifier extends ChangeNotifier {
     return offeringCurrent;
   }
 
-  Future<void> purchase(int index) async {
-    try {
-      // if (productList == null) {
-      //   throw Exception("productList is null");
-      // }
-      customerInfo = await Purchases.purchasePackage(productList[index]);
-    } catch (e) {
-      mgLog("purchase error - $e");
-    }
-  }
+  // Future<void> purchase(int index) async {
+  //   try {
+  //     customerInfo = await Purchases.purchasePackage(productList[index]);
+  //   } catch (e) {
+  //     mgLog("purchase error - $e");
+  //   }
+  // }
 
-  Future<void> purchasePackage(Package package) async {
+  Future<bool> purchasePackage(Package package) async {
     try {
       customerInfo = await Purchases.purchasePackage(package);
+
+      // 나중에 확인
+      entitlementIsActive = await isEntitlementActive();
+      return true;
     } catch (e) {
       mgLog("purchase error - $e");
+      return false;
     }
   }
 }

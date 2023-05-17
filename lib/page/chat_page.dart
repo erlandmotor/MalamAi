@@ -6,6 +6,7 @@ import 'package:chat_playground/define/hive_chat_massage.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 
 import 'package:chat_playground/models/chatgroup_notifier.dart';
+import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/widgets/message_bubble.dart';
 import 'package:chat_playground/widgets/message_composer.dart';
 import 'package:chat_playground/page/side_drawer.dart';
@@ -49,7 +50,16 @@ class _PageChatMainState extends State<PageChatMain> {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text(titleNameMain, textScaleFactor: 0.7),
+          //title: const Text(titleNameMain, textScaleFactor: 0.7),
+          title: Selector<RCPurchasesNotifier, bool>(
+              selector: (_, provider) => provider.entitlementIsActive,
+              builder: (context, isActive, child) {
+                if (isActive) {
+                  return const Text(titleNameMain, textScaleFactor: 0.7);
+                } else {
+                  return const Text('무료체험중입니다.', textScaleFactor: 0.7);
+                }
+              }),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.delete),
