@@ -13,6 +13,15 @@ class UIChangeNotifier with ChangeNotifier {
   // bool isCupertinoUI = false;
   // double customTextScaleFactor = 1.0;
 
+  final pageTransitionsTheme = const PageTransitionsTheme(
+    builders: <TargetPlatform, PageTransitionsBuilder>{
+      TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+      //TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+    },
+  );
+
   static const String uiSetBoxName = 'myOption';
 
   UIOption uiOption = UIOption(true, false, false, 1.0);
@@ -88,6 +97,7 @@ class UIChangeNotifier with ChangeNotifier {
 
   ThemeData updateThemes(bool useLightMode) {
     return ThemeData(
+        pageTransitionsTheme: pageTransitionsTheme,
         colorSchemeSeed: const Color(0xff6750a4),
         useMaterial3: true,
         brightness: useLightMode ? Brightness.light : Brightness.dark);
