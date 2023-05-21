@@ -108,7 +108,8 @@ class SplashScreenState extends State<SplashScreen> {
             Object? ret;
             if (!isActive) {
               final navigator = Navigator.of(context);
-              ret = await Navigator.pushNamed(context, routeNamePurchase);
+              ret = await Navigator.pushNamed(context, routeNamePurchase,
+                  arguments: 'skip');
               mgLog('returned purchase widget - $ret');
               if (ret != null) {
                 navigator.pushReplacementNamed(routeChatPage);

@@ -1,3 +1,4 @@
+import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:chat_playground/widgets/paywell.dart';
@@ -9,6 +10,9 @@ class PagePurchase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    mgLog('args - $args');
+
     final uiNotifier = context.read<UIChangeNotifier>();
     //final purchaseNotifier = context.read<RCPurchasesNotifier>();
     return Scaffold(

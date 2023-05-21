@@ -112,7 +112,8 @@ class _PageChatMainState extends State<PageChatMain> {
                             //     index - (index / adWidgetTerm).toInt();
 
                             final dataindex = index - index ~/ adWidgetTerm;
-                            final MessageItem? data = box.get(dataindex);
+                            //final MessageItem? data = box.get(dataindex);
+                            final MessageItem? data = box.getAt(dataindex);
                             mgLog('index - $index, dataindex - $dataindex');
                             return MessageBubble(
                               content: data!.content,

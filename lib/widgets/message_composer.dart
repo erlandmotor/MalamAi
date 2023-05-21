@@ -16,67 +16,56 @@ class MessageComposer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 80,
       padding: const EdgeInsets.all(12),
       color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.05),
-      child: SafeArea(
-        child: Row(
-          children: [
-            Expanded(
-              child: !awaitingResponse
-                  ? TextField(
-                      controller: _messageController,
-                      onSubmitted: onSubmitted,
-                      decoration: const InputDecoration(
-                        //hintText: 'Write your message here...',
-                        hintText: '메시지를 입력하세요...',
-                        border: InputBorder.none,
-                      ),
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // SizedBox(
-                        //   height: 24,
-                        //   width: 24,
-                        //   //child: CircularProgressIndicator(),
-                        //   child: const JumpingDotsProgressIndicator(
-                        //     fontSize: 28.0,
-                        //   ),
-                        // ),
+      //color: Colors.amber,
+      child:
+          //  SafeArea(
+          //   child:
+          Row(
+        children: [
+          Expanded(
+            child: !awaitingResponse
+                ? TextField(
+                    controller: _messageController,
+                    onSubmitted: onSubmitted,
+                    decoration: const InputDecoration(
+                      suffixIcon: Icon(Icons.send),
+                      //floatingLabelAlignment: FloatingLabelAlignment.center,
+                      hintText: '메시지를 입력하세요...',
 
-                        // JumpingDotsProgressIndicator(
-                        //   fontSize: 28.0,
-                        // ),
-
-                        // SizedBox(
-                        //   height: 24,
-                        //   width: 24,
-                        //   child: JumpingDotsProgressIndicator(
-                        //     fontSize: 28.0,
-                        //   ),
-                        // ),
-
-                        // Padding(
-                        //   padding: EdgeInsets.all(16),
-                        //   child: Text('응답 대기중...'),
-                        // ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: JumpingText('응답 대기중...'),
-                        ),
-                      ],
+                      border: InputBorder.none,
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(
+                            color: Colors.cyan,
+                          )),
                     ),
-            ),
-            IconButton(
-              onPressed: !awaitingResponse
-                  ? () => onSubmitted(_messageController.text)
-                  : null,
-              icon: const Icon(Icons.send),
-            ),
-          ],
-        ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: JumpingText('응답 대기중...'),
+                      ),
+                    ],
+                  ),
+          ),
+          // Align(
+          //   alignment: Alignment.topRight,
+          //   child: IconButton(
+          //     onPressed: !awaitingResponse
+          //         ? () => onSubmitted(_messageController.text)
+          //         : null,
+          //     icon: const Icon(Icons.send),
+          //   ),
+          // ),
+        ],
       ),
+      //),
+      //)
     );
   }
 }
