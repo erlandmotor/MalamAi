@@ -62,7 +62,7 @@ class MgAdWidgetState extends State<MgAdWidget> {
   Widget build(BuildContext context) {
     if (_bannerAd != null) {
       return Container(
-          margin: const EdgeInsets.only(bottom: 20.0),
+          margin: const EdgeInsets.only(bottom: 5.0),
           child: SafeArea(
             child: SizedBox(
               width: _bannerAd!.size.width.toDouble(),
@@ -75,7 +75,7 @@ class MgAdWidgetState extends State<MgAdWidget> {
           ));
     } else {
       return Container(
-        height: 50, // banner height
+        height: 30, // banner height
       );
     }
   }

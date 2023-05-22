@@ -32,7 +32,7 @@ class MessageBubble extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -64,20 +64,26 @@ class MessageBubble extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  isUserMessage ? '나의 말' : 'AI 답변',
+                  isUserMessage
+                      ? '${firebaseNotifier.user!.displayName}님의 말'
+                      : 'AI 답변',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            //const SizedBox(height: 2),
+            // Container(
+            //     color: Colors.cyan,
+            //     child:
             MarkdownWidget(
               data: content,
               shrinkWrap: true,
               config: uiNoti.isLightMode
                   ? MarkdownConfig.defaultConfig
                   : MarkdownConfig.darkConfig,
+              //)
             ),
-            const SizedBox(height: 8),
+            //const SizedBox(height: 2),
             Row(
               children: [
                 const Spacer(),
