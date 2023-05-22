@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
@@ -67,11 +68,13 @@ class SplashScreenState extends State<SplashScreen> {
     // }
 
     if (firebaseNotifier.loggedIn == false) {
-      widgets.add(Image.asset(
-        logoImage,
-        width: 120,
-        height: 120,
-      ));
+      widgets.add(ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.asset(
+            logoImage,
+            width: 120,
+            height: 120,
+          )));
 
       var uiNoti = context.watch<UIChangeNotifier>();
       widgets.add(SignInButton(
@@ -90,7 +93,14 @@ class SplashScreenState extends State<SplashScreen> {
       if (url != "") {
         widgets.add(ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: firebaseNotifier.photoImage));
+            //child: firebaseNotifier.photoImage));
+
+            child: CachedNetworkImage(
+              imageUrl: firebaseNotifier.user!.photoURL!,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            )));
         widgets.add(const SizedBox(height: 20));
       }
       widgets.add(ElevatedButton(

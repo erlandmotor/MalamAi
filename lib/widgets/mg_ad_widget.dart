@@ -13,7 +13,8 @@ class MgAdWidgetState extends State<MgAdWidget> {
   //NativeAd? _bannerAd2;
 
   final String _adUnitId =
-      'ca-app-pub-1457387674173388/7156563927'; // metalgeni
+      //'ca-app-pub-1457387674173388/7156563927'; // metalgeni
+      'ca-app-pub-3445302802549723/7811494414'; // MOTORWAY
 
   @override
   void initState() {

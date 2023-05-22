@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
@@ -40,7 +41,19 @@ class MessageBubble extends StatelessWidget {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: isUserMessage
-                        ? firebaseNotifier.photoImageChat
+                        ? //firebaseNotifier.photoImageChat
+
+                        CachedNetworkImage(
+                            width: 30,
+                            height: 30,
+                            imageUrl: firebaseNotifier.user!.photoURL!,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          )
                         : Image.asset(
                             logoImage,
                             width: 30,

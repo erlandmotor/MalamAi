@@ -15,8 +15,8 @@ class UIChangeNotifier with ChangeNotifier {
 
   final pageTransitionsTheme = const PageTransitionsTheme(
     builders: <TargetPlatform, PageTransitionsBuilder>{
-      TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-      //TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      //TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
     },

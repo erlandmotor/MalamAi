@@ -32,7 +32,7 @@ class PagePurchase extends StatelessWidget {
         body: Selector<RCPurchasesNotifier, bool>(
             selector: (_, provider) => provider.entitlementIsActive,
             builder: (context, isActive, child) {
-              if (!isActive) {
+              if (isActive) {
                 return buildActiveUser(context);
               } else {
                 return const Paywall();
@@ -83,7 +83,7 @@ class PagePurchase extends StatelessWidget {
 
     elements.add(
       Container(
-          padding: EdgeInsets.only(top: 8, bottom: 8),
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             TextButton(
               child: const Text("확인"),

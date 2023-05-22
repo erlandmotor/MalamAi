@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/define/global_define.dart';
@@ -47,7 +46,6 @@ class PageChatState extends State<PageChat> {
 
   @override
   Widget build(BuildContext context) {
-//-------
     return Scaffold(
         drawer: const MGSideDrawer(),
         body: Column(
@@ -61,7 +59,6 @@ class PageChatState extends State<PageChat> {
                     //     child: Text("메시지 없음"),
                     //   );
                     // }
-
                     final int myItemCount =
                         box.length + (box.length ~/ adWidgetTerm);
 
@@ -113,7 +110,6 @@ class PageChatState extends State<PageChat> {
                                 },
                               ),
                             ]),
-
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
@@ -128,21 +124,7 @@ class PageChatState extends State<PageChat> {
                                 }
                               } else {
                                 final dataindex = index - index ~/ adWidgetTerm;
-                                //final MessageItem? data = box.get(dataindex);
                                 final MessageItem? data = box.getAt(dataindex);
-
-                                mgLog(
-                                    'index - $index, dataindex - $dataindex, myItemCount - $myItemCount, data - $data');
-
-                                mgLog(
-                                    'box.values.length - ${box.values.length}');
-                                for (MessageItem item in box.values) {
-                                  mgLog('${item.content}');
-                                }
-
-                                if (data == null) {
-                                  return Text('data null...');
-                                }
 
                                 return MessageBubble(
                                   content: data!.content,
@@ -153,14 +135,9 @@ class PageChatState extends State<PageChat> {
                             childCount: myItemCount,
                           ),
                         ),
-                        ///////////////////
                       ],
                     ); //),
                   }),
-              // bottomNavigationBar: MessageComposer(
-              //   onSubmitted: _onSubmitted,
-              //   awaitingResponse: _awaitingResponse,
-              // ),
             ),
             MessageComposer(
               onSubmitted: _onSubmitted,
@@ -168,86 +145,10 @@ class PageChatState extends State<PageChat> {
             ),
           ],
         ));
-//-------
-    return Scaffold(
-      appBar: AppBar(
-          //title: const Text(titleNameMain, textScaleFactor: 0.7),
-          title: Selector<RCPurchasesNotifier, bool>(
-              selector: (_, provider) => provider.entitlementIsActive,
-              builder: (context, isActive, child) {
-                if (isActive) {
-                  return const Text(titleNameMain, textScaleFactor: 0.7);
-                } else {
-                  return const Text('무료체험중입니다.', textScaleFactor: 0.7);
-                }
-              }),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.delete),
-              //tooltip: 'Hi!',
-              onPressed: () {
-                openDialog(context);
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.pushNamed(context, routeNameChatTab);
-              },
-            ),
-          ]),
-      body: Column(
-        children: [
-          Expanded(
-            child: ValueListenableBuilder(
-                valueListenable: chatBox.listenable(),
-                builder: (context, Box<MessageItem> box, _) {
-                  if (box.values.isEmpty) {
-                    return const Center(
-                      child: Text("메시지 없음"),
-                    );
-                  }
-
-                  final int myItemCount =
-                      box.length + (box.length ~/ adWidgetTerm);
-
-                  return ListView.builder(
-                    controller: _controller,
-                    itemCount: myItemCount,
-                    itemBuilder: (context, index) {
-                      if (index > adWidgetTerm - 1 &&
-                          index % adWidgetTerm == 0) {
-                        mgLog('index - $index, ad');
-
-                        if (kIsWeb == false) {
-                          return const MgAdWidget();
-                        } else {
-                          return const Divider(height: 10);
-                        }
-                      } else {
-                        final dataindex = index - index ~/ adWidgetTerm;
-                        final MessageItem? data = box.get(dataindex);
-                        mgLog('index - $index, dataindex - $dataindex');
-                        return MessageBubble(
-                          content: data!.content,
-                          isUserMessage: data.isUserMessage,
-                        );
-                      }
-                    },
-                  );
-                }),
-          ),
-          MessageComposer(
-            onSubmitted: _onSubmitted,
-            awaitingResponse: _awaitingResponse,
-          ),
-        ],
-      ),
-      drawer: const MGSideDrawer(),
-    );
   }
 
   Future<void> _onSubmitted(String message) async {
+    //var tempContext = context;
     //box.
     await chatBox.add(MessageItem(message, true));
 
@@ -305,33 +206,5 @@ class PageChatState extends State<PageChat> {
         ],
       ),
     );
-  }
-}
-
-class _MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(16),
-      child: TextField(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Enter Text',
-        ),
-      ),
-    );
-  }
-
-  @override
-  double get maxExtent => 60;
-
-  @override
-  double get minExtent => 60;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
   }
 }

@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ntp/ntp.dart';
 
@@ -73,9 +74,19 @@ class FirebaseNotifier extends ChangeNotifier {
       loggedIn = user != null;
 
       if (loggedIn) {
-        photoImage = CachedNetworkImage(imageUrl: user!.photoURL!);
+        photoImage = CachedNetworkImage(
+          imageUrl: user!.photoURL!,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              CircularProgressIndicator(value: downloadProgress.progress),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        );
         photoImageChat = CachedNetworkImage(
-            imageUrl: user!.photoURL!, width: 30, height: 30);
+            imageUrl: user!.photoURL!,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(value: downloadProgress.progress),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            width: 30,
+            height: 30);
         await compareTrial();
         // ctime = user?.metadata.creationTime;
         // lasttime = user?.metadata.lastSignInTime;

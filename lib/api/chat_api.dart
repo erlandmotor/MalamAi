@@ -30,28 +30,13 @@ class ChatApi {
           break;
         }
       }
-      //List<int> subList1 = list.sublist(3);
       calcedMessages = messages.sublist(checkindex);
 
-      final msgContents2 =
-          calcedMessages.fold<int>(0, (value, e) => value + (e.content.length));
+      // final msgContents2 =
+      //     calcedMessages.fold<int>(0, (value, e) => value + (e.content.length));
     } else {
       calcedMessages = messages;
     }
-
-    //-----------------
-    // final chatCompletion = await OpenAI.instance.chat.create(
-    //   model: _model,
-    //   messages: messages
-    //       .map((e) => OpenAIChatCompletionChoiceMessageModel(
-    //             //role: e.isUserMessage ? 'user' : 'assistant',
-    //             role: e.isUserMessage
-    //                 ? OpenAIChatMessageRole.user
-    //                 : OpenAIChatMessageRole.assistant,
-    //             content: e.content,
-    //           ))
-    //       .toList(),
-    // );
 
     final chatCompletion = await OpenAI.instance.chat.create(
       model: _model,

@@ -154,7 +154,7 @@ class PaywallState extends State<Paywall> {
 
     return InkWell(
       //style: style,
-      onTap: () async {
+      onTap: () {
         final myPack = item;
         try {
           Future<bool> future = rcPurchaseNotifier.purchasePackage(myPack);

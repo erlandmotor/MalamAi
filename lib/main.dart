@@ -129,7 +129,7 @@ class _ChatAppState extends State<ChatApp> {
     uiNoti.enumUIOption(context);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      //debugShowCheckedModeBanner: false,
       title: 'Chat Playground',
       theme: uiNoti.materialThemeData,
       builder: (BuildContext context, Widget? childArg) {
