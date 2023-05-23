@@ -72,7 +72,7 @@ void main() async {
 
   runApp(MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AppDataNotifier(), lazy: false),
+        //ChangeNotifierProvider(create: (_) => AppDataNotifier(), lazy: false),
         ChangeNotifierProvider(create: (_) => UIChangeNotifier()),
         // ChangeNotifierProxyProvider<AppDataNotifier, UIChangeNotifier>(
         //   create: (_) => UIChangeNotifier(),

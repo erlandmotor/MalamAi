@@ -48,7 +48,8 @@ class PageChatState extends State<PageChat> {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: const MGSideDrawer(),
-        body: Column(
+        body: SafeArea(
+            child: Column(
           children: [
             Expanded(
               child: ValueListenableBuilder(
@@ -144,7 +145,7 @@ class PageChatState extends State<PageChat> {
               awaitingResponse: _awaitingResponse,
             ),
           ],
-        ));
+        )));
   }
 
   Future<void> _onSubmitted(String message) async {

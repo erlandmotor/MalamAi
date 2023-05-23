@@ -251,16 +251,17 @@ class PaywallState extends State<Paywall> {
               borderRadius: const BorderRadius.all(Radius.circular(5))),
           child: Text(
             '인기',
+            textScaleFactor: 1.0,
             textAlign: TextAlign.center,
             style: tStyle,
           )));
       widgets.add(const Spacer());
     }
 
-    widgets
-        .add(Text(uiDesc.title, textAlign: TextAlign.center, style: tStyle2));
-    widgets.add(
-        Text(uiDesc.priceString, textAlign: TextAlign.center, style: tStyle2));
+    widgets.add(Text(uiDesc.title,
+        textAlign: TextAlign.center, textScaleFactor: 1.0, style: tStyle2));
+    widgets.add(Text(uiDesc.priceString,
+        textAlign: TextAlign.center, textScaleFactor: 1.0, style: tStyle2));
     // widgets.add(Text('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',
     //     textAlign: TextAlign.center));
 
@@ -282,12 +283,13 @@ class PaywallState extends State<Paywall> {
           child: Text(
             '할인혜택: ${salePer.floor()}%',
             //maxLines: 1,
+            textScaleFactor: 1.0,
             textAlign: TextAlign.center,
             style: tStyle.copyWith(color: Colors.white),
           )));
 
       widgets.add(Text('주당 ₩${weekValue.floor()}',
-          textAlign: TextAlign.center, style: tStyle));
+          textAlign: TextAlign.center, textScaleFactor: 1.0, style: tStyle));
     }
 
     return widgets;
