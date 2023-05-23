@@ -95,10 +95,10 @@ class ChatApp extends StatefulWidget {
   final ChatApi chatApi;
 
   @override
-  State<ChatApp> createState() => _ChatAppState();
+  State<ChatApp> createState() => ChatAppState();
 }
 
-class _ChatAppState extends State<ChatApp> {
+class ChatAppState extends State<ChatApp> {
   @override
   Widget build(BuildContext context) {
     var uiNoti = context.watch<UIChangeNotifier>();
