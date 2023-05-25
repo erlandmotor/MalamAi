@@ -46,6 +46,10 @@ class PageChatState extends State<PageChat> {
 
   @override
   Widget build(BuildContext context) {
+    //chatBox = context.read<ChatGroupNotifier>().openLatest();
+    //final name = context.select<ChatGroupNotifier>((Box<MessageItem> p) => p);
+    chatBox = context.select((ChatGroupNotifier p) => p.curChatBox);
+
     return Scaffold(
         drawer: const MGSideDrawer(),
         body: SafeArea(
@@ -104,7 +108,8 @@ class PageChatState extends State<PageChat> {
                                 },
                               ),
                               IconButton(
-                                icon: const Icon(Icons.add),
+                                //icon: const Icon(Icons.add),
+                                icon: const Icon(Icons.view_list),
                                 onPressed: () {
                                   Navigator.pushNamed(
                                       context, routeNameChatTab);

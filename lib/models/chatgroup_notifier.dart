@@ -18,6 +18,8 @@ class ChatGroupNotifier with ChangeNotifier {
   late List<int> chatGroupsOrder;
   late Map<int, DateTime> chatTimes;
 
+  late Box<MessageItem> curChatBox;
+
   ChatGroupNotifier() {
     mgLog('ChatGroupNotifier notifier init.......');
   }
@@ -84,7 +86,6 @@ class ChatGroupNotifier with ChangeNotifier {
 
     Box<MessageItem> myBox = Hive.box(resultTabKey.toString());
     myBox.add(MessageItem('안녕하세요?', false));
-    //myBox.close();
 
     // 열려면
     // lastTabIndex = chatGroupsOrder.length - 1;
@@ -122,12 +123,26 @@ class ChatGroupNotifier with ChangeNotifier {
     chatGroupsOrder[oldIndex] = chatGroupsOrder[newIndex];
     chatGroupsOrder[newIndex] = oldval;
 
+    if (lastTabIndex == oldIndex) {
+      lastTabIndex = newIndex;
+      otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
+    } else {
+      if (lastTabIndex == newIndex) {
+        lastTabIndex = oldIndex;
+        otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
+      }
+    }
+
     otherDBBox.put(keyTabLists, chatGroupsOrder);
     notifyListeners();
   }
 
   setTabIndex(int tabindex) {
-    lastTabIndex = tabindex;
+    //lastTabIndex = tabindex;
+
+    mgLog('setting tab - $tabindex');
+    openChatBox(tabindex);
+
     notifyListeners();
   }
 
@@ -135,29 +150,22 @@ class ChatGroupNotifier with ChangeNotifier {
     if (lastTabIndex >= chatGroupsOrder.length) {
       lastTabIndex = 0;
     }
-    Box<MessageItem> myBox = Hive.box(chatGroupsOrder[lastTabIndex].toString());
+    curChatBox = Hive.box(chatGroupsOrder[lastTabIndex].toString());
 
-    if (myBox.isEmpty) {
+    if (curChatBox.isEmpty) {
       //myBox.put(key, value);
-      myBox.add(MessageItem('안녕하세요?', false));
+      curChatBox.add(MessageItem('안녕하세요?', false));
     }
 
-    // try{
-    //    myBox = Hive.box(chatGroups[lastTabIndex].toString());
-    // }
-    // catch{
-
-    // }
-
-    return myBox;
+    return curChatBox;
   }
 
   Box<MessageItem> openChatBox(int index) {
     lastTabIndex = index;
     otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
 
-    Box<MessageItem> myBox = Hive.box(chatGroupsOrder[index].toString());
-    return myBox;
+    curChatBox = Hive.box(chatGroupsOrder[index].toString());
+    return curChatBox;
   }
 
   String getChatTabLebel(int index) {

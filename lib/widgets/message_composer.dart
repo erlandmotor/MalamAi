@@ -30,17 +30,29 @@ class MessageComposer extends StatelessWidget {
                 ? TextField(
                     controller: _messageController,
                     onSubmitted: onSubmitted,
-                    decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.send),
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: () => onSubmitted(_messageController.text),
+                        icon: const Icon(Icons.send),
+                      ),
+
                       //floatingLabelAlignment: FloatingLabelAlignment.center,
                       hintText: '메시지를 입력하세요...',
 
-                      border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(
-                            color: Colors.cyan,
-                          )),
+                      //border: InputBorder.none,
+                      // enabledBorder: OutlineInputBorder(
+                      //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      //     borderSide: BorderSide(
+                      //       color: Colors.cyan,
+                      //     )),
+
+                      // focusedBorder: OutlineInputBorder(
+                      //   borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      //   borderSide: BorderSide(width: 1, color: Colors.cyan),
+                      // ),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      ),
                     ),
                   )
                 : Row(

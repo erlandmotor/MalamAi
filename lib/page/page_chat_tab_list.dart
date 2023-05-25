@@ -123,13 +123,12 @@ class ChatTabListState extends State<ChatTabList> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextButton(
+                TextButton.icon(
+                  icon: const Icon(Icons.add),
+                  label: const Text('추가하기'),
                   onPressed: () {
                     onAddTab(context);
                   },
-                  child: const Text(
-                    '추가하기',
-                  ),
                 ),
               ],
             ),
@@ -199,9 +198,13 @@ class ChatTabListState extends State<ChatTabList> {
                             _refreshIndicatorKey.currentState?.show();
                             onRemove(context, index);
                           },
-                          icon: const Icon(Icons.remove_circle,
+                          icon: const Icon(
+                              Icons.remove_circle_sharp, //Icons.remove_circle,
                               color: Colors.redAccent)),
-                      title: Text(label),
+                      title: Expanded(
+                        flex: 8,
+                        child: Text(label, overflow: TextOverflow.ellipsis),
+                      ),
                     ))))
         : Card(
             key: Key('${index + 200}'),
@@ -219,7 +222,14 @@ class ChatTabListState extends State<ChatTabList> {
                         }
                       },
                       title: Row(children: [
-                        Text(label),
+                        Expanded(
+                          flex: 8,
+                          child: Text(label, overflow: TextOverflow.ellipsis),
+                        ),
+                        // Text(
+                        //   label,
+                        //   overflow: TextOverflow.ellipsis,
+                        // ),
                         const Spacer(),
                         _isEdit
                             ? IconButton(
