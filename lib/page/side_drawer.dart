@@ -114,7 +114,7 @@ class MGSideDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.add),
+            leading: const Icon(Icons.view_list),
             title: Text(
               '채팅 그룹 관리',
               textScaleFactor: 1.0,

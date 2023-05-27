@@ -46,9 +46,14 @@ class PageChatState extends State<PageChat> {
 
   @override
   Widget build(BuildContext context) {
+    //chatBox = context.read<ChatGroupNotifier>().openLatest();
+    //final name = context.select<ChatGroupNotifier>((Box<MessageItem> p) => p);
+    chatBox = context.select((ChatGroupNotifier p) => p.curChatBox);
+
     return Scaffold(
         drawer: const MGSideDrawer(),
-        body: Column(
+        body: SafeArea(
+            child: Column(
           children: [
             Expanded(
               child: ValueListenableBuilder(
@@ -103,7 +108,8 @@ class PageChatState extends State<PageChat> {
                                 },
                               ),
                               IconButton(
-                                icon: const Icon(Icons.add),
+                                //icon: const Icon(Icons.add),
+                                icon: const Icon(Icons.view_list),
                                 onPressed: () {
                                   Navigator.pushNamed(
                                       context, routeNameChatTab);
@@ -144,7 +150,7 @@ class PageChatState extends State<PageChat> {
               awaitingResponse: _awaitingResponse,
             ),
           ],
-        ));
+        )));
   }
 
   Future<void> _onSubmitted(String message) async {
