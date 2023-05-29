@@ -162,13 +162,25 @@ class PaywallState extends State<Paywall> {
             mgLog('purchased - result $value,  pckage -  $myPack');
             if (value) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('구매가 완료되었습니다. 감사합니다.')),
+                SnackBar(
+                  content: const Text('구매가 완료되었습니다. 감사합니다.'),
+                  action: SnackBarAction(
+                    label: '닫기',
+                    onPressed: () {},
+                  ),
+                ),
               );
 
               Navigator.pop<String>(context, 'purchased');
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('에러가 발생했습니다. 다시 시도하세요.')),
+                SnackBar(
+                  content: const Text('에러가 발생했습니다. 다시 시도하세요.'),
+                  action: SnackBarAction(
+                    label: '닫기',
+                    onPressed: () {},
+                  ),
+                ),
               );
             }
           });
@@ -316,7 +328,13 @@ class PaywallState extends State<Paywall> {
           onPressed: isFreeTrial
               ? () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('체험중에도 언제든 구매가능합니다.')),
+                    SnackBar(
+                      content: const Text('체험중에도 언제든 구매가능합니다.'),
+                      action: SnackBarAction(
+                        label: '닫기',
+                        onPressed: () {},
+                      ),
+                    ),
                   );
 
                   Navigator.pop<String>(context, '체험하기');

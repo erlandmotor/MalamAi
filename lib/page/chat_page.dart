@@ -158,7 +158,13 @@ class _PageChatMainState extends State<PageChatMain> {
       });
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('에러가 발생했습니다. 다시 시도하세요.')),
+        SnackBar(
+          content: const Text('에러가 발생했습니다. 다시 시도하세요.'),
+          action: SnackBarAction(
+            label: '닫기',
+            onPressed: () {},
+          ),
+        ),
       );
       setState(() {
         _awaitingResponse = false;

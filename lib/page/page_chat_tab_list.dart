@@ -192,8 +192,6 @@ class ChatTabListState extends State<ChatTabList> {
                       subtitle: Text(subLabel),
                       leading: IconButton(
                           onPressed: () {
-                            //_context = context;
-                            //_index = index;
                             isRemoving = true;
                             _refreshIndicatorKey.currentState?.show();
                             onRemove(context, index);
@@ -261,120 +259,51 @@ class ChatTabListState extends State<ChatTabList> {
   onAddTab(BuildContext context) {
     groupNotifier.addTab();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('챗 탭이 추가되었습니다.')),
+      SnackBar(
+        content: const Text('챗 탭이 추가되었습니다.'),
+        action: SnackBarAction(
+          label: '닫기',
+          onPressed: () {},
+        ),
+      ),
     );
   }
 
   onRemove(BuildContext context, int index) {
     if (groupNotifier.chatGroupsOrder.length <= 1) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('삭제 할 수 없는 탭입니다.')),
+        SnackBar(
+          content: const Text('삭제 할 수 없는 탭입니다.'),
+          action: SnackBarAction(
+            label: '닫기',
+            onPressed: () {},
+          ),
+        ),
       );
       return;
     }
     groupNotifier.removeTab(index);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('챗 탭이 삭제되었습니다.')),
+      SnackBar(
+        content: const Text('챗 탭이 삭제되었습니다.'),
+        action: SnackBarAction(
+          label: '닫기',
+          onPressed: () {},
+        ),
+      ),
     );
   }
 
   Color mainTextColor = const Color(0xFF083e64);
-  //late BuildContext _context;
-  //late int _index;
-
-  // buildListAll(BuildContext context) {
-  //   List<Widget> widgets = [];
-
-  //   if (_isEdit) {
-  //     for (int i = 0; i < groupNotifier.chatGroupsOrder.length; i++) {
-  //       widgets.add(Container(
-  //           key: Key('$i'),
-  //           child: Dismissible(
-  //               background: Container(
-  //                 margin: const EdgeInsets.all(8),
-  //                 padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                 color: Colors.red,
-  //                 alignment: Alignment.centerLeft,
-  //                 child: const Icon(
-  //                   Icons.delete,
-  //                   size: 36,
-  //                   color: Colors.white,
-  //                 ),
-  //               ),
-  //               secondaryBackground: Container(
-  //                 margin: const EdgeInsets.all(8),
-  //                 padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                 color: Colors.red,
-  //                 alignment: Alignment.centerRight,
-  //                 child: const Icon(
-  //                   Icons.delete,
-  //                   size: 36,
-  //                   color: Colors.white,
-  //                 ),
-  //               ),
-  //               key: ValueKey<String>(
-  //                   groupNotifier.chatGroupsOrder[i].toString()),
-  //               onDismissed: (DismissDirection direction) async {
-  //                 /*
-  //                 _context = context;
-  //                 _index = i;
-  //                 isRemoving = true;
-  //                 _refreshIndicatorKey.currentState?.show();
-  //                 onRemove(context, i);
-  //                 */
-
-  //                 var result = await confirmDismiss2(context, i);
-  //                 mgLog('$result');
-  //               },
-  //               // confirmDismiss: (direction) =>
-  //               //     _confirmDismiss(direction, context, i),
-  //               child: buildItem(context, i))));
-  //     }
-  //   } else {
-  //     for (int i = 0; i < groupNotifier.chatGroupsOrder.length; i++) {
-  //       widgets.add(buildItem(context, i));
-  //     }
-  //   }
-
-  //   return widgets;
-  // }
-
-  // Future<bool> _confirmDismiss(
-  //   DismissDirection direction,
-  //   BuildContext context,
-  //   int index,
-  // ) {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (ctx) {
-  //         return AlertDialog(
-  //           //title: const Text('삭제'),
-  //           content: Text('정말로 해당 챗 그룹을 삭제하시겠습니까? $index'),
-  //           actions: <Widget>[
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 return Navigator.of(context).pop(false);
-  //               },
-  //               child: const Text('취소'),
-  //             ),
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 return Navigator.of(context).pop(true);
-  //               },
-  //               child: const Text('삭제'),
-  //             ),
-  //           ],
-  //         );
-  //       }).then((value) => Future.value(value));
-  // }
 
   Future<bool?> dialogBuilder(BuildContext context, int index) {
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('삭제하시겠습니까?'),
+          //title: const Text('삭제하시겠습니까?'),
           //content: Text('정말로 해당 챗 그룹을 삭제하시겠습니까? $index'),
+          content: const Text('삭제하시겠습니까?'),
           actions: <Widget>[
             FilledButton(
               // style: FilledButton.styleFrom(

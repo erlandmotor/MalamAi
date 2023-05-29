@@ -109,7 +109,7 @@ class ChatGroupNotifier with ChangeNotifier {
     myBox.deleteFromDisk();
 
     lastTabIndex = lastTabIndex.clamp(0, chatGroupsOrder.length - 1);
-    otherDBBox.put(keyLatestOpenIndex, lastTabIndex);
+    openChatBox(lastTabIndex);
 
     notifyListeners();
   }
