@@ -148,6 +148,7 @@ class _ChatAppState extends State<ChatApp> {
         routeChatPage: (context) => PageChat(chatApi: widget.chatApi),
         routeNameChatTab: (context) => const ChatTabList(),
         routeNameOption: (context) => PageSetting(),
+        routeChatHelp: (context) => PageSetting(),
       },
     );
   }

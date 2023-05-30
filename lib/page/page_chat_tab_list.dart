@@ -233,28 +233,6 @@ class ChatTabListState extends State<ChatTabList> {
                           fit: FlexFit.tight,
                           child: Text(label, overflow: TextOverflow.ellipsis),
                         ),
-
-                        // Expanded(
-                        //   flex: 10,
-                        //   child: Text(label, overflow: TextOverflow.ellipsis),
-                        // ),
-                        // Text(
-                        //   label,
-                        //   overflow: TextOverflow.ellipsis,
-                        // ),
-                        // const Spacer(),
-                        // _isEdit
-                        //     ? IconButton(
-                        //         onPressed: () {
-                        //           //_context = context;
-                        //           //_index = index;
-                        //           //isRemoving = true;
-                        //           _refreshIndicatorKey.currentState?.show();
-                        //           onRemove(context, index);
-                        //         },
-                        //         icon: const Icon(Icons.remove_circle,
-                        //             color: Colors.redAccent))
-                        //     : Container(),
                       ]));
                 }),
           );
@@ -364,9 +342,6 @@ class ChatTabListState extends State<ChatTabList> {
               _isEdit
                   ? IconButton(
                       onPressed: () {
-                        //_context = context;
-                        //_index = index;
-                        //isRemoving = true;
                         _refreshIndicatorKey.currentState?.show();
                         onRemove(context, index);
                       },

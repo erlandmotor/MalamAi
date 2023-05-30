@@ -37,6 +37,8 @@ class PageChatState extends State<PageChat> {
 
   late Box<MessageItem> chatBox;
 
+  bool isBegin = true;
+
   @override
   void initState() {
     //makeBubbleWidget();

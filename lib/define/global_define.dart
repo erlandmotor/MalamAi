@@ -20,6 +20,7 @@ const routeChatPage = '/chat';
 const routeNameOption = '/option';
 const routeNamePurchase = '/purchase';
 const routeNameChatTab = '/chattabs';
+const routeChatHelp = '/chat/help';
 
 //const logoImage = 'assets/icons/robot5.png';
 const logoImage = 'assets/icons/icon.jfif';
