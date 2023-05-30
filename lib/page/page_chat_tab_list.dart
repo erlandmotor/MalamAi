@@ -174,7 +174,7 @@ class ChatTabListState extends State<ChatTabList> {
                 onDismissed: (DismissDirection direction) async {
                   //_context = context;
                   //_index = index;
-                  isRemoving = true;
+                  //isRemoving = true;
                   _refreshIndicatorKey.currentState?.show();
                   onRemove(context, index);
                   mgLog('Removed');
@@ -191,18 +191,27 @@ class ChatTabListState extends State<ChatTabList> {
                           : null,
                       subtitle: Text(subLabel),
                       leading: IconButton(
-                          onPressed: () {
-                            isRemoving = true;
-                            _refreshIndicatorKey.currentState?.show();
-                            onRemove(context, index);
-                          },
-                          icon: const Icon(
-                              Icons.remove_circle_sharp, //Icons.remove_circle,
-                              color: Colors.redAccent)),
-                      title: Expanded(
-                        flex: 8,
-                        child: Text(label, overflow: TextOverflow.ellipsis),
+                        icon: const Icon(
+                            Icons.remove_circle_sharp, //Icons.remove_circle,
+                            color: Colors.redAccent),
+                        onPressed: () {
+                          dialogBuilder(context, index).then((value) {
+                            if (value != null && value == true) {
+                              _refreshIndicatorKey.currentState?.show();
+                              onRemove(context, index);
+                            }
+                          });
+                          // 바로 삭제
+                          // _refreshIndicatorKey.currentState?.show();
+                          // onRemove(context, index);
+                        },
                       ),
+                      // title: Expanded(
+                      //   flex: 8,
+                      //   child: Text(label, overflow: TextOverflow.ellipsis),
+                      // ),
+
+                      title: Text(label, overflow: TextOverflow.ellipsis),
                     ))))
         : Card(
             key: Key('${index + 200}'),
@@ -220,27 +229,32 @@ class ChatTabListState extends State<ChatTabList> {
                         }
                       },
                       title: Row(children: [
-                        Expanded(
-                          flex: 8,
+                        Flexible(
+                          fit: FlexFit.tight,
                           child: Text(label, overflow: TextOverflow.ellipsis),
                         ),
+
+                        // Expanded(
+                        //   flex: 10,
+                        //   child: Text(label, overflow: TextOverflow.ellipsis),
+                        // ),
                         // Text(
                         //   label,
                         //   overflow: TextOverflow.ellipsis,
                         // ),
-                        const Spacer(),
-                        _isEdit
-                            ? IconButton(
-                                onPressed: () {
-                                  //_context = context;
-                                  //_index = index;
-                                  isRemoving = true;
-                                  _refreshIndicatorKey.currentState?.show();
-                                  onRemove(context, index);
-                                },
-                                icon: const Icon(Icons.remove_circle,
-                                    color: Colors.redAccent))
-                            : Container(),
+                        // const Spacer(),
+                        // _isEdit
+                        //     ? IconButton(
+                        //         onPressed: () {
+                        //           //_context = context;
+                        //           //_index = index;
+                        //           //isRemoving = true;
+                        //           _refreshIndicatorKey.currentState?.show();
+                        //           onRemove(context, index);
+                        //         },
+                        //         icon: const Icon(Icons.remove_circle,
+                        //             color: Colors.redAccent))
+                        //     : Container(),
                       ]));
                 }),
           );
@@ -254,7 +268,7 @@ class ChatTabListState extends State<ChatTabList> {
     groupNotifier.swapTab(oldIndex, newIndex);
   }
 
-  bool isRemoving = false;
+  //bool isRemoving = false;
 
   onAddTab(BuildContext context) {
     groupNotifier.addTab();
@@ -329,34 +343,6 @@ class ChatTabListState extends State<ChatTabList> {
     );
   }
 
-  Future<bool> confirmDismiss2(
-    BuildContext context,
-    int index,
-  ) {
-    return showDialog<bool>(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            content: Text('정말로 해당 챗 그룹을 삭제하시겠습니까? $index'),
-            actions: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  //return Navigator.of(context).pop(false);
-                  return Navigator.pop(context);
-                },
-                child: const Text('취소'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  //return Navigator.of(context).pop(true);
-                },
-                child: const Text('삭제'),
-              ),
-            ],
-          );
-        }).then((value) => Future.value(value));
-  }
-
   buildItem(BuildContext context, int index) {
     var label = groupNotifier.getChatTabLebel(index);
     DateTime? chatdate = groupNotifier.chatTimes[index] ?? DateTime.now();
@@ -380,7 +366,7 @@ class ChatTabListState extends State<ChatTabList> {
                       onPressed: () {
                         //_context = context;
                         //_index = index;
-                        isRemoving = true;
+                        //isRemoving = true;
                         _refreshIndicatorKey.currentState?.show();
                         onRemove(context, index);
                       },
