@@ -16,12 +16,6 @@ class PageUsage extends StatelessWidget {
               icon: const Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            // actions: [
-            //   TextButton(
-            //     child: const Text('Close'),
-            //     onPressed: () => Navigator.of(context).pop(),
-            //   ),
-            // ],
           ),
           body: Center(
               child: TextButton(
@@ -48,10 +42,6 @@ class PageUsage extends StatelessWidget {
                           ),
                         ]),
                         actions: <Widget>[
-                          // TextButton(
-                          //   child: const Text('Okay'),
-                          //   onPressed: () => Navigator.of(context).pop(),
-                          // ),
                           FilledButton(
                             child: const Text('알겠습니다'),
                             onPressed: () => Navigator.of(context).pop(),
