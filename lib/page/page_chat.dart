@@ -85,7 +85,7 @@ class PageChatState extends State<PageChat> {
                             //         ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             //     child: FlexibleSpaceBar(
                             //       centerTitle: true, //child를 중앙에 놓는다.
-                            //       title: Text('London'),
+                            //       title: Text('title'),
                             //     ),
                             //   ),
                             // ),
@@ -104,13 +104,11 @@ class PageChatState extends State<PageChat> {
                             actions: <Widget>[
                               IconButton(
                                 icon: const Icon(Icons.delete),
-                                //tooltip: 'Hi!',
                                 onPressed: () {
-                                  openDialog(context);
+                                  openDeleteDialog(context);
                                 },
                               ),
                               IconButton(
-                                //icon: const Icon(Icons.add),
                                 icon: const Icon(Icons.view_list),
                                 onPressed: () {
                                   Navigator.pushNamed(
@@ -196,7 +194,7 @@ class PageChatState extends State<PageChat> {
     });
   }
 
-  void openDialog(BuildContext context) {
+  void openDeleteDialog(BuildContext context) {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(

@@ -21,6 +21,7 @@ import 'package:chat_playground/page/page_purchase.dart';
 import 'package:chat_playground/page/page_setting.dart';
 import 'package:chat_playground/page/page_splash_screen.dart';
 import 'package:chat_playground/page/page_chat_tab_list.dart';
+import 'package:chat_playground/page/page_usage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -148,7 +149,7 @@ class _ChatAppState extends State<ChatApp> {
         routeChatPage: (context) => PageChat(chatApi: widget.chatApi),
         routeNameChatTab: (context) => const ChatTabList(),
         routeNameOption: (context) => PageSetting(),
-        routeChatHelp: (context) => PageSetting(),
+        routeChatHelp: (context) => const PageUsage(),
       },
     );
   }
