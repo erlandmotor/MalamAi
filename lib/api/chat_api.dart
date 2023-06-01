@@ -1,7 +1,7 @@
 import 'package:chat_playground/define/hive_chat_massage.dart';
 //import 'package:chat_playground/models/chat_message.dart';
 //import 'package:chat_playground/secrets.dart';
-import 'package:dart_openai/openai.dart';
+import 'package:dart_openai/dart_openai.dart';
 
 class ChatApi {
   static const _model = 'gpt-3.5-turbo';

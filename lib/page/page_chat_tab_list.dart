@@ -289,6 +289,25 @@ class ChatTabListState extends State<ChatTabList> {
   Color mainTextColor = const Color(0xFF083e64);
 
   Future<bool?> dialogBuilder(BuildContext context, int index) {
+    if (groupNotifier.chatGroupsOrder.length <= 1) {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: const Text('삭제할수 없는 탭입니다.'),
+            actions: <Widget>[
+              FilledButton(
+                child: const Text('예'),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
