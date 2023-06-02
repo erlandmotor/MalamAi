@@ -44,6 +44,10 @@ class PageChatState extends State<PageChat> {
     //makeBubbleWidget();
     chatBox = context.read<ChatGroupNotifier>().openLatest();
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushNamed(context, routeChatHelp);
+    });
   }
 
   @override
