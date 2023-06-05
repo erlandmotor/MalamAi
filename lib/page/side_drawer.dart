@@ -132,7 +132,8 @@ class MGSideDrawer extends StatelessWidget {
           ),
           ListTile(
             //leading: const Icon(Icons.help_center),
-            leading: const Icon(Icons.lightbulb),
+            //leading: const Icon(Icons.lightbulb),
+            leading: const Icon(Icons.tips_and_updates),
             title: Text(
               '사용법및 예시',
               textScaleFactor: 1.0,
