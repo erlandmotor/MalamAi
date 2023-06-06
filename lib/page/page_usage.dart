@@ -20,7 +20,10 @@ class PageUsage extends StatelessWidget {
   static const List<List<String>> descs = [
     [
       'C++로 HTTP를 구현하는 예제를 보여줄래?',
-      //'스타트업의 개발팀장처럼 면접 질문을 생성해줘.',
+      '사이버펑크에 대해서 설명해줄래?',
+      '중년 뱃살을 빼려면 어떻게 해야해?',
+      '개발팀장처럼 면접 질문을 생성해줘.',
+      'C++로 HTTP를 구현하는 예제를 보여줄래?',
       '사이버펑크에 대해서 설명해줄래?',
       '중년 뱃살을 빼려면 어떻게 해야해?',
     ],
@@ -52,7 +55,7 @@ class PageUsage extends StatelessWidget {
           buildTotal(),
           TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('알겠습니다')),
+              child: const Text('알겠습니다')),
         ]),
       ),
       //),
@@ -111,46 +114,42 @@ class PageUsage extends StatelessWidget {
 
   Widget buildWarn() {
     return Card(
-      color: uiNoti.materialThemeData.colorScheme.tertiaryContainer,
-      elevation: 8,
-      margin: const EdgeInsets.all(20),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const ListTile(
-              leading: Icon(Icons.warning),
-              title: Text(
-                '제한 사항',
-                //textScaleFactor: 1.0,
-              ),
-            ),
-            ...List.generate(descs[1].length, (index) {
-              return ListTile(
-                //leading: Icon(Icons.tips_and_updates_sharp),
-                //style: ListTileStyle.drawer,
-                dense: true,
-                // title: Row(
-                //   children: [
-                //     Flexible(
-                //       fit: FlexFit.tight,
-                //       child: Text(
-                //         descs[1][index],
-                //       ),
-                //     ),
-                //   ],
+        color: uiNoti.materialThemeData.colorScheme.tertiaryContainer,
+        elevation: 8,
+        margin: const EdgeInsets.all(20),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // const ListTile(
+                //   leading: Icon(Icons.warning),
+                //   title: Text(
+                //     '제한 사항',
+                //     //textScaleFactor: 1.0,
+                //   ),
                 // ),
-
-                title: Text(
-                  descs[1][index],
-                ),
-              );
-
-              // return Text(
-              //   descs[1][index],
-              // );
-            }),
-          ]),
-    );
+                ...List.generate(descs[1].length, (index) {
+                  return Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                              width: 5,
+                              height: 5,
+                              child: Icon(Icons.warning_amber_rounded,
+                                  color: uiNoti
+                                      .materialThemeData.colorScheme.error)),
+                          const SizedBox(width: 30),
+                          Expanded(child: Text(descs[1][index]))
+                        ],
+                      ));
+                }),
+              ]),
+        ));
   }
 }
