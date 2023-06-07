@@ -254,7 +254,7 @@ class ChatTabListState extends State<ChatTabList> {
       SnackBar(
         content: const Text('챗 탭이 추가되었습니다.'),
         action: SnackBarAction(
-          label: '닫기',
+          label: '확인',
           onPressed: () {},
         ),
       ),
@@ -267,7 +267,7 @@ class ChatTabListState extends State<ChatTabList> {
         SnackBar(
           content: const Text('삭제 할 수 없는 탭입니다.'),
           action: SnackBarAction(
-            label: '닫기',
+            label: '확인',
             onPressed: () {},
           ),
         ),
@@ -279,7 +279,7 @@ class ChatTabListState extends State<ChatTabList> {
       SnackBar(
         content: const Text('챗 탭이 삭제되었습니다.'),
         action: SnackBarAction(
-          label: '닫기',
+          label: '확인',
           onPressed: () {},
         ),
       ),

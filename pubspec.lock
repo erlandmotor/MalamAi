@@ -101,10 +101,10 @@ packages:
     dependency: "direct dev"
     description:
       name: build_runner
-      sha256: "220ae4553e50d7c21a17c051afc7b183d28a24a420502e842f303f8e4e6edced"
+      sha256: "5e1929ad37d48bd382b124266cb8e521de5548d406a45a5ae6656c13dab73e37"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.4"
+    version: "2.4.5"
   build_runner_core:
     dependency: transitive
     description:
@@ -476,10 +476,10 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_android
-      sha256: "2a8b90b766ce00b03e7543f4ffeec97b6eb51fb6c3f31ce2a364bd1f1b9dd7fc"
+      sha256: e89179df2bbcc5988c0e2e98d1c95d471fe7910d323a15b5569ac6eddf085b95
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.14"
+    version: "6.1.15"
   google_sign_in_ios:
     dependency: transitive
     description:
@@ -764,10 +764,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_windows
-      sha256: d3f80b32e83ec208ac95253e0cd4d298e104fbc63cb29c5c69edaed43b0c69d6
+      sha256: "1cb68ba4cd3a795033de62ba1b7b4564dace301f952de6bfb3cd91b202b6ee96"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.6"
+    version: "2.1.7"
   pedantic:
     dependency: transitive
     description:
@@ -860,10 +860,10 @@ packages:
     dependency: "direct main"
     description:
       name: purchases_flutter
-      sha256: fd4ca3cefa6053cc5f9c49177fc232a06bedb9e1e09f07927b4f9fa18727d3b0
+      sha256: "1dfca3209f847f8999c54c475e92cf3211381794b2c7f5aa399f90efe2b40997"
       url: "https://pub.dev"
     source: hosted
-    version: "4.12.0"
+    version: "4.13.0"
   quiver:
     dependency: transitive
     description:
@@ -1177,10 +1177,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "5a751eddf9db89b3e5f9d50c20ab8612296e4e8db69009788d6c8b060a84191c"
+      sha256: "7dacfda1edcca378031db9905ad7d7bd56b29fd1a90b0908b71a52a12c41e36b"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.4"
+    version: "5.0.3"
   xdg_directories:
     dependency: transitive
     description:

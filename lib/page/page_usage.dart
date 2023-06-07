@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class PageUsage extends StatelessWidget {
-  PageUsage({Key? key}) : super(key: key);
+  const PageUsage({Key? key}) : super(key: key);
 
 // 예시 파이널
 // 중년 뱃살을 빼려면 어떻게 해야해?
@@ -23,9 +23,6 @@ class PageUsage extends StatelessWidget {
       '사이버펑크에 대해서 설명해줄래?',
       '중년 뱃살을 빼려면 어떻게 해야해?',
       '개발팀장처럼 면접 질문을 생성해줘.',
-      'C++로 HTTP를 구현하는 예제를 보여줄래?',
-      '사이버펑크에 대해서 설명해줄래?',
-      '중년 뱃살을 빼려면 어떻게 해야해?',
     ],
     [
       '때때로 부정확한 정보를 생성할 수 있습니다.',
@@ -34,17 +31,25 @@ class PageUsage extends StatelessWidget {
     ],
   ];
 
-  late UIChangeNotifier uiNoti;
+  //late UIChangeNotifier uiNoti;
 
   @override
   Widget build(BuildContext context) {
-    uiNoti = context.read<UIChangeNotifier>();
+    var uiNoti = context.read<UIChangeNotifier>();
 
     return Dialog.fullscreen(
       child: Scaffold(
         //drawer: const MGSideDrawer(),
+        backgroundColor:
+            uiNoti.isLightMode ? Colors.indigo[100] : Colors.deepPurple[800],
+
         appBar: AppBar(
-          title: const Text('사용법과 예시'),
+          backgroundColor:
+              uiNoti.isLightMode ? Colors.indigo[100] : Colors.deepPurple[800],
+          title: const Text(
+            '사용법과 예시',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           centerTitle: false,
           leading: IconButton(
             icon: const Icon(Icons.close),
@@ -52,36 +57,37 @@ class PageUsage extends StatelessWidget {
           ),
         ),
         body: ListView(children: [
-          buildTotal(),
-          TextButton(
+          buildTotal(context),
+          TextButton.icon(
+              icon: const Icon(Icons.arrow_back_ios_new),
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('알겠습니다')),
+              label: const Text('확인')),
         ]),
       ),
       //),
     );
   }
 
-  Widget buildTotal() {
+  Widget buildTotal(BuildContext context) {
     return Column(children: [
       //  그룹( 예시, 주의등등)
 
       // buildGroup(),
-      buildWarn(),
-      buildGroup(),
+      buildWarn(context),
+      buildGroup(context),
 
       //]
       //),
     ]);
   }
 
-  Widget buildGroup() {
+  Widget buildGroup(BuildContext context) {
     return Card(
       elevation: 8,
       margin: const EdgeInsets.all(20),
       child: Column(children: [
         const ListTile(
-          leading: Icon(Icons.tips_and_updates_sharp),
+          leading: Icon(Icons.tips_and_updates_sharp, color: Colors.amber),
           title: Text(
             '활용 예시',
             //textScaleFactor: 1.0,
@@ -102,17 +108,29 @@ class PageUsage extends StatelessWidget {
             ),
 
             trailing: IconButton(
-              icon: const Icon(Icons.copy),
-              onPressed: () =>
-                  Clipboard.setData(ClipboardData(text: descs[0][index])),
-            ),
+                icon: const Icon(Icons.copy),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: descs[0][index]));
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('복사되었습니다.'),
+                      action: SnackBarAction(
+                        label: '확인',
+                        onPressed: () {},
+                      ),
+                    ),
+                  );
+                }),
           );
         }),
       ]),
     );
   }
 
-  Widget buildWarn() {
+  Widget buildWarn(BuildContext context) {
+    var uiNoti = context.read<UIChangeNotifier>();
+
     return Card(
         color: uiNoti.materialThemeData.colorScheme.tertiaryContainer,
         elevation: 8,

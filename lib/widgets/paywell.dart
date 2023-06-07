@@ -75,13 +75,15 @@ class PaywallState extends State<Paywall> {
                           style: TextStyle(
                               color: Colors.green,
                               fontWeight: FontWeight.bold)),
-                      TextSpan(text: '을 구매하면 광고없이 사용하며\n 언제든 취소할수 있습니다.'),
+                      TextSpan(
+                          text:
+                              '을 구매하면 광고없이 사용하며\n 언제든 취소할수 있습니다.\n또한 앞으로 추가될 기능도 사용가능합니다.'),
                     ],
                   ),
                 )),
             //),
             const SizedBox(
-              height: 80,
+              height: 180,
             ),
 
             buildTrialButton(context),
@@ -165,7 +167,7 @@ class PaywallState extends State<Paywall> {
                 SnackBar(
                   content: const Text('구매가 완료되었습니다. 감사합니다.'),
                   action: SnackBarAction(
-                    label: '닫기',
+                    label: '확인',
                     onPressed: () {},
                   ),
                 ),
@@ -177,7 +179,7 @@ class PaywallState extends State<Paywall> {
                 SnackBar(
                   content: const Text('에러가 발생했습니다. 다시 시도하세요.'),
                   action: SnackBarAction(
-                    label: '닫기',
+                    label: '확인',
                     onPressed: () {},
                   ),
                 ),
@@ -331,7 +333,7 @@ class PaywallState extends State<Paywall> {
                     SnackBar(
                       content: const Text('체험중에도 언제든 구매가능합니다.'),
                       action: SnackBarAction(
-                        label: '닫기',
+                        label: '확인',
                         onPressed: () {},
                       ),
                     ),

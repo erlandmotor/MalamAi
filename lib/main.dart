@@ -130,7 +130,7 @@ class _ChatAppState extends State<ChatApp> {
     uiNoti.enumUIOption(context);
 
     return MaterialApp(
-      //debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       title: 'Chat Playground',
       theme: uiNoti.materialThemeData,
       builder: (BuildContext context, Widget? childArg) {
@@ -149,7 +149,7 @@ class _ChatAppState extends State<ChatApp> {
         routeChatPage: (context) => PageChat(chatApi: widget.chatApi),
         routeNameChatTab: (context) => const ChatTabList(),
         routeNameOption: (context) => PageSetting(),
-        routeChatHelp: (context) => PageUsage(),
+        routeChatHelp: (context) => const PageUsage(),
       },
     );
   }

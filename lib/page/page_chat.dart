@@ -183,7 +183,7 @@ class PageChatState extends State<PageChat> {
         SnackBar(
           content: const Text('에러가 발생했습니다. 다시 시도하세요.'),
           action: SnackBarAction(
-            label: '닫기',
+            label: '확인',
             onPressed: () {},
           ),
         ),
