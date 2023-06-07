@@ -1,6 +1,7 @@
 import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
 class PageUsage extends StatelessWidget {
@@ -27,7 +28,7 @@ class PageUsage extends StatelessWidget {
     [
       '때때로 부정확한 정보를 생성할 수 있습니다.',
       '때때로 유해한 지침이나 편향된 콘텐츠를 생성할 수 있습니다.',
-      '위사항은 제작사의 입장을 대변하지 않습니다.',
+      'AI답변은 제작사의 입장을 대변하지 않습니다.',
     ],
   ];
 
@@ -57,9 +58,14 @@ class PageUsage extends StatelessWidget {
           ),
         ),
         body: ListView(children: [
-          buildTotal(context),
+          //buildTotal(context),
+
+          buildWarn(context),
+          buildGroup(context),
+
           TextButton.icon(
-              icon: const Icon(Icons.arrow_back_ios_new),
+              //icon: const Icon(Icons.arrow_back_ios_new),
+              icon: const Icon(Icons.first_page),
               onPressed: () => Navigator.of(context).pop(),
               label: const Text('확인')),
         ]),
@@ -82,56 +88,110 @@ class PageUsage extends StatelessWidget {
   }
 
   Widget buildGroup(BuildContext context) {
-    return Card(
-      elevation: 8,
-      margin: const EdgeInsets.all(20),
-      child: Column(children: [
-        const ListTile(
-          leading: Icon(Icons.tips_and_updates_sharp, color: Colors.amber),
-          title: Text(
-            '활용 예시',
-            //textScaleFactor: 1.0,
-          ),
+    List<Widget> sampleList = List.generate(descs[0].length, (index) {
+      return ListTile(
+        //leading: Icon(Icons.tips_and_updates_sharp),
+        title: Row(
+          children: [
+            Flexible(
+              fit: FlexFit.tight,
+              child: Text(
+                descs[0][index],
+              ),
+            ),
+          ],
         ),
-        ...List.generate(descs[0].length, (index) {
-          return ListTile(
-            //leading: Icon(Icons.tips_and_updates_sharp),
-            title: Row(
-              children: [
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: Text(
-                    descs[0][index],
+
+        trailing: IconButton(
+            icon: const Icon(Icons.copy),
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: descs[0][index]));
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('복사되었습니다.'),
+                  action: SnackBarAction(
+                    label: '확인',
+                    onPressed: () {},
                   ),
                 ),
-              ],
+              );
+            }),
+      );
+    });
+
+    sampleList = sampleList
+        .animate(interval: 300.ms)
+        .fadeIn(duration: 700.ms, delay: 300.ms)
+        //.shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
+        //.shimmer(blendMode: BlendMode.srcOver, color: Colors.transparent)
+        .move(begin: const Offset(-16, 0), curve: Curves.easeOutQuad);
+
+    // return Card(
+    //   elevation: 8,
+    //   margin: const EdgeInsets.all(20),
+    //   child:
+
+    final uiNoti = context.read<UIChangeNotifier>();
+
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(children: [
+          ListTile(
+            //leading: Icon(Icons.tips_and_updates_outlined, color: Colors.amber),
+            leading: Icon(Icons.tips_and_updates_outlined,
+                color: uiNoti.isLightMode ? Colors.amber[900] : Colors.amber),
+
+            title: const Text(
+              '활용 예시',
+              //textScaleFactor: 1.0,
             ),
+          ),
 
-            trailing: IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: descs[0][index]));
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text('복사되었습니다.'),
-                      action: SnackBarAction(
-                        label: '확인',
-                        onPressed: () {},
-                      ),
+          /*
+          ...List.generate(descs[0].length, (index) {
+            return ListTile(
+              //leading: Icon(Icons.tips_and_updates_sharp),
+              title: Row(
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Text(
+                      descs[0][index],
                     ),
-                  );
-                }),
-          );
-        }),
-      ]),
-    );
+                  ),
+                ],
+              ),
+
+              trailing: IconButton(
+                  icon: const Icon(Icons.copy),
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: descs[0][index]));
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('복사되었습니다.'),
+                        action: SnackBarAction(
+                          label: '확인',
+                          onPressed: () {},
+                        ),
+                      ),
+                    );
+                  }),
+            );
+          }),
+          */
+
+          ...sampleList,
+        ]));
   }
 
   Widget buildWarn(BuildContext context) {
     var uiNoti = context.read<UIChangeNotifier>();
 
-    return Card(
+    //.shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
+
+    Widget warnCard = Card(
         color: uiNoti.materialThemeData.colorScheme.tertiaryContainer,
         elevation: 8,
         margin: const EdgeInsets.all(20),
@@ -169,5 +229,15 @@ class PageUsage extends StatelessWidget {
                 }),
               ]),
         ));
+
+    warnCard = warnCard
+        .animate()
+        //.animate(onPlay: (controller) => controller.repeat())
+        .shimmer(delay: 2000.ms, duration: 600.ms, color: Colors.white)
+        .animate() // this wraps the previous Animate in another Animate
+        .fadeIn(duration: 1200.ms, curve: Curves.easeOutQuad)
+        .slide(duration: 800.ms);
+
+    return warnCard;
   }
 }

@@ -105,8 +105,8 @@ class ChatTabListState extends State<ChatTabList> {
         builder: (context, chatGroupsOrderlength, child) {
           return ReorderableListView.builder(
             header: _isEdit
-                ? const Text('위치를 이동하거나 좌우로 지우세요')
-                : const Text('이동할 탭을 선택하세요.'),
+                ? const Text('순서를 바꾸거나 좌우로 슬라이드해서 삭제하세요')
+                : const Text('사용할 탭을 선택하세요.'),
             buildDefaultDragHandles: _isEdit,
             onReorder: (int oldIndex, int newIndex) {
               _oldIndex = oldIndex;
@@ -252,7 +252,7 @@ class ChatTabListState extends State<ChatTabList> {
     groupNotifier.addTab();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('챗 탭이 추가되었습니다.'),
+        content: const Text('탭이 추가되었습니다.'),
         action: SnackBarAction(
           label: '확인',
           onPressed: () {},
@@ -265,7 +265,7 @@ class ChatTabListState extends State<ChatTabList> {
     if (groupNotifier.chatGroupsOrder.length <= 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('삭제 할 수 없는 탭입니다.'),
+          content: const Text('마지막 탭은 삭제할 수 없습니다.'),
           action: SnackBarAction(
             label: '확인',
             onPressed: () {},
@@ -277,7 +277,7 @@ class ChatTabListState extends State<ChatTabList> {
     groupNotifier.removeTab(index);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('챗 탭이 삭제되었습니다.'),
+        content: const Text('탭이 삭제되었습니다.'),
         action: SnackBarAction(
           label: '확인',
           onPressed: () {},
