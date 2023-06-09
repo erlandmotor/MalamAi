@@ -22,8 +22,8 @@ class PageUsage extends StatelessWidget {
     [
       'C++로 HTTP를 구현하는 예제를 보여줄래?',
       '사이버펑크에 대해서 설명해줄래?',
+      'A* 알고리즘을 사용하여 기본 AI 게임 에이전트를 생성하는 C# 코드를 생성해줄래?',
       '중년 뱃살을 빼려면 어떻게 해야해?',
-      '개발팀장처럼 면접 질문을 생성해줘.',
     ],
     [
       '때때로 부정확한 정보를 생성할 수 있습니다.',
@@ -41,12 +41,14 @@ class PageUsage extends StatelessWidget {
     return Dialog.fullscreen(
       child: Scaffold(
         //drawer: const MGSideDrawer(),
-        backgroundColor:
-            uiNoti.isLightMode ? Colors.indigo[100] : Colors.deepPurple[800],
+        backgroundColor: uiNoti.isLightMode
+            ? const Color.fromARGB(255, 208, 211, 231)
+            : Colors.deepPurple[800],
 
         appBar: AppBar(
-          backgroundColor:
-              uiNoti.isLightMode ? Colors.indigo[100] : Colors.deepPurple[800],
+          backgroundColor: uiNoti.isLightMode
+              ? const Color.fromARGB(255, 208, 211, 231)
+              : Colors.deepPurple[800],
           title: const Text(
             '사용법과 예시',
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -58,11 +60,9 @@ class PageUsage extends StatelessWidget {
           ),
         ),
         body: ListView(children: [
-          //buildTotal(context),
-
           buildWarn(context),
-          buildGroup(context),
-
+          buildExample(context),
+          buildReplay(context),
           TextButton.icon(
               //icon: const Icon(Icons.arrow_back_ios_new),
               icon: const Icon(Icons.first_page),
@@ -74,27 +74,60 @@ class PageUsage extends StatelessWidget {
     );
   }
 
-  Widget buildTotal(BuildContext context) {
-    return Column(children: [
-      //  그룹( 예시, 주의등등)
+  Widget buildWarn(BuildContext context) {
+    var uiNoti = context.read<UIChangeNotifier>();
 
-      // buildGroup(),
-      buildWarn(context),
-      buildGroup(context),
+    Widget warnCard = Card(
+        color: uiNoti.materialThemeData.colorScheme.tertiaryContainer,
+        elevation: 8,
+        margin: const EdgeInsets.symmetric(horizontal: 20), // .all(20),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            ...List.generate(descs[1].length, (index) {
+              return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                          width: 5,
+                          height: 5,
+                          child: Icon(Icons.warning_amber_rounded,
+                              color:
+                                  uiNoti.materialThemeData.colorScheme.error)),
+                      const SizedBox(width: 30),
+                      Expanded(child: Text(descs[1][index]))
+                    ],
+                  ));
+            }),
+          ]),
+        ));
 
-      //]
-      //),
-    ]);
+    //warnCard = warnCard
+    //.animate() // this wraps the previous Animate in another Animate
+    // .slide(
+    //     begin: const Offset(-5, 0),
+    //     duration: 1800.ms,
+    //     curve: Curves.easeOutQuad)
+    //.fadeIn(duration: 2800.ms, curve: Curves.easeOutQuad)
+    //.animate()
+    //.animate(onPlay: (controller) => controller.repeat())
+    //.shimmer(delay: 8000.ms, duration: 600.ms, color: Colors.white);
+
+    return warnCard;
   }
 
-  Widget buildGroup(BuildContext context) {
+  Widget buildExample(BuildContext context) {
     List<Widget> sampleList = List.generate(descs[0].length, (index) {
       return ListTile(
         //leading: Icon(Icons.tips_and_updates_sharp),
+        dense: true,
         title: Row(
           children: [
             Flexible(
-              fit: FlexFit.tight,
+              fit: FlexFit.loose,
               child: Text(
                 descs[0][index],
               ),
@@ -123,121 +156,74 @@ class PageUsage extends StatelessWidget {
     sampleList = sampleList
         .animate(interval: 300.ms)
         .fadeIn(duration: 700.ms, delay: 300.ms)
-        //.shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
-        //.shimmer(blendMode: BlendMode.srcOver, color: Colors.transparent)
+        //.shimmer(blendMode: BlendMode.srcOver, color: Colors.white)
+        //.shimmer(color: Colors.white)
+        .shimmer(blendMode: BlendMode.darken, color: Colors.white12)
         .move(begin: const Offset(-16, 0), curve: Curves.easeOutQuad);
-
-    // return Card(
-    //   elevation: 8,
-    //   margin: const EdgeInsets.all(20),
-    //   child:
 
     final uiNoti = context.read<UIChangeNotifier>();
 
+    Widget leadIcon = Icon(Icons.tips_and_updates_outlined,
+        color: uiNoti.isLightMode ? Colors.amber[900] : Colors.amber);
+
+    leadIcon = leadIcon
+        .animate(onPlay: (controller) => controller.repeat())
+        .shimmer(delay: 4000.ms, duration: 1800.ms) // shimmer +
+        .shake(hz: 4, curve: Curves.easeInOutCubic) // shake +
+        .scale(
+            begin: const Offset(1, 1),
+            end: const Offset(1.1, 1.1),
+            duration: 600.ms) // scale up
+        .then(delay: 600.ms) // then wait and
+        .scale(
+            begin: const Offset(1, 1),
+            end: const Offset(1 / 1.1, 1 / 1.1)); // scale down
+
     return Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(
+            horizontal: 20, vertical: 20), // .all(20),
         child: Column(children: [
           ListTile(
-            //leading: Icon(Icons.tips_and_updates_outlined, color: Colors.amber),
-            leading: Icon(Icons.tips_and_updates_outlined,
-                color: uiNoti.isLightMode ? Colors.amber[900] : Colors.amber),
+            // leading: Icon(Icons.tips_and_updates_outlined,
+            //     color: uiNoti.isLightMode ? Colors.amber[900] : Colors.amber),
+            leading: leadIcon,
 
             title: const Text(
               '활용 예시',
               //textScaleFactor: 1.0,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-
-          /*
-          ...List.generate(descs[0].length, (index) {
-            return ListTile(
-              //leading: Icon(Icons.tips_and_updates_sharp),
-              title: Row(
-                children: [
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Text(
-                      descs[0][index],
-                    ),
-                  ),
-                ],
-              ),
-
-              trailing: IconButton(
-                  icon: const Icon(Icons.copy),
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: descs[0][index]));
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('복사되었습니다.'),
-                        action: SnackBarAction(
-                          label: '확인',
-                          onPressed: () {},
-                        ),
-                      ),
-                    );
-                  }),
-            );
-          }),
-          */
-
           ...sampleList,
         ]));
   }
 
-  Widget buildWarn(BuildContext context) {
-    var uiNoti = context.read<UIChangeNotifier>();
-
-    //.shimmer(blendMode: BlendMode.srcOver, color: Colors.white12)
-
-    Widget warnCard = Card(
-        color: uiNoti.materialThemeData.colorScheme.tertiaryContainer,
-        elevation: 8,
-        margin: const EdgeInsets.all(20),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // const ListTile(
-                //   leading: Icon(Icons.warning),
-                //   title: Text(
-                //     '제한 사항',
-                //     //textScaleFactor: 1.0,
-                //   ),
-                // ),
-                ...List.generate(descs[1].length, (index) {
-                  return Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Row(
-                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                              width: 5,
-                              height: 5,
-                              child: Icon(Icons.warning_amber_rounded,
-                                  color: uiNoti
-                                      .materialThemeData.colorScheme.error)),
-                          const SizedBox(width: 30),
-                          Expanded(child: Text(descs[1][index]))
-                        ],
-                      ));
-                }),
-              ]),
+  Widget buildReplay(BuildContext context) {
+    Widget askWidget = Padding(
+        padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
+        child: CheckboxListTile(
+          controlAffinity: ListTileControlAffinity.leading,
+          title: const Text('다시 보지 않기'),
+          //secondary: Icon(Icons.ac_unit),
+          checkColor: Colors.black,
+          activeColor: Colors.cyanAccent,
+          value: true,
+          onChanged: (value) {},
         ));
 
-    warnCard = warnCard
+    askWidget = askWidget
         .animate()
-        //.animate(onPlay: (controller) => controller.repeat())
-        .shimmer(delay: 2000.ms, duration: 600.ms, color: Colors.white)
-        .animate() // this wraps the previous Animate in another Animate
-        .fadeIn(duration: 1200.ms, curve: Curves.easeOutQuad)
-        .slide(duration: 800.ms);
+        .fadeIn(duration: 200.ms, delay: 2000.ms)
+        //.slide(duration: 700.ms, delay: 2000.ms, curve: Curves.easeOutQuad, begin:)
+        // .shimmer(
+        //     duration: 2000.ms,
+        //     blendMode: BlendMode.darken,
+        //     color: Colors.cyanAccent)
+        .move(
+            duration: 200.ms,
+            begin: const Offset(0, 16),
+            curve: Curves.easeOutQuad);
 
-    return warnCard;
+    return askWidget;
   }
 }

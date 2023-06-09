@@ -99,7 +99,7 @@ class PaywallState extends State<Paywall> {
                           SizedBox(
                             width: 10,
                           ),
-                          Expanded(child: Text('광고없이 사용.')),
+                          Expanded(child: Text('광고없이 사용. (연간 유저 전용)')),
                         ],
                       ),
                       Row(
@@ -171,9 +171,9 @@ class PaywallState extends State<Paywall> {
         List.generate(packs.length, (index) => buildPurchaseCard(packs[index]));
 
     widgets = widgets
-        .animate(interval: 300.ms)
+        .animate(interval: 100.ms)
         .move(begin: const Offset(-26, 0), curve: Curves.easeOutQuad)
-        .fadeIn(duration: 200.ms, delay: 100.ms)
+        .fadeIn(duration: 500.ms, delay: 100.ms)
         .animate(onPlay: (controller) => controller.repeat(), interval: 300.ms)
         .shimmer(
             delay: 1300.ms,
