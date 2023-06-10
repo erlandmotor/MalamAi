@@ -34,6 +34,6 @@ class AppDataNotifier with ChangeNotifier {
     isViewExample = avalue;
     mgLog("isViewExample saved");
 
-    notifyListeners();
+    //notifyListeners();
   }
 }

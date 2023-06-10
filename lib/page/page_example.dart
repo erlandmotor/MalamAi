@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import 'package:chat_playground/define/mg_handy.dart';
 
 class PageExample extends StatelessWidget {
   const PageExample({Key? key}) : super(key: key);
@@ -221,21 +222,23 @@ class PageExample extends StatelessWidget {
 
     Widget askWidget = Padding(
       padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
-      child: Selector<AppDataNotifier, bool>(
-          selector: (_, provider) => provider.isViewExample,
-          builder: (context, isViewExample, child) {
-            return CheckboxListTile(
-                controlAffinity: ListTileControlAffinity.leading,
-                title: const Text('다시 보지 않기'),
-                checkColor: Colors.black,
-                activeColor: Colors.cyanAccent,
-                value: isViewExample,
-                onChanged: (value) {
-                  if (value != null) {
-                    context.read<AppDataNotifier>().viewExample = value;
-                  }
-                });
-          }),
+      child: Selector<AppDataNotifier, bool>(selector: (_, provider) {
+        mgLog('다시보지않기 참조');
+        return provider.isViewExample;
+      }, builder: (context, isViewExample, child) {
+        mgLog('다시보지않기 변경');
+        return CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            title: const Text('다시 보지 않기'),
+            checkColor: Colors.black,
+            activeColor: Colors.cyanAccent,
+            value: isViewExample,
+            onChanged: (value) {
+              if (value != null) {
+                context.read<AppDataNotifier>().viewExample = value;
+              }
+            });
+      }),
     );
 
     askWidget = askWidget
