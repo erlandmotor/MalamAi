@@ -37,6 +37,7 @@ const storeKeySubscription = 'subscription1';
 const googleApiKey = 'goog_VJqDaQSHfvEEFizPnFKTzqqrMOd';
 const entitlementID = 'week';
 
+const appSettingDB = 'app_setting';
 const uiSettingDB = 'ui_setting';
 const otherDB = 'other_set';
 const chatGroupDB = 'chat_group';

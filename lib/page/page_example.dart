@@ -1,11 +1,12 @@
+import 'package:chat_playground/models/app_data_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
-class PageUsage extends StatelessWidget {
-  const PageUsage({Key? key}) : super(key: key);
+class PageExample extends StatelessWidget {
+  const PageExample({Key? key}) : super(key: key);
 
 // 예시 파이널
 // 중년 뱃살을 빼려면 어떻게 해야해?
@@ -154,8 +155,8 @@ class PageUsage extends StatelessWidget {
     });
 
     sampleList = sampleList
-        .animate(interval: 300.ms)
-        .fadeIn(duration: 700.ms, delay: 300.ms)
+        .animate(interval: 200.ms)
+        .fadeIn(duration: 500.ms, delay: 200.ms)
         //.shimmer(blendMode: BlendMode.srcOver, color: Colors.white)
         //.shimmer(color: Colors.white)
         .shimmer(blendMode: BlendMode.darken, color: Colors.white12)
@@ -166,18 +167,25 @@ class PageUsage extends StatelessWidget {
     Widget leadIcon = Icon(Icons.tips_and_updates_outlined,
         color: uiNoti.isLightMode ? Colors.amber[900] : Colors.amber);
 
+    // leadIcon = leadIcon
+    //     .animate(onPlay: (controller) => controller.repeat())
+    //     .shimmer(
+    //         delay: 1000.ms,
+    //         duration: 800.ms,
+    //         color: Colors.amberAccent) // shimmer +
+    //     .shake(hz: 4, curve: Curves.easeInOutCubic) // shake +
+    //     .scale(
+    //         begin: const Offset(1, 1),
+    //         end: const Offset(1.2, 1.2),
+    //         duration: 600.ms) // scale up
+    //     .then(delay: 600.ms) // then wait and
+    //     .scale(
+    //         begin: const Offset(1, 1),
+    //         end: const Offset(1 / 1.2, 1 / 1.2)); // scale down
+
     leadIcon = leadIcon
         .animate(onPlay: (controller) => controller.repeat())
-        .shimmer(delay: 4000.ms, duration: 1800.ms) // shimmer +
-        .shake(hz: 4, curve: Curves.easeInOutCubic) // shake +
-        .scale(
-            begin: const Offset(1, 1),
-            end: const Offset(1.1, 1.1),
-            duration: 600.ms) // scale up
-        .then(delay: 600.ms) // then wait and
-        .scale(
-            begin: const Offset(1, 1),
-            end: const Offset(1 / 1.1, 1 / 1.1)); // scale down
+        .shimmer(delay: 1000.ms, duration: 800.ms, color: Colors.amberAccent);
 
     return Padding(
         padding: const EdgeInsets.symmetric(
@@ -199,21 +207,40 @@ class PageUsage extends StatelessWidget {
   }
 
   Widget buildReplay(BuildContext context) {
+    // Widget askWidget = Padding(
+    //     padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
+    //     child: CheckboxListTile(
+    //       controlAffinity: ListTileControlAffinity.leading,
+    //       title: const Text('다시 보지 않기'),
+    //       //secondary: Icon(Icons.ac_unit),
+    //       checkColor: Colors.black,
+    //       activeColor: Colors.cyanAccent,
+    //       value: true,
+    //       onChanged: (value) {},
+    //     ));
+
     Widget askWidget = Padding(
-        padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
-        child: CheckboxListTile(
-          controlAffinity: ListTileControlAffinity.leading,
-          title: const Text('다시 보지 않기'),
-          //secondary: Icon(Icons.ac_unit),
-          checkColor: Colors.black,
-          activeColor: Colors.cyanAccent,
-          value: true,
-          onChanged: (value) {},
-        ));
+      padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
+      child: Selector<AppDataNotifier, bool>(
+          selector: (_, provider) => provider.isViewExample,
+          builder: (context, isViewExample, child) {
+            return CheckboxListTile(
+                controlAffinity: ListTileControlAffinity.leading,
+                title: const Text('다시 보지 않기'),
+                checkColor: Colors.black,
+                activeColor: Colors.cyanAccent,
+                value: isViewExample,
+                onChanged: (value) {
+                  if (value != null) {
+                    context.read<AppDataNotifier>().viewExample = value;
+                  }
+                });
+          }),
+    );
 
     askWidget = askWidget
         .animate()
-        .fadeIn(duration: 200.ms, delay: 2000.ms)
+        .fadeIn(duration: 200.ms, delay: 1000.ms)
         //.slide(duration: 700.ms, delay: 2000.ms, curve: Curves.easeOutQuad, begin:)
         // .shimmer(
         //     duration: 2000.ms,
