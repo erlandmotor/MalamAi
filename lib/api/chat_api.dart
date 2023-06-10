@@ -1,13 +1,17 @@
 import 'package:chat_playground/define/hive_chat_massage.dart';
 //import 'package:chat_playground/models/chat_message.dart';
 //import 'package:chat_playground/secrets.dart';
-import 'package:dart_openai/openai.dart';
+import 'package:dart_openai/dart_openai.dart';
 
 class ChatApi {
   static const _model = 'gpt-3.5-turbo';
 
   ChatApi() {
-    OpenAI.apiKey = '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';
+    //처음
+    //OpenAI.apiKey = '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';
+    // 테스트뉴
+    OpenAI.apiKey = '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';
+
     //OpenAI.organization = openAiOrg;
   }
 

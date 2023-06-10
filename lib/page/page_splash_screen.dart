@@ -130,10 +130,12 @@ class SplashScreenState extends State<SplashScreen> {
           },
           child: const Text("시작", textScaleFactor: 1.0)));
       widgets.add(TextButton(
-          onPressed: () {
-            rcPurchaseNotifier.logOut();
-          },
-          child: const Text("SignOut", textScaleFactor: 1.0)));
+        //icon: const Icon(Icons.logout),
+        child: const Text("SignOut", textScaleFactor: 1.0),
+        onPressed: () {
+          rcPurchaseNotifier.logOut();
+        },
+      ));
     }
 
     return widgets;

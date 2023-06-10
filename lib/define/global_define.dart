@@ -20,6 +20,7 @@ const routeChatPage = '/chat';
 const routeNameOption = '/option';
 const routeNamePurchase = '/purchase';
 const routeNameChatTab = '/chattabs';
+const routeChatHelp = '/chat/help';
 
 //const logoImage = 'assets/icons/robot5.png';
 const logoImage = 'assets/icons/icon.jfif';
@@ -36,6 +37,7 @@ const storeKeySubscription = 'subscription1';
 const googleApiKey = 'goog_VJqDaQSHfvEEFizPnFKTzqqrMOd';
 const entitlementID = 'week';
 
+const appSettingDB = 'app_setting';
 const uiSettingDB = 'ui_setting';
 const otherDB = 'other_set';
 const chatGroupDB = 'chat_group';

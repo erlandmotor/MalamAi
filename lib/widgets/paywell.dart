@@ -2,6 +2,7 @@ import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -75,13 +76,59 @@ class PaywallState extends State<Paywall> {
                           style: TextStyle(
                               color: Colors.green,
                               fontWeight: FontWeight.bold)),
-                      TextSpan(text: '을 구매하면 광고없이 사용하며\n 언제든 취소할수 있습니다.'),
+                      TextSpan(
+                          text:
+                              '을 구매하면 광고없이 사용하며\n 언제든 취소할수 있습니다.\n또한 앞으로 추가될 기능도 사용가능합니다.'),
                     ],
                   ),
                 )),
+
+            Container(
+                //alignment: Alignment.centerRight,
+                //alignment: FractionalOffset.centerRight,
+                padding: const EdgeInsets.fromLTRB(90, 20, 90, 20),
+                child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(Icons.check_circle_outline_outlined,
+                              color: Colors.green),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(child: Text('광고없이 사용. (연간 유저 전용)')),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(Icons.check_circle_outline_outlined,
+                              color: Colors.green),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(child: Text('주제별로 대화를 나누어 사용.')),
+                        ],
+                      ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     Icon(Icons.check_circle_outline_outlined,
+                      //         color: Colors.green),
+                      //     SizedBox(
+                      //       width: 10,
+                      //     ),
+                      //     Expanded(child: Text('추가제공되는 기능을 사용가능.')),
+                      //   ],
+                      // ),
+                    ])),
+
             //),
             const SizedBox(
-              height: 80,
+              height: 100,
             ),
 
             buildTrialButton(context),
@@ -116,12 +163,31 @@ class PaywallState extends State<Paywall> {
     List<Widget> widgets = [];
     List<Package> packs = rcPurchaseNotifier.productList;
 
-    //widgets.add(const Spacer());
-    for (Package item in packs) {
-      widgets.add(buildPurchaseCard(item));
-      //widgets.add(Spacer());
-    }
-    //widgets.add(const Spacer());
+    // for (Package item in packs) {
+    //   widgets.add(buildPurchaseCard(item));
+    // }
+
+    widgets =
+        List.generate(packs.length, (index) => buildPurchaseCard(packs[index]));
+
+    widgets = widgets
+        .animate(interval: 100.ms)
+        .move(begin: const Offset(-26, 0), curve: Curves.easeOutQuad)
+        .fadeIn(duration: 500.ms, delay: 100.ms)
+        .animate(onPlay: (controller) => controller.repeat(), interval: 300.ms)
+        .shimmer(
+            delay: 1300.ms,
+            duration: 500.ms,
+            blendMode: BlendMode.srcOver,
+            color: Colors.white)
+        .then(delay: 3000.ms);
+
+    // color: uiNotifier.isLightMode
+    //     ? Colors.indigo[100]
+    //     : Colors.deepPurple[800]);
+
+    //.shimmer(blendMode: BlendMode.srcOver, color: Colors.transparent)
+    //.move(begin: const Offset(-16, 0), curve: Curves.easeOutQuad);
 
     if (rcPurchaseNotifier.firebaseNotifier.isFreeTrial == true) {
       /*
@@ -153,7 +219,12 @@ class PaywallState extends State<Paywall> {
             ProductUIDesc();
 
     return InkWell(
+      //return Card(
+      //color: uiNotifier.materialThemeData.colorScheme.tertiary,
+      //elevation: 19,
+      //margin: const EdgeInsets.all(5),
       //style: style,
+
       onTap: () {
         final myPack = item;
         try {
@@ -162,13 +233,25 @@ class PaywallState extends State<Paywall> {
             mgLog('purchased - result $value,  pckage -  $myPack');
             if (value) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('구매가 완료되었습니다. 감사합니다.')),
+                SnackBar(
+                  content: const Text('구매가 완료되었습니다. 감사합니다.'),
+                  action: SnackBarAction(
+                    label: '확인',
+                    onPressed: () {},
+                  ),
+                ),
               );
 
               Navigator.pop<String>(context, 'purchased');
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('에러가 발생했습니다. 다시 시도하세요.')),
+                SnackBar(
+                  content: const Text('에러가 발생했습니다. 다시 시도하세요.'),
+                  action: SnackBarAction(
+                    label: '확인',
+                    onPressed: () {},
+                  ),
+                ),
               );
             }
           });
@@ -198,7 +281,7 @@ class PaywallState extends State<Paywall> {
                 ),
                 color: uiNotifier.materialThemeData.colorScheme.secondary
                     .withOpacity(0.4),
-                borderRadius: const BorderRadius.all(Radius.circular(12)))
+                borderRadius: const BorderRadius.all(Radius.circular(5)))
             : BoxDecoration(
                 image: const DecorationImage(
                   image: AssetImage('assets/image/purchase.jfif'),
@@ -214,7 +297,8 @@ class PaywallState extends State<Paywall> {
                 ),
                 color: uiNotifier.materialThemeData.colorScheme.secondary
                     .withOpacity(0.4),
-                borderRadius: const BorderRadius.all(Radius.circular(12))),
+                borderRadius: const BorderRadius.all(Radius.circular(5))),
+
         padding: const EdgeInsets.only(
             top: 10.0, left: 5.0, right: 5.0, bottom: 10.0),
         child: Column(
@@ -289,7 +373,9 @@ class PaywallState extends State<Paywall> {
           )));
 
       widgets.add(Text('주당 ₩${weekValue.floor()}',
-          textAlign: TextAlign.center, textScaleFactor: 1.0, style: tStyle));
+          textAlign: TextAlign.center,
+          textScaleFactor: 1.0,
+          style: tStyle.copyWith(color: Colors.black87)));
     }
 
     return widgets;
@@ -316,7 +402,13 @@ class PaywallState extends State<Paywall> {
           onPressed: isFreeTrial
               ? () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('체험중에도 언제든 구매가능합니다.')),
+                    SnackBar(
+                      content: const Text('체험중에도 언제든 구매가능합니다.'),
+                      action: SnackBarAction(
+                        label: '확인',
+                        onPressed: () {},
+                      ),
+                    ),
                   );
 
                   Navigator.pop<String>(context, '체험하기');

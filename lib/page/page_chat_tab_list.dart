@@ -105,8 +105,8 @@ class ChatTabListState extends State<ChatTabList> {
         builder: (context, chatGroupsOrderlength, child) {
           return ReorderableListView.builder(
             header: _isEdit
-                ? const Text('위치를 이동하거나 좌우로 지우세요')
-                : const Text('이동할 탭을 선택하세요.'),
+                ? const Text('순서를 바꾸거나 좌우로 슬라이드해서 삭제하세요')
+                : const Text('사용할 탭을 선택하세요.'),
             buildDefaultDragHandles: _isEdit,
             onReorder: (int oldIndex, int newIndex) {
               _oldIndex = oldIndex;
@@ -174,7 +174,7 @@ class ChatTabListState extends State<ChatTabList> {
                 onDismissed: (DismissDirection direction) async {
                   //_context = context;
                   //_index = index;
-                  isRemoving = true;
+                  //isRemoving = true;
                   _refreshIndicatorKey.currentState?.show();
                   onRemove(context, index);
                   mgLog('Removed');
@@ -191,20 +191,27 @@ class ChatTabListState extends State<ChatTabList> {
                           : null,
                       subtitle: Text(subLabel),
                       leading: IconButton(
-                          onPressed: () {
-                            //_context = context;
-                            //_index = index;
-                            isRemoving = true;
-                            _refreshIndicatorKey.currentState?.show();
-                            onRemove(context, index);
-                          },
-                          icon: const Icon(
-                              Icons.remove_circle_sharp, //Icons.remove_circle,
-                              color: Colors.redAccent)),
-                      title: Expanded(
-                        flex: 8,
-                        child: Text(label, overflow: TextOverflow.ellipsis),
+                        icon: const Icon(
+                            Icons.remove_circle_sharp, //Icons.remove_circle,
+                            color: Colors.redAccent),
+                        onPressed: () {
+                          dialogBuilder(context, index).then((value) {
+                            if (value != null && value == true) {
+                              _refreshIndicatorKey.currentState?.show();
+                              onRemove(context, index);
+                            }
+                          });
+                          // 바로 삭제
+                          // _refreshIndicatorKey.currentState?.show();
+                          // onRemove(context, index);
+                        },
                       ),
+                      // title: Expanded(
+                      //   flex: 8,
+                      //   child: Text(label, overflow: TextOverflow.ellipsis),
+                      // ),
+
+                      title: Text(label, overflow: TextOverflow.ellipsis),
                     ))))
         : Card(
             key: Key('${index + 200}'),
@@ -222,27 +229,10 @@ class ChatTabListState extends State<ChatTabList> {
                         }
                       },
                       title: Row(children: [
-                        Expanded(
-                          flex: 8,
+                        Flexible(
+                          fit: FlexFit.tight,
                           child: Text(label, overflow: TextOverflow.ellipsis),
                         ),
-                        // Text(
-                        //   label,
-                        //   overflow: TextOverflow.ellipsis,
-                        // ),
-                        const Spacer(),
-                        _isEdit
-                            ? IconButton(
-                                onPressed: () {
-                                  //_context = context;
-                                  //_index = index;
-                                  isRemoving = true;
-                                  _refreshIndicatorKey.currentState?.show();
-                                  onRemove(context, index);
-                                },
-                                icon: const Icon(Icons.remove_circle,
-                                    color: Colors.redAccent))
-                            : Container(),
                       ]));
                 }),
           );
@@ -256,125 +246,75 @@ class ChatTabListState extends State<ChatTabList> {
     groupNotifier.swapTab(oldIndex, newIndex);
   }
 
-  bool isRemoving = false;
+  //bool isRemoving = false;
 
   onAddTab(BuildContext context) {
     groupNotifier.addTab();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('챗 탭이 추가되었습니다.')),
+      SnackBar(
+        content: const Text('탭이 추가되었습니다.'),
+        action: SnackBarAction(
+          label: '확인',
+          onPressed: () {},
+        ),
+      ),
     );
   }
 
   onRemove(BuildContext context, int index) {
     if (groupNotifier.chatGroupsOrder.length <= 1) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('삭제 할 수 없는 탭입니다.')),
+        SnackBar(
+          content: const Text('마지막 탭은 삭제할 수 없습니다.'),
+          action: SnackBarAction(
+            label: '확인',
+            onPressed: () {},
+          ),
+        ),
       );
       return;
     }
     groupNotifier.removeTab(index);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('챗 탭이 삭제되었습니다.')),
+      SnackBar(
+        content: const Text('탭이 삭제되었습니다.'),
+        action: SnackBarAction(
+          label: '확인',
+          onPressed: () {},
+        ),
+      ),
     );
   }
 
   Color mainTextColor = const Color(0xFF083e64);
-  //late BuildContext _context;
-  //late int _index;
-
-  // buildListAll(BuildContext context) {
-  //   List<Widget> widgets = [];
-
-  //   if (_isEdit) {
-  //     for (int i = 0; i < groupNotifier.chatGroupsOrder.length; i++) {
-  //       widgets.add(Container(
-  //           key: Key('$i'),
-  //           child: Dismissible(
-  //               background: Container(
-  //                 margin: const EdgeInsets.all(8),
-  //                 padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                 color: Colors.red,
-  //                 alignment: Alignment.centerLeft,
-  //                 child: const Icon(
-  //                   Icons.delete,
-  //                   size: 36,
-  //                   color: Colors.white,
-  //                 ),
-  //               ),
-  //               secondaryBackground: Container(
-  //                 margin: const EdgeInsets.all(8),
-  //                 padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                 color: Colors.red,
-  //                 alignment: Alignment.centerRight,
-  //                 child: const Icon(
-  //                   Icons.delete,
-  //                   size: 36,
-  //                   color: Colors.white,
-  //                 ),
-  //               ),
-  //               key: ValueKey<String>(
-  //                   groupNotifier.chatGroupsOrder[i].toString()),
-  //               onDismissed: (DismissDirection direction) async {
-  //                 /*
-  //                 _context = context;
-  //                 _index = i;
-  //                 isRemoving = true;
-  //                 _refreshIndicatorKey.currentState?.show();
-  //                 onRemove(context, i);
-  //                 */
-
-  //                 var result = await confirmDismiss2(context, i);
-  //                 mgLog('$result');
-  //               },
-  //               // confirmDismiss: (direction) =>
-  //               //     _confirmDismiss(direction, context, i),
-  //               child: buildItem(context, i))));
-  //     }
-  //   } else {
-  //     for (int i = 0; i < groupNotifier.chatGroupsOrder.length; i++) {
-  //       widgets.add(buildItem(context, i));
-  //     }
-  //   }
-
-  //   return widgets;
-  // }
-
-  // Future<bool> _confirmDismiss(
-  //   DismissDirection direction,
-  //   BuildContext context,
-  //   int index,
-  // ) {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (ctx) {
-  //         return AlertDialog(
-  //           //title: const Text('삭제'),
-  //           content: Text('정말로 해당 챗 그룹을 삭제하시겠습니까? $index'),
-  //           actions: <Widget>[
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 return Navigator.of(context).pop(false);
-  //               },
-  //               child: const Text('취소'),
-  //             ),
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 return Navigator.of(context).pop(true);
-  //               },
-  //               child: const Text('삭제'),
-  //             ),
-  //           ],
-  //         );
-  //       }).then((value) => Future.value(value));
-  // }
 
   Future<bool?> dialogBuilder(BuildContext context, int index) {
+    if (groupNotifier.chatGroupsOrder.length <= 1) {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: const Text('삭제할수 없는 탭입니다.'),
+            actions: <Widget>[
+              FilledButton(
+                child: const Text('예'),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('삭제하시겠습니까?'),
+          //title: const Text('삭제하시겠습니까?'),
           //content: Text('정말로 해당 챗 그룹을 삭제하시겠습니까? $index'),
+          content: const Text('삭제하시겠습니까?'),
           actions: <Widget>[
             FilledButton(
               // style: FilledButton.styleFrom(
@@ -400,34 +340,6 @@ class ChatTabListState extends State<ChatTabList> {
     );
   }
 
-  Future<bool> confirmDismiss2(
-    BuildContext context,
-    int index,
-  ) {
-    return showDialog<bool>(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            content: Text('정말로 해당 챗 그룹을 삭제하시겠습니까? $index'),
-            actions: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  //return Navigator.of(context).pop(false);
-                  return Navigator.pop(context);
-                },
-                child: const Text('취소'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  //return Navigator.of(context).pop(true);
-                },
-                child: const Text('삭제'),
-              ),
-            ],
-          );
-        }).then((value) => Future.value(value));
-  }
-
   buildItem(BuildContext context, int index) {
     var label = groupNotifier.getChatTabLebel(index);
     DateTime? chatdate = groupNotifier.chatTimes[index] ?? DateTime.now();
@@ -449,9 +361,6 @@ class ChatTabListState extends State<ChatTabList> {
               _isEdit
                   ? IconButton(
                       onPressed: () {
-                        //_context = context;
-                        //_index = index;
-                        isRemoving = true;
                         _refreshIndicatorKey.currentState?.show();
                         onRemove(context, index);
                       },

@@ -98,6 +98,16 @@ class MessageBubble extends StatelessWidget {
                           .join("\n");
 
                       Clipboard.setData(ClipboardData(text: adjust));
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text('복사되었습니다.'),
+                          action: SnackBarAction(
+                            label: '확인',
+                            onPressed: () {},
+                          ),
+                        ),
+                      );
                     },
                     icon: const Icon(Icons.copy_rounded)),
                 IconButton(

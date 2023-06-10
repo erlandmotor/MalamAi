@@ -131,6 +131,25 @@ class MGSideDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            //leading: const Icon(Icons.help_center),
+            //leading: const Icon(Icons.lightbulb),
+            leading: const Icon(Icons.tips_and_updates),
+            title: Text(
+              '사용법및 예시',
+              textScaleFactor: 1.0,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color:
+                    uiNoti.materialThemeData.colorScheme.onSecondaryContainer,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, routeChatHelp);
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.payment),
             title: Text(
               '구매',
