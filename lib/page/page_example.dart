@@ -223,6 +223,7 @@ class PageExample extends StatelessWidget {
     Widget askWidget = Padding(
       padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
       child: Selector<AppDataNotifier, bool>(selector: (_, provider) {
+        // notebookTest
         mgLog('다시보지않기 참조');
         return provider.isViewExample;
       }, builder: (context, isViewExample, child) {
