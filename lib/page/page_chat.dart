@@ -4,6 +4,7 @@ import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/define/hive_chat_massage.dart';
 import 'package:chat_playground/define/mg_handy.dart';
+import 'package:chat_playground/models/app_data_notifier.dart';
 
 import 'package:chat_playground/models/chatgroup_notifier.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
@@ -45,9 +46,11 @@ class PageChatState extends State<PageChat> {
     chatBox = context.read<ChatGroupNotifier>().openLatest();
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.pushNamed(context, routeChatHelp);
-    });
+    if (context.read<AppDataNotifier>().dontShowExample == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamed(context, routeChatHelp);
+      });
+    }
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class AppDataNotifier with ChangeNotifier {
   static const String boxFieldViewExample = 'boxFieldViewExample';
-  bool isViewExample = false;
+  bool dontShowExample = false;
   late final Box boxAppSetting;
   AppDataNotifier() {
     mgLog('AppDataNotifier notifier init.......');
@@ -17,7 +17,7 @@ class AppDataNotifier with ChangeNotifier {
     boxAppSetting = Hive.box(appSettingDB);
     bool? valueViewExampleField = boxAppSetting.get(boxFieldViewExample);
     if (valueViewExampleField != null) {
-      isViewExample = valueViewExampleField;
+      dontShowExample = valueViewExampleField;
     }
   }
 
@@ -31,9 +31,9 @@ class AppDataNotifier with ChangeNotifier {
 
   Future<void> saveAppData(bool avalue) async {
     await boxAppSetting.put(boxFieldViewExample, avalue);
-    isViewExample = avalue;
-    mgLog("isViewExample saved");
+    dontShowExample = avalue;
+    mgLog("dontShowExample saved - dontShowExample - $dontShowExample");
 
-    //notifyListeners();
+    notifyListeners();
   }
 }

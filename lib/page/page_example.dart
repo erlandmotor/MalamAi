@@ -6,7 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 
-class PageExample extends StatelessWidget {
+class PageExample extends StatefulWidget {
   const PageExample({Key? key}) : super(key: key);
 
 // 예시 파이널
@@ -34,23 +34,26 @@ class PageExample extends StatelessWidget {
     ],
   ];
 
-  //late UIChangeNotifier uiNoti;
+  @override
+  State<PageExample> createState() => _PageExampleState();
+}
 
+class _PageExampleState extends State<PageExample> {
+  //late UIChangeNotifier uiNoti;
   @override
   Widget build(BuildContext context) {
     var uiNoti = context.read<UIChangeNotifier>();
 
     return Dialog.fullscreen(
       child: Scaffold(
-        //drawer: const MGSideDrawer(),
-        backgroundColor: uiNoti.isLightMode
-            ? const Color.fromARGB(255, 208, 211, 231)
-            : Colors.deepPurple[800],
+        // backgroundColor: uiNoti.isLightMode
+        //     ? const Color.fromARGB(255, 208, 211, 231)
+        //     : Colors.deepPurple[800],
 
         appBar: AppBar(
-          backgroundColor: uiNoti.isLightMode
-              ? const Color.fromARGB(255, 208, 211, 231)
-              : Colors.deepPurple[800],
+          // backgroundColor: uiNoti.isLightMode
+          //     ? const Color.fromARGB(255, 208, 211, 231)
+          //     : Colors.deepPurple[800],
           title: const Text(
             '사용법과 예시',
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -65,11 +68,20 @@ class PageExample extends StatelessWidget {
           buildWarn(context),
           buildExample(context),
           buildReplay(context),
+          /*
           TextButton.icon(
-              //icon: const Icon(Icons.arrow_back_ios_new),
               icon: const Icon(Icons.first_page),
               onPressed: () => Navigator.of(context).pop(),
               label: const Text('확인')),
+              */
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 0),
+            child: FilledButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('확인'),
+            ),
+          ),
         ]),
       ),
       //),
@@ -86,7 +98,7 @@ class PageExample extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            ...List.generate(descs[1].length, (index) {
+            ...List.generate(PageExample.descs[1].length, (index) {
               return Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                   child: Row(
@@ -100,7 +112,7 @@ class PageExample extends StatelessWidget {
                               color:
                                   uiNoti.materialThemeData.colorScheme.error)),
                       const SizedBox(width: 30),
-                      Expanded(child: Text(descs[1][index]))
+                      Expanded(child: Text(PageExample.descs[1][index]))
                     ],
                   ));
             }),
@@ -122,16 +134,17 @@ class PageExample extends StatelessWidget {
   }
 
   Widget buildExample(BuildContext context) {
-    List<Widget> sampleList = List.generate(descs[0].length, (index) {
+    List<Widget> sampleList =
+        List.generate(PageExample.descs[0].length, (index) {
       return ListTile(
         //leading: Icon(Icons.tips_and_updates_sharp),
-        dense: true,
+        //dense: true,
         title: Row(
           children: [
             Flexible(
               fit: FlexFit.loose,
               child: Text(
-                descs[0][index],
+                PageExample.descs[0][index],
               ),
             ),
           ],
@@ -140,7 +153,8 @@ class PageExample extends StatelessWidget {
         trailing: IconButton(
             icon: const Icon(Icons.copy),
             onPressed: () {
-              Clipboard.setData(ClipboardData(text: descs[0][index]));
+              Clipboard.setData(
+                  ClipboardData(text: PageExample.descs[0][index]));
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -186,17 +200,17 @@ class PageExample extends StatelessWidget {
 
     leadIcon = leadIcon
         .animate(onPlay: (controller) => controller.repeat())
-        .shimmer(delay: 1000.ms, duration: 800.ms, color: Colors.amberAccent);
+        .shimmer(
+            delay: 1000.ms,
+            duration: 800.ms,
+            color: uiNoti.isLightMode ? Colors.amberAccent : Colors.white);
 
     return Padding(
         padding: const EdgeInsets.symmetric(
             horizontal: 20, vertical: 20), // .all(20),
         child: Column(children: [
           ListTile(
-            // leading: Icon(Icons.tips_and_updates_outlined,
-            //     color: uiNoti.isLightMode ? Colors.amber[900] : Colors.amber),
             leading: leadIcon,
-
             title: const Text(
               '활용 예시',
               //textScaleFactor: 1.0,
@@ -208,34 +222,24 @@ class PageExample extends StatelessWidget {
   }
 
   Widget buildReplay(BuildContext context) {
-    // Widget askWidget = Padding(
-    //     padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
-    //     child: CheckboxListTile(
-    //       controlAffinity: ListTileControlAffinity.leading,
-    //       title: const Text('다시 보지 않기'),
-    //       //secondary: Icon(Icons.ac_unit),
-    //       checkColor: Colors.black,
-    //       activeColor: Colors.cyanAccent,
-    //       value: true,
-    //       onChanged: (value) {},
-    //     ));
-
     Widget askWidget = Padding(
-      padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
+      padding: const EdgeInsets.fromLTRB(75, 0, 0, 0),
       child: Selector<AppDataNotifier, bool>(selector: (_, provider) {
-        mgLog('다시보지않기 참조');
-        return provider.isViewExample;
+        mgLog(
+            '다시보지않기 참조 - provider.dontShowExample - ${provider.dontShowExample}');
+        return provider.dontShowExample;
       }, builder: (context, isViewExample, child) {
         // master test
-        mgLog('다시보지않기 변경');
+        mgLog('다시보지않기 UI업데이트 - dontShowExample - $isViewExample');
         return CheckboxListTile(
             controlAffinity: ListTileControlAffinity.leading,
-            title: const Text('다시 보지 않기'),
+            title: const Text('시작 시 다시 보지 않기'),
             checkColor: Colors.black,
             activeColor: Colors.cyanAccent,
             value: isViewExample,
             onChanged: (value) {
               if (value != null) {
+                mgLog('다시보지않기 변경및 저장 - value - $value');
                 context.read<AppDataNotifier>().viewExample = value;
               }
             });
