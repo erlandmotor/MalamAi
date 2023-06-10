@@ -226,6 +226,7 @@ class PageExample extends StatelessWidget {
         mgLog('다시보지않기 참조');
         return provider.isViewExample;
       }, builder: (context, isViewExample, child) {
+        // master test
         mgLog('다시보지않기 변경');
         return CheckboxListTile(
             controlAffinity: ListTileControlAffinity.leading,
