@@ -84,6 +84,17 @@ class PageChatState extends State<PageChat> {
                             pinned: false,
                             snap: false,
                             floating: true,
+                            bottom: PreferredSize(
+                              preferredSize: const Size.fromHeight(48.0),
+                              child: Container(
+                                height: 48.0,
+                                alignment: Alignment.center,
+                                child: TextButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.wallet),
+                                    label: Text('구매')),
+                              ),
+                            ),
                             //expandedHeight: 20.0,
                             //backgroundColor: Colors.transparent, //투명색.
                             // flexibleSpace: ClipRect(
