@@ -42,7 +42,7 @@ class _PageExampleState extends State<PageExample> {
   //late UIChangeNotifier uiNoti;
   @override
   Widget build(BuildContext context) {
-    var uiNoti = context.read<UIChangeNotifier>();
+    //var uiNoti = context.read<UIChangeNotifier>();
 
     return Dialog.fullscreen(
       child: Scaffold(
