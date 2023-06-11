@@ -91,8 +91,8 @@ class PageChatState extends State<PageChat> {
                                 alignment: Alignment.center,
                                 child: TextButton.icon(
                                     onPressed: () {},
-                                    icon: Icon(Icons.wallet),
-                                    label: Text('구매')),
+                                    icon: const Icon(Icons.payment_outlined),
+                                    label: const Text('구매')),
                               ),
                             ),
                             //expandedHeight: 20.0,
