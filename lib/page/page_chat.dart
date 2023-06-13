@@ -85,16 +85,25 @@ class PageChatState extends State<PageChat> {
                             snap: false,
                             floating: true,
                             bottom: PreferredSize(
-                              preferredSize: const Size.fromHeight(48.0),
-                              child: Container(
-                                height: 48.0,
-                                alignment: Alignment.center,
-                                child: TextButton.icon(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.payment_outlined),
-                                    label: const Text('구매')),
-                              ),
-                            ),
+                                preferredSize: const Size.fromHeight(48.0),
+                                child: Container(
+                                  height: 48.0,
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Text('무료체험중입니다.'),
+                                        TextButton.icon(
+                                            onPressed: () {
+                                              Navigator.pushNamed(
+                                                  context, routeNamePurchase);
+                                            },
+                                            icon: const Icon(
+                                                Icons.payment_outlined),
+                                            label: const Text('구매')),
+                                      ]),
+                                )),
                             //expandedHeight: 20.0,
                             //backgroundColor: Colors.transparent, //투명색.
                             // flexibleSpace: ClipRect(
