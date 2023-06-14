@@ -15,6 +15,14 @@ class ChatApi {
     //OpenAI.organization = openAiOrg;
   }
 
+  static SetApiPurchased() {
+    OpenAI.apiKey = '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';
+  }
+
+  static SetApiShare() {
+    OpenAI.apiKey = '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';
+  }
+
   late int checklength;
   late int checkindex;
   late List<MessageItem> calcedMessages;

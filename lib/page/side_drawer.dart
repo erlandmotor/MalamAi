@@ -97,7 +97,7 @@ class MGSideDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
+            leading: const Icon(Icons.settings_outlined),
             title: Text(
               '설정',
               textScaleFactor: 1.0,
@@ -114,7 +114,7 @@ class MGSideDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.view_list),
+            leading: const Icon(Icons.view_list_outlined),
             title: Text(
               '채팅 그룹 관리',
               textScaleFactor: 1.0,
@@ -133,7 +133,7 @@ class MGSideDrawer extends StatelessWidget {
           ListTile(
             //leading: const Icon(Icons.help_center),
             //leading: const Icon(Icons.lightbulb),
-            leading: const Icon(Icons.tips_and_updates),
+            leading: const Icon(Icons.tips_and_updates_outlined),
             title: Text(
               '사용법및 예시',
               textScaleFactor: 1.0,
@@ -150,7 +150,7 @@ class MGSideDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.payment),
+            leading: const Icon(Icons.payment_outlined),
             title: Text(
               '구매',
               textScaleFactor: 1.0,
@@ -179,7 +179,7 @@ class MGSideDrawer extends StatelessWidget {
                       //     uiNoti.materialThemeData.colorScheme.onSecondary,
                       // iconColor:
                       //     uiNoti.materialThemeData.colorScheme.onSecondary,
-                      leading: Icon(Icons.info),
+                      leading: Icon(Icons.info_outline_rounded),
                       title: Text(
                         'Ver $ver',
                         textAlign: TextAlign.right,

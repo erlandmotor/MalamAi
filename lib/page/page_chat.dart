@@ -14,6 +14,7 @@ import 'package:chat_playground/page/side_drawer.dart';
 import 'package:chat_playground/widgets/mg_ad_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -59,6 +60,35 @@ class PageChatState extends State<PageChat> {
     //final name = context.select<ChatGroupNotifier>((Box<MessageItem> p) => p);
     chatBox = context.select((ChatGroupNotifier p) => p.curChatBox);
 
+    bool isEntitlementIsActive =
+        context.select((RCPurchasesNotifier p) => p.entitlementIsActive);
+
+    late Widget? demoButtonWidget;
+    //isEntitlementIsActive = true;
+    if (isEntitlementIsActive == false) {
+      demoButtonWidget = TextButton(
+        child: const Text('무료체험중입니다 구매하여 제한없이 사용하세요'),
+        onPressed: () {
+          Navigator.pushNamed(context, routeNamePurchase);
+        },
+      );
+
+      demoButtonWidget = demoButtonWidget
+          // .animate(interval: 100.ms)
+          // .move(begin: const Offset(-26, 0), curve: Curves.easeOutQuad)
+          // .fadeIn(duration: 500.ms, delay: 100.ms)
+          .animate(onPlay: (controller) => controller.repeat())
+          .shimmer(
+              delay: 200.ms,
+              duration: 2400.ms,
+              //blendMode: BlendMode.srcOver,
+              blendMode: BlendMode.srcATop,
+              color: Colors.amberAccent[100]);
+      //.then(delay: 3000.ms);
+    } else {
+      demoButtonWidget = null;
+    }
+
     return Scaffold(
         drawer: const MGSideDrawer(),
         body: SafeArea(
@@ -84,59 +114,40 @@ class PageChatState extends State<PageChat> {
                             pinned: false,
                             snap: false,
                             floating: true,
-                            bottom: PreferredSize(
-                                preferredSize: const Size.fromHeight(48.0),
-                                child: Container(
-                                  height: 48.0,
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text('무료체험중입니다.'),
-                                        TextButton.icon(
-                                            onPressed: () {
-                                              Navigator.pushNamed(
-                                                  context, routeNamePurchase);
-                                            },
-                                            icon: const Icon(
-                                                Icons.payment_outlined),
-                                            label: const Text('구매')),
-                                      ]),
-                                )),
-                            //expandedHeight: 20.0,
-                            //backgroundColor: Colors.transparent, //투명색.
-                            // flexibleSpace: ClipRect(
-                            //   child: BackdropFilter(
-                            //     filter:
-                            //         ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            //     child: FlexibleSpaceBar(
-                            //       centerTitle: true, //child를 중앙에 놓는다.
-                            //       title: Text('title'),
-                            //     ),
-                            //   ),
-                            // ),
                             title: Selector<RCPurchasesNotifier, bool>(
                                 selector: (_, provider) =>
                                     provider.entitlementIsActive,
                                 builder: (context, isActive, child) {
+                                  return const Text(titleNameMain,
+                                      textScaleFactor: 0.7);
+                                  /*
                                   if (isActive) {
                                     return const Text(titleNameMain,
                                         textScaleFactor: 0.7);
                                   } else {
                                     return const Text('무료체험중입니다.',
-                                        textScaleFactor: 0.7);
+                                        textScaleFactor: 0.7);                                        
                                   }
+                                  */
                                 }),
+                            bottom: isEntitlementIsActive == false
+                                ? PreferredSize(
+                                    preferredSize: const Size.fromHeight(48.0),
+                                    child: Container(
+                                      height: 48.0,
+                                      alignment: Alignment.center,
+                                      child: demoButtonWidget,
+                                    ))
+                                : null,
                             actions: <Widget>[
                               IconButton(
-                                icon: const Icon(Icons.delete),
+                                icon: const Icon(Icons.delete_outlined),
                                 onPressed: () {
                                   openDeleteDialog(context);
                                 },
                               ),
                               IconButton(
-                                icon: const Icon(Icons.view_list),
+                                icon: const Icon(Icons.view_list_outlined),
                                 onPressed: () {
                                   Navigator.pushNamed(
                                       context, routeNameChatTab);
@@ -204,7 +215,7 @@ class PageChatState extends State<PageChat> {
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('에러가 발생했습니다. 다시 시도하세요.'),
+          content: const Text('에러가 발생했습니다. 잠시후 다시 시도하세요.'),
           action: SnackBarAction(
             label: '확인',
             onPressed: () {},

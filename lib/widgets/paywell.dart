@@ -1,3 +1,4 @@
+import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/rc_purchases_notifier.dart';
 import 'package:chat_playground/models/ui_change_notifier.dart';
@@ -178,7 +179,8 @@ class PaywallState extends State<Paywall> {
         .shimmer(
             delay: 1300.ms,
             duration: 500.ms,
-            blendMode: BlendMode.srcOver,
+            //blendMode: BlendMode.srcOver,
+            blendMode: BlendMode.srcATop,
             color: Colors.white)
         .then(delay: 3000.ms);
 
@@ -242,11 +244,11 @@ class PaywallState extends State<Paywall> {
                 ),
               );
 
-              Navigator.pop<String>(context, 'purchased');
+              Navigator.pop<String>(context, ret_purchased);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text('에러가 발생했습니다. 다시 시도하세요.'),
+                  content: const Text('에러가 발생했습니다. 잠시후 다시 시도하세요.'),
                   action: SnackBarAction(
                     label: '확인',
                     onPressed: () {},
@@ -281,7 +283,7 @@ class PaywallState extends State<Paywall> {
                 ),
                 color: uiNotifier.materialThemeData.colorScheme.secondary
                     .withOpacity(0.4),
-                borderRadius: const BorderRadius.all(Radius.circular(5)))
+                borderRadius: const BorderRadius.all(Radius.circular(15)))
             : BoxDecoration(
                 image: const DecorationImage(
                   image: AssetImage('assets/image/purchase.jfif'),
@@ -297,7 +299,7 @@ class PaywallState extends State<Paywall> {
                 ),
                 color: uiNotifier.materialThemeData.colorScheme.secondary
                     .withOpacity(0.4),
-                borderRadius: const BorderRadius.all(Radius.circular(5))),
+                borderRadius: const BorderRadius.all(Radius.circular(15))),
 
         padding: const EdgeInsets.only(
             top: 10.0, left: 5.0, right: 5.0, bottom: 10.0),
@@ -411,7 +413,7 @@ class PaywallState extends State<Paywall> {
                     ),
                   );
 
-                  Navigator.pop<String>(context, '체험하기');
+                  Navigator.pop<String>(context, ret_share);
                 }
               : null,
           child: const Text('지금 체험하기'),

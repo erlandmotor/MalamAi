@@ -159,7 +159,7 @@ class _PageChatMainState extends State<PageChatMain> {
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('에러가 발생했습니다. 다시 시도하세요.'),
+          content: const Text('에러가 발생했습니다. 잠시후 다시 시도하세요.'),
           action: SnackBarAction(
             label: '확인',
             onPressed: () {},

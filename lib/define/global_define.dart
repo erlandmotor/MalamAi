@@ -41,3 +41,7 @@ const appSettingDB = 'app_setting';
 const uiSettingDB = 'ui_setting';
 const otherDB = 'other_set';
 const chatGroupDB = 'chat_group';
+
+// Pop return value
+const ret_share = 'ret_share';
+const ret_purchased = 'purchased';

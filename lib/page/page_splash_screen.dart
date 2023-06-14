@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chat_playground/api/chat_api.dart';
 import 'package:chat_playground/define/global_define.dart';
 import 'package:chat_playground/define/mg_handy.dart';
 import 'package:chat_playground/models/firebase_notifier.dart';
@@ -122,6 +123,13 @@ class SplashScreenState extends State<SplashScreen> {
                   arguments: 'skip');
               mgLog('returned purchase widget - $ret');
               if (ret != null) {
+                if (ret == ret_purchased) {
+                  mgLog('구매해서 이동');
+                  ChatApi.SetApiPurchased();
+                } else if (ret == ret_share) {
+                  mgLog('체험하기로 이동');
+                  ChatApi.SetApiShare();
+                }
                 navigator.pushReplacementNamed(routeChatPage);
               }
             } else {
