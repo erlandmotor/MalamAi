@@ -4,6 +4,7 @@ import 'package:chat_playground/define/mg_handy.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ntp/ntp.dart';
 
 class ChatGroupNotifier with ChangeNotifier {
   static const keyOtherDB = 'other_set';
@@ -11,6 +12,8 @@ class ChatGroupNotifier with ChangeNotifier {
   static const keyLatestOpenIndex = 'latest_open_index';
   static const keyTabLists = 'key_tab_lists';
   static const keyTabUpdateTime = 'key_tab_update';
+  static const keyToday = 'key_today';
+  static const keyTodayCount = 'key_today_count';
 
   late Box otherDBBox;
   int curIndex = 0;
@@ -19,6 +22,8 @@ class ChatGroupNotifier with ChangeNotifier {
   late Map<int, DateTime> chatTimes;
 
   late Box<MessageItem> curChatBox;
+  late DateTime chatToday;
+  late int chatTodayCount;
 
   ChatGroupNotifier() {
     mgLog('ChatGroupNotifier notifier init.......');
@@ -28,6 +33,7 @@ class ChatGroupNotifier with ChangeNotifier {
     Hive.registerAdapter(HiveChatGroupAdapter());
     Hive.registerAdapter(MessageItemAdapter());
     await Hive.openBox(keyOtherDB);
+
     otherDBBox = Hive.box(keyOtherDB);
 
     List<int>? chatTabs = otherDBBox.get(keyTabLists);
@@ -43,14 +49,12 @@ class ChatGroupNotifier with ChangeNotifier {
     Map<dynamic, dynamic>? chatUpdateTimes = otherDBBox.get(keyTabUpdateTime);
     chatTimes = {};
     if (chatUpdateTimes == null || chatUpdateTimes.isEmpty) {
-      //chatTimes = {0: DateTime.now()};
+      var now = await NTP.now();
       for (var item in chatGroupsOrder) {
-        chatTimes[item] = DateTime.now();
+        chatTimes[item] = now;
       }
-
       otherDBBox.put(keyTabUpdateTime, chatTimes);
     } else {
-      //chatTimes = chatUpdateTimes;
       chatUpdateTimes.forEach((key, value) {
         chatTimes[key] = value;
       });
@@ -63,7 +67,11 @@ class ChatGroupNotifier with ChangeNotifier {
     } else {
       lastTabIndex = lastTabs;
     }
-    //await Hive.openBox<HiveChatGroup>(keychatGroupDB);
+
+//
+    chatToday = otherDBBox.get(keyToday);
+    chatTodayCount = otherDBBox.get(keyTodayCount);
+//
 
     for (var element in chatGroupsOrder) {
       await Hive.openBox<MessageItem>(element.toString());
@@ -82,6 +90,13 @@ class ChatGroupNotifier with ChangeNotifier {
 
     chatGroupsOrder.add(resultTabKey);
     otherDBBox.put(keyTabLists, chatGroupsOrder);
+
+////
+    var now = await NTP.now();
+    chatTimes[resultTabKey] = now;
+    otherDBBox.put(keyTabUpdateTime, chatTimes);
+
+////
     await Hive.openBox<MessageItem>(resultTabKey.toString());
 
     Box<MessageItem> myBox = Hive.box(resultTabKey.toString());
@@ -105,6 +120,10 @@ class ChatGroupNotifier with ChangeNotifier {
     chatGroupsOrder.removeAt(index);
     otherDBBox.put(keyTabLists, chatGroupsOrder);
 
+////
+    chatTimes.remove(tab);
+    otherDBBox.put(keyTabUpdateTime, chatTimes);
+////
     Box<MessageItem> myBox = Hive.box(tab.toString());
     myBox.deleteFromDisk();
 
@@ -181,5 +200,10 @@ class ChatGroupNotifier with ChangeNotifier {
     } catch (e) {
       return '새 탭';
     }
+  }
+
+  Future<int> requestChatAI(String message) async {
+    int ret = await curChatBox.add(MessageItem(message, true));
+    return ret;
   }
 }

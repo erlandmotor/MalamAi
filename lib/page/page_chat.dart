@@ -74,9 +74,6 @@ class PageChatState extends State<PageChat> {
       );
 
       demoButtonWidget = demoButtonWidget
-          // .animate(interval: 100.ms)
-          // .move(begin: const Offset(-26, 0), curve: Curves.easeOutQuad)
-          // .fadeIn(duration: 500.ms, delay: 100.ms)
           .animate(onPlay: (controller) => controller.repeat())
           .shimmer(
               delay: 200.ms,
@@ -84,7 +81,6 @@ class PageChatState extends State<PageChat> {
               //blendMode: BlendMode.srcOver,
               blendMode: BlendMode.srcATop,
               color: Colors.amberAccent[100]);
-      //.then(delay: 3000.ms);
     } else {
       demoButtonWidget = null;
     }
@@ -193,8 +189,10 @@ class PageChatState extends State<PageChat> {
 
   Future<void> _onSubmitted(String message) async {
     //var tempContext = context;
-    //box.
-    await chatBox.add(MessageItem(message, true));
+
+    await context.read<ChatGroupNotifier>().requestChatAI(message);
+
+    //await chatBox.add(MessageItem(message, true));
 
     setState(() {
       _awaitingResponse = true;

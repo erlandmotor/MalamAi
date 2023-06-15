@@ -384,12 +384,12 @@ class PaywallState extends State<Paywall> {
   }
 
   Widget buildTrialDesc() {
-    final isFreeTrial = rcPurchaseNotifier.firebaseNotifier.isFreeTrial;
-    return Container(
+    //final isFreeTrial = rcPurchaseNotifier.firebaseNotifier.isFreeTrial;
+    return const SizedBox(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Text(
-          isFreeTrial ? '3일간 무료체험할수 있습니다.' : '무료체험기간이 끝났습니다.',
+          //isFreeTrial ? '3일간 무료체험할수 있습니다.' : '무료체험기간이 끝났습니다.',
+          '제한된 기능으로 무료체험할수 있습니다.',
           textAlign: TextAlign.center,
         ));
   }
@@ -399,7 +399,7 @@ class PaywallState extends State<Paywall> {
 
     return Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 56),
         child: FilledButton(
           onPressed: isFreeTrial
               ? () {

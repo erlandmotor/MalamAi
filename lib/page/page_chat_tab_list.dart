@@ -68,37 +68,6 @@ class ChatTabListState extends State<ChatTabList> {
         ));
   }
 
-  // reorderListView() {
-  //   return ReorderableListView(
-  //     header: _isEdit
-  //         ? const Text('위치를 이동하거나 좌우로 지우세요.')
-  //         : const Text('이동할 탭을 선택하세요.'),
-  //     buildDefaultDragHandles: _isEdit,
-  //     children: buildListAll(context),
-  //     onReorder: (int oldIndex, int newIndex) {
-  //       _oldIndex = oldIndex;
-  //       _newIndex = newIndex;
-  //       isSwapping = true;
-  //       _refreshIndicatorKey.currentState?.show();
-  //     },
-  //     footer: Column(
-  //       children: [
-  //         const SizedBox(
-  //           height: 20,
-  //         ),
-  //         TextButton(
-  //           onPressed: () {
-  //             onAddTab(context);
-  //           },
-  //           child: const Text(
-  //             '추가하기',
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   reorderListViewBuild() {
     return Selector<ChatGroupNotifier, int>(
         selector: (_, provider) => provider.chatGroupsOrder.length,
@@ -172,9 +141,6 @@ class ChatTabListState extends State<ChatTabList> {
                 key: ValueKey<String>(
                     groupNotifier.chatGroupsOrder[index].toString()),
                 onDismissed: (DismissDirection direction) async {
-                  //_context = context;
-                  //_index = index;
-                  //isRemoving = true;
                   _refreshIndicatorKey.currentState?.show();
                   onRemove(context, index);
                   mgLog('Removed');
@@ -191,8 +157,7 @@ class ChatTabListState extends State<ChatTabList> {
                           : null,
                       subtitle: Text(subLabel),
                       leading: IconButton(
-                        icon: const Icon(
-                            Icons.remove_circle_sharp, //Icons.remove_circle,
+                        icon: const Icon(Icons.remove_circle_sharp,
                             color: Colors.redAccent),
                         onPressed: () {
                           dialogBuilder(context, index).then((value) {
@@ -338,35 +303,5 @@ class ChatTabListState extends State<ChatTabList> {
         );
       },
     );
-  }
-
-  buildItem(BuildContext context, int index) {
-    var label = groupNotifier.getChatTabLebel(index);
-    DateTime? chatdate = groupNotifier.chatTimes[index] ?? DateTime.now();
-    var subLabel = DateFormat('yyyy-MM-dd hh:mm').format(chatdate);
-
-    return Card(
-        key: Key('${index + 200}'),
-        child: ListTile(
-            key: Key('$index'),
-            trailing: _isEdit
-                ? ReorderableDragStartListener(
-                    index: index, child: const Icon(Icons.drag_handle))
-                : null,
-            subtitle: Text(subLabel),
-            leading: const Icon(Icons.chat),
-            title: Row(children: [
-              Text(label),
-              const Spacer(),
-              _isEdit
-                  ? IconButton(
-                      onPressed: () {
-                        _refreshIndicatorKey.currentState?.show();
-                        onRemove(context, index);
-                      },
-                      icon: const Icon(Icons.remove_circle,
-                          color: Colors.redAccent))
-                  : Container(),
-            ])));
   }
 }
