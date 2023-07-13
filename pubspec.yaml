@@ -39,22 +39,16 @@ dependencies:
   markdown_widget: ^2.0.0
   progress_indicators: ^1.0.0
   provider: ^6.0.5
-  # shared_preferences: ^2.0.20
   google_mobile_ads: ^3.0.0
   flutter_platform_widgets: ^3.2.0
-  # share_plus: ^6.3.4
   auto_size_text: ^3.0.0
-  # in_app_purchase: ^3.1.5
-  # cloud_firestore: ^4.4.5
-  # cloud_functions: ^4.0.13
   firebase_auth: ^4.3.0
   firebase_core: ^2.8.0
   google_sign_in: ^6.0.2
   intl: ^0.18.1
   ntp: ^2.0.0
   flutter_signin_button: ^2.0.0
-  cached_network_image: ^3.2.3
-  # purchases_flutter: ^4.11.1
+  cached_network_image: ^3.2.3  
   purchases_flutter: ^4.12.0
   gradient_borders: ^1.0.0
   hive: ^2.2.3
