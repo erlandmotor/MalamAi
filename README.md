@@ -19,23 +19,23 @@ samples, guidance on mobile development, and a full API reference.
 ### 사용한 SDK, Package 목록
 
   hive
-  
+
   dart_openai
-  
+
   markdown_widget
-  
+
   progress_indicators
-  
+
   provider
-  
+
   google_mobile_ads
-  
+
   firebase_auth
-  
+
   google_sign_in
-  
-  purchases_flutter    
-  
+
+  purchases_flutter ( RevenueCat 구매 백엔드 )
+
   flutter_animate
-  
+
 
