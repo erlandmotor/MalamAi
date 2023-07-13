@@ -168,8 +168,16 @@ class PaywallState extends State<Paywall> {
     //   widgets.add(buildPurchaseCard(item));
     // }
 
-    widgets =
-        List.generate(packs.length, (index) => buildPurchaseCard(packs[index]));
+    // real
+    // widgets =
+    //     List.generate(packs.length, (index) => buildPurchaseCard(packs[index]));
+
+    // show version
+    widgets = [
+      buildPurchaseCardTest(0),
+      buildPurchaseCardTest(1),
+      buildPurchaseCardTest(2),
+    ];
 
     widgets = widgets
         .animate(interval: 100.ms)
@@ -261,6 +269,71 @@ class PaywallState extends State<Paywall> {
           mgLog(' $e');
         }
         //Navigator.pop<String>(context, 'purchased');
+      },
+      child: Container(
+        //color: uiNotifier.materialThemeData.colorScheme.tertiary,
+        height: 150,
+        width: 110,
+        decoration: isReq
+            ? BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/image/purchase_req.jfif'),
+                  fit: BoxFit.cover,
+                ),
+                border: const GradientBoxBorder(
+                  gradient: LinearGradient(colors: [
+                    //Colors.blueAccent,
+                    Colors.blue,
+                    Colors.yellowAccent,
+                    Colors.greenAccent
+                  ], begin: Alignment.bottomLeft, end: Alignment.topRight),
+                  width: 7,
+                ),
+                color: uiNotifier.materialThemeData.colorScheme.secondary
+                    .withOpacity(0.4),
+                borderRadius: const BorderRadius.all(Radius.circular(15)))
+            : BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/image/purchase.jfif'),
+                  fit: BoxFit.cover,
+                ),
+                border: const GradientBoxBorder(
+                  gradient: LinearGradient(
+                      colors: [Colors.grey, Colors.blueGrey],
+                      //colors: [Colors.blue, Colors.green],
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight),
+                  width: 6,
+                ),
+                color: uiNotifier.materialThemeData.colorScheme.secondary
+                    .withOpacity(0.4),
+                borderRadius: const BorderRadius.all(Radius.circular(15))),
+
+        padding: const EdgeInsets.only(
+            top: 10.0, left: 5.0, right: 5.0, bottom: 10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          //crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: buildPurchaseCardInside(productDesc, isReq),
+        ),
+      ),
+    );
+  }
+
+  Widget buildPurchaseCardTest(int testId) {
+    final isReq = testId == 2;
+
+    ProductUIDesc productDesc = ProductUIDesc();
+
+    return InkWell(
+      //return Card(
+      //color: uiNotifier.materialThemeData.colorScheme.tertiary,
+      //elevation: 19,
+      //margin: const EdgeInsets.all(5),
+      //style: style,
+
+      onTap: () {
+        // test widget
       },
       child: Container(
         //color: uiNotifier.materialThemeData.colorScheme.tertiary,

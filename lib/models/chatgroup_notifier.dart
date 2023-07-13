@@ -22,8 +22,8 @@ class ChatGroupNotifier with ChangeNotifier {
   late Map<int, DateTime> chatTimes;
 
   late Box<MessageItem> curChatBox;
-  late DateTime chatToday;
-  late int chatTodayCount;
+  late DateTime? chatToday;
+  late int? chatTodayCount;
 
   ChatGroupNotifier() {
     mgLog('ChatGroupNotifier notifier init.......');

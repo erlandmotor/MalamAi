@@ -34,7 +34,8 @@ const storeKeyUpgrade = 'dash_upgrade_3d';
 const storeKeySubscription = 'subscription1';
 
 // Revcat Android
-const googleApiKey = 'goog_VJqDaQSHfvEEFizPnFKTzqqrMOd';
+
+const googleApiKey = '<APIKEY-- REVNEW 키가림>';
 const entitlementID = 'week';
 
 const appSettingDB = 'app_setting';
