@@ -3,7 +3,7 @@ name: Flutter action
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   lint_shellcheck:
