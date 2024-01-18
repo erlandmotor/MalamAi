@@ -5,7 +5,7 @@ import 'package:dart_openai/dart_openai.dart';
 
 class ChatApi {
   static const _model = 'gpt-3.5-turbo';
-  static const apiKey = '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';
+  static const apiKey = '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';
   ChatApi() {
     //처음
     //OpenAI.apiKey = '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';
