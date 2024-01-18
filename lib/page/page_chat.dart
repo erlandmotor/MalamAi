@@ -67,7 +67,7 @@ class PageChatState extends State<PageChat> {
     //isEntitlementIsActive = true;
     if (isEntitlementIsActive == false) {
       demoButtonWidget = TextButton(
-        child: const Text('무료체험중입니다 구매하여 제한없이 사용하세요'),
+        child: const Text('Uji coba gratis. Beli dan gunakan tanpa batasan.'),
         onPressed: () {
           Navigator.pushNamed(context, routeNamePurchase);
         },
@@ -96,7 +96,7 @@ class PageChatState extends State<PageChat> {
                   builder: (context, Box<MessageItem> box, _) {
                     // if (box.values.isEmpty) {
                     //   return const Center(
-                    //     child: Text("메시지 없음"),
+                    //     child: Text("Tidak ada pesan"),
                     //   );
                     // }
                     final int myItemCount =
@@ -121,7 +121,7 @@ class PageChatState extends State<PageChat> {
                                     return const Text(titleNameMain,
                                         textScaleFactor: 0.7);
                                   } else {
-                                    return const Text('무료체험중입니다.',
+                                    return const Text('Ini adalah uji coba gratis.',
                                         textScaleFactor: 0.7);                                        
                                   }
                                   */
@@ -213,9 +213,9 @@ class PageChatState extends State<PageChat> {
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('에러가 발생했습니다. 잠시후 다시 시도하세요.'),
+          content: const Text('Terjadi kesalahan. Silakan coba lagi nanti.'),
           action: SnackBarAction(
-            label: '확인',
+            label: 'memeriksa',
             onPressed: () {},
           ),
         ),
@@ -234,21 +234,21 @@ class PageChatState extends State<PageChat> {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('대화내용 삭제'),
-        content: const Text('대화내용을 모두 삭제 하시겠습니까?'),
+        title: const Text('Hapus konten percakapan'),
+        content: const Text('Apakah Anda ingin menghapus semua percakapan??'),
         actions: <Widget>[
           TextButton(
-              child: const Text('삭제'),
+              child: const Text('menghapus'),
               onPressed: () {
                 Navigator.of(context).pop();
 
                 setState(() {
                   chatBox.clear();
-                  chatBox.add(MessageItem('안녕하세요?', false));
+                  chatBox.add(MessageItem('Halo?', false));
                 });
               }),
           FilledButton(
-            child: const Text('취소'),
+            child: const Text('pembatalan'),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
